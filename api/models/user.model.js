@@ -45,27 +45,6 @@ const User = sequelize.define(
   }
 );
 
-
-User.beforeCreate(async (user) => {
-  if (user.password) {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!regex.test(user.password)) {
-      throw new Error("Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
-    }
-    user.password = await bcrypt.hash(user.password, 10);
-  }
-});
-
-User.beforeUpdate(async (user) => {
-  if (user.changed("password")) {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!regex.test(user.password)) {
-      throw new Error("Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.");
-    }
-    user.password = await bcrypt.hash(user.password, 10);
-  }
-});
-
 // Compare Password
 User.prototype.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
