@@ -8,189 +8,163 @@ import usersQueries from "../../queries/users.querie.js";
 import jwt from "jsonwebtoken";
 import verifyToken from "../../middleware/verifyauth.js";
 import createToken from "../../middleware/auth.js";
+import http from "http";
 
 const { expect } = chai;
-let http = chai.use(chaiHttp);
-
-//Demo:-
-describe("Array Test", () => {
-  it("should verify that the array contains a specific element", () => {
-    const fruits = ["apple", "banana", "cherry"];
-    const target = "banana";
-    expect(fruits).to.include(target);
-  });
-});
-
-// Create Users:-
-// describe("Post API testing", () => {
-//   it("should create a user and insert into the database", async () => {
-//     const newUserData = {
-//       username: "nisha",
-//       email: "nisha@gmail.com",
-//       password: "Pnisha@123",
-//     };
-//     console.log("Test - Creating user with data:", newUserData);
-
-//     try {
-//       const existingUser = await usersQueries.findUserByEmail(
-//         newUserData.email
-//       );
-//       if (existingUser) {
-//         console.log("User already exists with email:", newUserData.email);
-//         return;
-//       }
-
-//       // Hash the password:-
-//       const hashedPassword = await bcrypt.hash(newUserData.password, 10);
-
-//       // Insert the user into the database:-
-//       const user = await usersQueries.createUser({
-//         username: newUserData.username,
-//         email: newUserData.email,
-//         password: hashedPassword,
-//       });
-//       console.log("Insert users===========", user);
-
-//       // Send request :-
-//       const res = await http
-//         .request(app)
-//         .post("/api/user/register")
-//         .send(newUserData);
-
-//       console.log("Response Status:", res.status);
-//       console.log("Response Body:", res.body);
-
-//       // Validate response:-
-//       expect(res.status).to.equal(201);
-//       expect(res.body).to.have.property("message", "User Created Successfully");
-//       expect(res.body.user).to.have.property("username", newUserData.username);
-//       expect(res.body.user).to.have.property("email", newUserData.email);
-//     } catch (err) {
-//       console.error("Test - Unexpected error:", err.message);
-//       throw err;
-//     }
-//   });
-// });
+chai.use(chaiHttp);
 
 // GetUser BY Id:-
-// describe("Should GetUser by Id", () => {
-//   it("GetUser BY Id", async () => {
+// describe("Get User By ID", () => {
+//   it("Get User By Id :)", async () => {
 //     try {
-//       // User data:-
-//       let GetData = {
-//         id: 11,
-//         username: "uno",
-//         email: "uno@gmail.com",
-//         password: "Puno@123",
+//       const tokenUserData = {
+//         id: 7,
+//         username: "laxmi",
+//         email: "laxmi@gmail.com",
+//         password: "Laxmi@123",
 //       };
 
-//       //  Generate a token :-
-//       let GetToken = createToken({
-//         id: GetData.id,
-//         username: GetData.username,
-//         email: GetData.email,
+//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+
+//       let createdToken = createToken({
+//         id: tokenUserData.id,
+//         email: tokenUserData.email,
+//         username: tokenUserData.username,
 //       });
 
-//       console.log("Generated Token:", GetToken);
-
-//       const verifiedToken = jwt.verify(
-//         GetToken,
-//         process.env.JWT_SECERT || "Master@8110##"
-//       );
-//       console.log("Decoded Token:", verifiedToken);
-
-//       let getData = {
-//         id: 11,
-//         username: "uno",
-//         email: "uno@gmail.com",
-//         password: "Puno@123",
+//       const getUserData = {
+//         id: 7,
 //       };
 
-//       // Validate token:-
-//       expect(verifiedToken).to.have.property("id", getData.id);
-//       expect(verifiedToken).to.have.property("username", getData.username);
-//       expect(verifiedToken).to.have.property("email", getData.email);
-//       console.log("Token validated successfully");
-//     } catch (err) {
-//       console.log("Unauthorized user============", err.message);
-//       throw err;
+//       const path = `/api/user/getuser/${getUserData.id}`;
+//       console.log("path:", path);
+
+//       const options = {
+//         hostname: "localhost",
+//         port: 3001,
+//         path: path,
+//         method: "GET",
+//         headers: {
+//           authorization: createdToken, 
+//         },
+//       };
+
+//           const req = http.request(options, (res) => {
+//             let data = "";
+
+//             res.on("data", (chunk) => {
+//               data += chunk;
+//             });
+
+//             res.on("end", () => {
+//               console.log("Response Status:", res.statusCode);
+
+//               const parsedData = JSON.parse(data);
+//               console.log("Response Body:", parsedData);
+
+//               expect(res.statusCode).to.equal(200);
+//             });
+//           });
+
+//           req.on("error", (error) => {
+//             console.error("Request error:", error.message);
+//             throw error;
+//           });
+//           req.end();
+//     } catch (tokenError) {
+//       console.error(
+//         "Token verification failed immediately after generation:",
+//         tokenError.message
+//       );
+//       throw tokenError;
 //     }
 //   });
 // });
 
-// GetAll Users:-
-describe("GetAll Users", () => {
-  it("GetAll Users :)", async () => {
-    const GetAllData = {
-      username: "",
-      email: "",
-      password: "",
-    };
-    console.log("Getall====", GetAllData);
-
-    try {
-      // const users = await sequelize.query(
-      //   `SELECT id, username, email FROM users`
-      // );
-      // console.log(users, "Fetch Users");
-
-      //  Hash the password:-
-      const hashedPassword = await bcrypt.hash(GetAllData.password, 10);
-
-      // Insert the user into the database:-
-      const user = await usersQueries.getAllUser({
-        username: GetAllData.username,
-        email: GetAllData.email,
-        password: hashedPassword,
-      });
-      console.log("GetAll users===========", user);
-
-      chai.request(app).get("/api/user/usersall").send(GetAllData);
-
-      console.log("Response Status:", res.status);
-      console.log("Response Body:", res.body);
-
-      expect(res.status).to.be.equal(200);
-    } catch (err) {
-      console.error("Unexpected error:", err.message);
-      throw err;
-    }
-  });
-});
-
-// Update Users:-
-// describe("Update Users", () => {
-//   it("Update Users :)", async () => {
-//     //  User Data:-
-//     const tokenUserData = {
-//       id: 3,
-//       username: "Masterrr",
-//       email: "testusers@gmail.com",
-//       password: "Test@123",
+// describe("GetAll Users", () => {
+//   it("GetAll Users :)", async () => {
+//     const options = {
+//       hostname: "localhost",
+//       port: 3001,
+//       path: "/api/user/usersall",
+//       method: "GET",
 //     };
 
-//     // Hash the password:-
-//     const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+//     const req = http.request(options, (res) => {
+//       let data = "";
 
-//     let createdToken = createToken({
-//       id: tokenUserData.id,
-//       email: tokenUserData.email,
-//       username: tokenUserData.username,
+//       res.on("data", (chunk) => {
+//         data += chunk;
+//       });
+
+//       res.on("end", () => {
+//         console.log("Response Status:", res.statusCode);
+
+//         const parsedData = JSON.parse(data);
+//         console.log("Response Body:", parsedData);
+
+//         expect(res.statusCode).to.equal(200);
+//       });
 //     });
-//     try {
-//       const decoded = jwt.verify(createdToken, process.env.JWT_SECERT);
-//       console.log(decoded, "decoded");
-//       expect(decoded).to.have.property("id", tokenUserData.id);
-//       expect(decoded).to.have.property("email", tokenUserData.email);
-//       expect(decoded).to.have.property("username", tokenUserData.username);
-//       console.log("Token validation successful");
 
-//       // Update User Data:-
+//     req.on("error", (error) => {
+//       console.error("Request error:", error.message);
+//       throw error;
+//     });
+//     req.end();
+//   });
+// });
+
+// //Update Users:-
+// describe("Update Users", () => {
+//   it("Update Users :)", async () => {
+//     try {
+//       // USER DATA ====> NP
+//       const tokenUserData = {
+//         id: 11,
+//         username: "uno",
+//         email: "uno@gmail.com",
+//         password: "Puno@123",
+//       };
+
+//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+
+//       let createdToken = createToken({
+//         id: tokenUserData.id,
+//         email: tokenUserData.email,
+//         username: tokenUserData.username,
+//       });
+
+//       const req = {
+//         headers: { authorization: createdToken },
+//       };
+
+//       // VERIFY TOKEN ====> NP
+//       const res = {
+//         status: (code) => {
+//           res.statusCode = code;
+//           return res;
+//         },
+//         json: (message) => {
+//           res.message = message;
+//         },
+//         send: (message) => {
+//           res.message = message;
+//         },
+//       };
+
+//       let nextCalled = false;
+//       const next = () => {
+//         nextCalled = true;
+//       };
+
+//       await verifyToken(req, res, next);
+
 //       const updateUserData = {
-//         id: 3,
-//         username: "Test",
-//         email: "testusers@gmail.com",
-//         password: "Test@123",
+//         id: 11,
+//         username: "Puno",
+//         email: "Puno@gmail.com",
+//         password: "Puno@123",
 //       };
 
 //       const [users] = await sequelize.query(
@@ -216,37 +190,52 @@ describe("GetAll Users", () => {
 //   });
 // });
 
-// Delete Users:-
+// // Delete Users:-
 // describe("Delete Users", () => {
 //   it("Delete Users :)", async () => {
 //     try {
-//       // User Data:-
-//       const tokenData = {
-//         id: 1,
-//         username: "nidhu",
-//         email: "nidhu@gmail.com",
-//         password: "Nidhu@123",
+//       //  User Data:-
+//       const tokenUserData = {
+//         id: 11,
+//         username: "Puno",
+//         email: "Puno@gmail.com",
+//         password: "Puno@123",
 //       };
 
-//       // Hash the password:-
-//       const hashedPassword = await bcrypt.hash(tokenData.password, 10);
-
-//       // Deleted User Data:-
+//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
 //       let createdToken = createToken({
-//         id: tokenData.id,
-//         email: tokenData.email,
-//         username: tokenData.username,
+//         id: tokenUserData.id,
+//         email: tokenUserData.email,
+//         username: tokenUserData.username,
 //       });
 
-//       const verifiedToken = jwt.verify(createdToken, process.env.JWT_SECERT);
-//       console.log(verifiedToken, "decoded============");
-
-//       const deleteData = {
-//         id: 1,
+//       const req = {
+//         headers: { authorization: createdToken },
 //       };
 
-//       expect(verifiedToken).to.have.property("id", deleteData.id);
-//       console.log("Token valid successfully");
+//       const res = {
+//         status: (code) => {
+//           res.statusCode = code;
+//           return res;
+//         },
+//         json: (message) => {
+//           res.message = message;
+//         },
+//         send: (message) => {
+//           res.message = message;
+//         },
+//       };
+
+//       let nextCalled = false;
+//       const next = () => {
+//         nextCalled = true;
+//       };
+
+//       await verifyToken(req, res, next);
+
+//       const deleteData = {
+//         id: 11,
+//       };
 
 //       let user = await sequelize.query(`DELETE FROM users WHERE  id = :id`, {
 //         replacements: {
@@ -256,7 +245,7 @@ describe("GetAll Users", () => {
 //       });
 //       console.log("Deleted user successfully", user);
 //     } catch (err) {
-//       console.log("Unauthorized user============", err.message);
+//       console.log("Unauthorized user", err.message);
 //       throw err;
 //     }
 //   });

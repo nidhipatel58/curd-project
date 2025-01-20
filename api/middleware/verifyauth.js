@@ -10,10 +10,13 @@ const verifyToken = (req, res, next) => {
         message: "Token is required",
       });
     }
+
+    console.log("verify function : starting of verify");
     const decoded = jwt.verify(token, process.env.JWT_SECERT);
-    console.log(decoded.id, "verify function decoded ");
     req.userId = decoded.id
     next();
+    console.log("verify function : completed of verify");
+
   } catch (err) {
     res.status(401).send("Invalid or expired token");
   }
