@@ -3,117 +3,167 @@ import chaiHttp from "chai-http";
 import app from "../../../server.js";
 import sequelize from "../../config/db.js";
 import bcrypt from "bcryptjs";
-import User from "../../models/user.model.js";
 import usersQueries from "../../queries/users.querie.js";
-import jwt from "jsonwebtoken";
-import verifyToken from "../../middleware/verifyauth.js";
 import createToken from "../../middleware/auth.js";
 import http from "http";
 
 const { expect } = chai;
 chai.use(chaiHttp);
 
+// Create Users:-
+describe("Create Users", () => {
+  it("Create User Succes", async () => {
+    try {
+      let createUser = {
+        username: "laxmi",
+        email: "laxmi@gmail.com",
+        password: "Plaxmi@123",
+      };
+
+      const hashedPassword = await bcrypt.hash(createUser.password, 10);
+      createUser.password = hashedPassword;
+      let path = `/api/user/register`;
+      console.log(path, "path");
+
+      let data = JSON.stringify(createUser);
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(data),
+        },
+      };
+
+      let req = http.request(options, (res) => {
+        let data = "";
+        res.on("data", (chunks) => {
+          data += chunks;
+        });
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
+          expect(res.statusCode).to.equal(201);
+        });
+      });
+
+      req.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      req.write(data);
+      req.end();
+    } catch (err) {
+      console.log("Creation of users Failed!!", err.message);
+    }
+  });
+});
+
 // GetUser BY Id:-
-// describe("Get User By ID", () => {
-//   it("Get User By Id :)", async () => {
-//     try {
-//       const tokenUserData = {
-//         id: 7,
-//         username: "laxmi",
-//         email: "laxmi@gmail.com",
-//         password: "Laxmi@123",
-//       };
+describe("Get User By ID", () => {
+  it("Get User By Id :)", async () => {
+    try {
+      const tokenUserData = {
+        id: 7,
+        username: "laxmi",
+        email: "laxmi@gmail.com",
+        password: "Laxmi@123",
+      };
 
-//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
 
-//       let createdToken = createToken({
-//         id: tokenUserData.id,
-//         email: tokenUserData.email,
-//         username: tokenUserData.username,
-//       });
+      let createdToken = createToken({
+        id: tokenUserData.id,
+        email: tokenUserData.email,
+        username: tokenUserData.username,
+      });
 
-//       const getUserData = {
-//         id: 7,
-//       };
+      const getUserData = {
+        id: 7,
+      };
 
-//       const path = `/api/user/getuser/${getUserData.id}`;
-//       console.log("path:", path);
+      const path = `/api/user/getuser/${getUserData.id}`;
+      console.log("path:", path);
 
-//       const options = {
-//         hostname: "localhost",
-//         port: 3001,
-//         path: path,
-//         method: "GET",
-//         headers: {
-//           authorization: createdToken,
-//         },
-//       };
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "GET",
+        headers: {
+          authorization: createdToken,
+        },
+      };
 
-//           const req = http.request(options, (res) => {
-//             let data = "";
+      const req = http.request(options, (res) => {
+        let data = "";
 
-//             res.on("data", (chunk) => {
-//               data += chunk;
-//             });
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
 
-//             res.on("end", () => {
-//               console.log("Response Status:", res.statusCode);
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
 
-//               const parsedData = JSON.parse(data);
-//               console.log("Response Body:", parsedData);
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
 
-//               expect(res.statusCode).to.equal(200);
-//             });
-//           });
+          expect(res.statusCode).to.equal(200);
+        });
+      });
 
-//           req.on("error", (error) => {
-//             console.error("Request error:", error.message);
-//             throw error;
-//           });
-//           req.end();
-//     } catch (tokenError) {
-//       console.error(
-//         "Token verification failed immediately after generation:",
-//         tokenError.message
-//       );
-//       throw tokenError;
-//     }
-//   });
-// });
+      req.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      req.end();
+    } catch (tokenError) {
+      console.error(
+        "Token verification failed immediately after generation:",
+        tokenError.message
+      );
+      throw tokenError;
+    }
+  });
+});
 
-// describe("GetAll Users", () => {
-//   it("GetAll Users :)", async () => {
-//     const options = {
-//       hostname: "localhost",
-//       port: 3001,
-//       path: "/api/user/usersall",
-//       method: "GET",
-//     };
+// GETAll Users:-
+describe("GetAll Users", () => {
+  it("GetAll Users :)", async () => {
+    const options = {
+      hostname: "localhost",
+      port: 3001,
+      path: "/api/user/usersall",
+      method: "GET",
+    };
 
-//     const req = http.request(options, (res) => {
-//       let data = "";
+    const req = http.request(options, (res) => {
+      let data = "";
 
-//       res.on("data", (chunk) => {
-//         data += chunk;
-//       });
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
 
-//       res.on("end", () => {
-//         console.log("Response Status:", res.statusCode);
+      res.on("end", () => {
+        console.log("Response Status:", res.statusCode);
 
-//         const parsedData = JSON.parse(data);
-//         console.log("Response Body:", parsedData);
+        const parsedData = JSON.parse(data);
+        console.log("Response Body:", parsedData);
 
-//         expect(res.statusCode).to.equal(200);
-//       });
-//     });
+        expect(res.statusCode).to.equal(200);
+      });
+    });
 
-//     req.on("error", (error) => {
-//       console.error("Request error:", error.message);
-//       throw error;
-//     });
-//     req.end();
-//   });
-// });
+    req.on("error", (error) => {
+      console.error("Request error:", error.message);
+      throw error;
+    });
+    req.end();
+  });
+});
 
 // //Update Users:-
 describe("Update Users", () => {
@@ -136,16 +186,18 @@ describe("Update Users", () => {
         password: hashedPassword,
       });
 
-      const path = `/api/user/updateuser/${tokenUserData.id}`;
-      console.log("path:", path);
-
-      const data = JSON.stringify({
-        id: "1",
+      const updateUser = {
+        id: 1,
         username: "umi..",
         email: "umi@gmail.com",
-        password: "Pumi@123",
-      });
+        password: hashedPassword,
+      };
 
+      const path = `/api/user/updateuser/${updateUser.id}`;
+      console.log("path:", path);
+
+      //   Pass here your json Data:-
+      const data = JSON.stringify(updateUser);
       const options = {
         hostname: "localhost",
         port: 3001,
@@ -177,6 +229,7 @@ describe("Update Users", () => {
         console.error("Request error:", error.message);
         throw error;
       });
+      reqst.write(data);
       reqst.end();
 
       console.log(`Update Users successfully`);
@@ -191,199 +244,182 @@ describe("Update Users", () => {
 });
 
 // // Delete Users:-
-// describe("Delete Users", () => {
-//   it("Delete Users :)", async () => {
-//     try {
-//       // USER DATA =====>
-//       const tokenUserData = {
-//         id: 1,
-//         username: "umi",
-//         email: "umi@gmail",
-//         password: "Pumi@123",
-//       };
+describe("Delete Users", () => {
+  it("Delete Users :)", async () => {
+    try {
+      //  User Data:-
+      const tokenUserData = {
+        id: 3,
+        username: "nidhi",
+        email: "nidhi@gmail.com",
+        password: "Pnidhi@123",
+      };
 
-//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+      let createdToken = createToken({
+        id: tokenUserData.id,
+        email: tokenUserData.email,
+        username: tokenUserData.username,
+        password: hashedPassword,
+      });
 
-//       let createdToken = createToken({
-//         id: tokenUserData.id,
-//         email: tokenUserData.email,
-//         username: tokenUserData.username,
-//         password: hashedPassword,
-//       });
+      let deleteUser = {
+        id: 3,
+      };
 
-//       const reqs = {
-//         headers: { authorization: createdToken },
-//       };
+      const path = `/api/user/deleteuser/${deleteUser.id}`;
+      console.log("path:", path);
 
-//       const res = {
-//         status: (code) => {
-//           res.statusCode = code;
-//           return res;
-//         },
-//         json: (message) => {
-//           res.message = message;
-//         },
-//         send: (message) => {
-//           res.message = message;
-//         },
-//       };
+      const data = JSON.stringify(deleteUser);
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(data),
+          authorization: createdToken,
+        },
+      };
 
-//       let nextCalled = false;
-//       const next = () => {
-//         nextCalled = true;
-//       };
+      const req = http.request(options, (res) => {
+        let data = "";
 
-//       await verifyToken(reqs, res, next);
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
 
-//       const updateUserData = {
-//         id: 1,
-//         username: "umii",
-//         email: "umi@gmail.com",
-//         password: "Pumi@123",
-//       };
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
 
-//       const path = `/api/user/updateuser/${updateUserData.id}`;
-//       console.log("path:", path);
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
 
-//       const options = {
-//         hostname: "localhost",
-//         port: 3001,
-//         path: path,
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//           authorization: createdToken,
-//         },
-//       };
+          expect(res.statusCode).to.equal(200);
+        });
+      });
 
-//       const reqst = http.request(options, (res) => {
-//         let data = "";
+      req.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      req.write(data);
+      req.end();
+      console.log("Deleted user successfully");
+    } catch (err) {
+      console.log("Unauthorized user", err.message);
+      throw err;
+    }
+  });
+});
 
-//         res.on("data", (chunks) => {
-//           data += chunks;
-//         });
+// Signup:-
+describe("Signup API: ", () => {
+  it("Should signup correctly", async () => {
+    // Signup Data:-
+    let data = {
+      username: "laxmi",
+      email: "laxmi@gmail.com",
+      password: "Plaxmi@123",
+    };
 
-//         res.on("end", () => {
-//           console.log("Response Status:", res.statusCode);
-//           const parsedData = JSON.parse(data);
-//           console.log("Response Body:", parsedData);
-//           expect(res.statusCode).to.equal(200);
-//         });
-//       });
+    console.log("Signup Data--------", data);
 
-//       reqst.on("error", (error) => {
-//         console.error("Request error:", error.message);
-//         throw error;
-//       });
-//       reqst.write(JSON.stringify(updateUserData));
-//       reqst.end();
+    try {
+      const existingUser = await usersQueries.findUserByEmail(data.email);
+      if (existingUser) {
+        console.log("User already exists with email:", data.email);
+        return;
+      }
 
-//       console.log(`Update Users successfully`);
-//     } catch (tokenError) {
-//       console.error(
-//         "Token verification failed immediately after generation!!",
-//         tokenError.message
-//       );
-//       throw tokenError;
-//     }
-//   });
-// });
+      // Hash the password:-
+      const hashedPassword = await bcrypt.hash(data.password, 10);
 
-// // Delete Users:-
-// describe("Delete Users", () => {
-//   it("Delete Users :)", async () => {
-//     try {
-//       //  User Data:-
-//       const tokenUserData = {
-//         id: 5,
-//         username: "krisha..",
-//         email: "krisha@gmail.com",
-//         password: "Krisha@123",
-//       };
+      let outcome = await sequelize.query(
+        `INSERT INTO users(email, password, username) VALUES (:email, :password, :username)`,
+        {
+          replacements: {
+            email: data.email,
+            password: hashedPassword,
+            username: data.username,
+          },
+          type: sequelize.QueryTypes.INSERT,
+        }
+      );
 
-//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
-//       let createdToken = createToken({
-//         id: tokenUserData.id,
-//         email: tokenUserData.email,
-//         username: tokenUserData.username,
-//         password: hashedPassword,
-//       });
+      console.log("Signup and Insert into Database", outcome);
+      let res = await http.request
+        .execute(app)
+        .post("/api/user/signup")
+        .send(data);
+      expect(res).to.have.status(201);
+      expect(res.body.username).to.equal(data.username);
+      expect(res.body.password).to.equal(data.password);
+      expect(res.body.email).to.equal(data.email);
+      expect(res.body.message).to.equal("Signup Successfully:)");
+    } catch (err) {
+      console.log("Signup Failed============!!", err.message);
+    }
+  });
+});
 
-//       const reqs = {
-//         headers: { authorization: createdToken },
-//       };
+// Login User:-
+describe("Login API Test", () => {
+  it("Should login with valid info", async () => {
+    const UserData = {
+      id: "12",
+      username: "nidhi",
+      email: "nidhi@gmail.com",
+      password: "Pnidhi@123",
+    };
 
-//       const res = {
-//         status: (code) => {
-//           res.statusCode = code;
-//           return res;
-//         },
-//         json: (message) => {
-//           res.message = message;
-//         },
-//         send: (message) => {
-//           res.message = message;
-//         },
-//       };
+    try {
+      const path = "/api/user/login";
+      console.log("path:", path);
 
-//       let nextCalled = false;
-//       const next = () => {
-//         nextCalled = true;
-//       };
+      let createdToken = createToken({
+        id: UserData.id,
+        email: UserData.email,
+        username: UserData.username,
+      });
 
-//       await verifyToken(reqs, res, next);
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "POST",
+        headers: {
+          authorization: createdToken,
+        },
+      };
 
-//       const deleteData = {
-//         id: 5,
-//       };
+      const req = http.request(options, (res) => {
+        let data = "";
 
-//       const path = `/api/user/deleteuser/${deleteData.id}`;
-//       console.log("path:", path);
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
 
-//       const options = {
-//         hostname: "localhost",
-//         port: 3001,
-//         path: path,
-//         method: "DELETE",
-//         headers: {
-//           authorization: createdToken,
-//         },
-//       };
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
 
-//       const req = http.request(options, (res) => {
-//         let data = "";
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
 
-//         res.on("data", (chunk) => {
-//           data += chunk;
-//         });
+          expect(res.statusCode).to.equal(200);
+        });
+      });
 
-//         res.on("end", () => {
-//           console.log("Response Status:", res.statusCode);
+      req.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      req.end();
 
-//           const parsedData = JSON.parse(data);
-//           console.log("Response Body:", parsedData);
-
-//           expect(res.statusCode).to.equal(200);
-//         });
-//       });
-
-//       req.on("error", (error) => {
-//         console.error("Request error:", error.message);
-//         throw error;
-//       });
-//       req.end();
-
-//       //   let user = await sequelize.query(`DELETE FROM users WHERE  id = :id`, {
-//       //     replacements: {
-//       //       id: deleteData.id,
-//       //     },
-//       //     type: sequelize.QueryTypes.DELETE,
-//       //   });
-
-//       console.log("Deleted user successfully", user);
-//     } catch (err) {
-//       console.log("Unauthorized user", err.message);
-//       throw err;
-//     }
-//   });
-// });
+      console.log("User Login Successfully :)");
+    } catch (err) {
+      console.log("Login Auth Failed=========", err.message);
+    }
+  });
+});

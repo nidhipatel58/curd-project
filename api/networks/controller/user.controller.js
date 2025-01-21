@@ -6,22 +6,35 @@ import bcrypt from "bcryptjs";
 const createUser = async (req, res) => {
   try {
     let { email, password, username } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    let userData = { email, password: hashedPassword, username };
+    if (!email || !password || !username) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    // Check if email already exists:-
+    const existingUser = await UserService.findUserByEmail(email);
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
 
-    let user = await UserService.createUser(userData);
-    res.status(201).json({
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userData = { email, password: hashedPassword, username };
+
+    // Create the new user
+    const user = await UserService.createUser(userData);
+    console.log("users-----------------", user);
+
+    // Respond with success
+    return res.status(201).json({
       message: "User Created Successfully",
       user,
     });
   } catch (err) {
-    res.status(400).json({
-      message: err.message,
-    });
+    console.error("Error creating user:", err.message);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-// Get user by ID:
+// Get user by ID:-
 const getUserById = async (req, res) => {
   try {
     let { id } = req.params;
@@ -40,7 +53,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-// Get All Users:
+// Get All Users:-
 const getAllUser = async (req, res) => {
   try {
     let users = await UserService.getAllUser();
@@ -55,7 +68,7 @@ const getAllUser = async (req, res) => {
   }
 };
 
-// Update user by ID:
+// Update user by ID:-
 const updateUser = async (req, res) => {
   try {
     let { id } = req.params;
@@ -78,12 +91,14 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Delete user by ID:
+// Delete user by ID:-
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
     const user = await UserService.deleteUser(id);
+
+    console.log("Update id", id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -130,12 +145,14 @@ const signup = async (req, res) => {
   }
 };
 
-// Login user:
+// Login user:-
 const Login = async (req, res) => {
   const { email, password } = req.body;
-
   try {
-    // Find user by email
+    // console.log(email, "email");
+    // console.log(password, "pass");
+
+    // Find user by email:-
     const user = await UserService.findUserByEmail(email);
     if (!user) {
       return res

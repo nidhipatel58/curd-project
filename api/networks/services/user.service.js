@@ -2,7 +2,8 @@ import usersQuerie from "../../queries/users.querie.js";
 
 // Create Users:
 let createUser = async (userData) => {
-  return await usersQuerie.createUser(userData);
+  let newUser = await usersQuerie.createUser(userData);
+  return newUser;
 };
 
 // Get All Users:-
@@ -23,21 +24,22 @@ const getUserById = async (id) => {
 // Find a user by email::-
 const findUserByEmail = async (email) => {
   const user = await usersQuerie.findUserByEmail(email);
+  console.log("find by email", email);
   return user;
 };
 
 // Update user by ID:-
 const updateUser = async (id, updates) => {
   const updatedUser = await usersQuerie.updateUser(id, updates);
+  if (!user) {
+    throw new Error("User not found");
+  }
   return updatedUser;
 };
 
 // Delete user by ID:-
 const deleteUser = async (id) => {
   const deletedUser = await usersQuerie.deleteUser(id);
-  if (!user) {
-    throw new Error("User not found");
-  }
   return deletedUser;
 };
 

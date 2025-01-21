@@ -5,8 +5,9 @@ import UserModel from "../models/user.model.js";
 let usersQueries = {
   // Create User:-
   createUser: async (userData) => {
-    let newData = await UserModel.create(userData);
-    return newData;
+    const newUser = await UserModel.create(userData);
+    console.log("New user created:", newUser);
+    return newUser;
     // const { username, email, password } = userData;
     // const result = await sequelize.query(
     //   `INSERT INTO users (username, email, password)
@@ -76,10 +77,10 @@ let usersQueries = {
     // );
     // return result[0];
 
-    let users = await UserModel.findByPk(id);
-    Object.assign(users);
-    await users.destroy();
-    return { message: "User deleted successfully", users };
+    let user = await UserModel.findByPk(id);
+    // Object.assign(user);
+    await user.destroy();
+    return user;
   },
 
   findUserByEmail: async (email) => {
@@ -93,6 +94,8 @@ let usersQueries = {
     // return result[0];
 
     let users = await UserModel.findOne({ where: { email } });
+    console.log(users, "email");
+
     return users;
   },
 };
