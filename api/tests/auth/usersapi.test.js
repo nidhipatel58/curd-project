@@ -136,31 +136,6 @@ describe("Update Users", () => {
         password: hashedPassword,
       });
 
-      const req = {
-        headers: { authorization: createdToken },
-      };
-
-      // VERIFY TOKEN ====>
-      const res = {
-        status: (code) => {
-          res.statusCode = code;
-          return res;
-        },
-        json: (message) => {
-          res.message = message;
-        },
-        send: (message) => {
-          res.message = message;
-        },
-      };
-
-      let nextCalled = false;
-      const next = () => {
-        nextCalled = true;
-      };
-
-      await verifyToken(req, res, next);
-
       const updateUserData = {
         id: 1,
         username: "umi:)",
@@ -168,9 +143,15 @@ describe("Update Users", () => {
         password: "Pumi@123",
       };
 
-      //  Here Give your actual Url:-
       const path = `/api/user/updateuser/${updateUserData.id}`;
       console.log("path:", path);
+
+      const data = JSON.stringify({
+        id: '1',
+        username: 'umi:)',
+        email: 'umi@gmail.com',
+        password: 'Pumi@123',
+      });
 
       const options = {
         hostname: "localhost",
@@ -178,6 +159,8 @@ describe("Update Users", () => {
         path: path,
         method: "PUT",
         headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(data),
           authorization: createdToken,
         },
       };
@@ -191,10 +174,8 @@ describe("Update Users", () => {
 
         res.on("end", () => {
           console.log("Response Status:", res.statusCode);
-
           const parsedData = JSON.parse(data);
           console.log("Response Body:", parsedData);
-
           expect(res.statusCode).to.equal(200);
         });
       });
