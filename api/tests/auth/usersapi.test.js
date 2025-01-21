@@ -116,8 +116,83 @@ chai.use(chaiHttp);
 // });
 
 // //Update Users:-
-// describe("Update Users", () => {
-//   it("Update Users :)", async () => {
+describe("Update Users", () => {
+  it("Update Users :)", async () => {
+    try {
+      // USER DATA =====>
+      const tokenUserData = {
+        id: 1,
+        username: "umii",
+        email: "umi@gmail",
+        password: "Pumi@123",
+      };
+
+      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+
+      let createdToken = createToken({
+        id: tokenUserData.id,
+        email: tokenUserData.email,
+        username: tokenUserData.username,
+        password: hashedPassword,
+      });
+
+      const path = `/api/user/updateuser/${tokenUserData.id}`;
+      console.log("path:", path);
+
+      const data = JSON.stringify({
+        id: "1",
+        username: "umi..",
+        email: "umi@gmail.com",
+        password: "Pumi@123",
+      });
+
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(data),
+          authorization: createdToken,
+        },
+      };
+
+      const reqst = http.request(options, (res) => {
+        let data = "";
+
+        res.on("data", (chunks) => {
+          data += chunks;
+        });
+
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
+          expect(res.statusCode).to.equal(200);
+        });
+      });
+
+      reqst.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      reqst.end();
+
+      console.log(`Update Users successfully`);
+    } catch (tokenError) {
+      console.error(
+        "Token verification failed immediately after generation!!",
+        tokenError.message
+      );
+      throw tokenError;
+    }
+  });
+});
+
+// // Delete Users:-
+// describe("Delete Users", () => {
+//   it("Delete Users :)", async () => {
 //     try {
 //       // USER DATA =====>
 //       const tokenUserData = {
