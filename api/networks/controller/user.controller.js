@@ -58,8 +58,9 @@ const getAllUser = async (req, res) => {
 // Update user by ID:
 const updateUser = async (req, res) => {
   try {
-    let updates = req.body;
     let { id } = req.params;
+    let updates = req.body;
+    console.log("Update id", id, "and data", updates);
 
     const user = await UserService.updateUser(id, updates);
     if (!user) {

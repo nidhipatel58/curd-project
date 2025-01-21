@@ -45,7 +45,7 @@ chai.use(chaiHttp);
 //         path: path,
 //         method: "GET",
 //         headers: {
-//           authorization: createdToken, 
+//           authorization: createdToken,
 //         },
 //       };
 
@@ -116,79 +116,105 @@ chai.use(chaiHttp);
 // });
 
 // //Update Users:-
-// describe("Update Users", () => {
-//   it("Update Users :)", async () => {
-//     try {
-//       // USER DATA ====> NP
-//       const tokenUserData = {
-//         id: 11,
-//         username: "uno",
-//         email: "uno@gmail.com",
-//         password: "Puno@123",
-//       };
+describe("Update Users", () => {
+  it("Update Users :)", async () => {
+    try {
+      // USER DATA =====>
+      const tokenUserData = {
+        id: 1,
+        username: "umi",
+        email: "umi@gmail",
+        password: "Pumi@123",
+      };
 
-//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
 
-//       let createdToken = createToken({
-//         id: tokenUserData.id,
-//         email: tokenUserData.email,
-//         username: tokenUserData.username,
-//       });
+      let createdToken = createToken({
+        id: tokenUserData.id,
+        email: tokenUserData.email,
+        username: tokenUserData.username,
+        password: hashedPassword,
+      });
 
-//       const req = {
-//         headers: { authorization: createdToken },
-//       };
+      const req = {
+        headers: { authorization: createdToken },
+      };
 
-//       // VERIFY TOKEN ====> NP
-//       const res = {
-//         status: (code) => {
-//           res.statusCode = code;
-//           return res;
-//         },
-//         json: (message) => {
-//           res.message = message;
-//         },
-//         send: (message) => {
-//           res.message = message;
-//         },
-//       };
+      // VERIFY TOKEN ====>
+      const res = {
+        status: (code) => {
+          res.statusCode = code;
+          return res;
+        },
+        json: (message) => {
+          res.message = message;
+        },
+        send: (message) => {
+          res.message = message;
+        },
+      };
 
-//       let nextCalled = false;
-//       const next = () => {
-//         nextCalled = true;
-//       };
+      let nextCalled = false;
+      const next = () => {
+        nextCalled = true;
+      };
 
-//       await verifyToken(req, res, next);
+      await verifyToken(req, res, next);
 
-//       const updateUserData = {
-//         id: 11,
-//         username: "Puno",
-//         email: "Puno@gmail.com",
-//         password: "Puno@123",
-//       };
+      const updateUserData = {
+        id: 1,
+        username: "umi:)",
+        email: "umi@gmail.com",
+        password: "Pumi@123",
+      };
 
-//       const [users] = await sequelize.query(
-//         `UPDATE users SET username = :username, email = :email, password = :password WHERE id = :id`,
-//         {
-//           replacements: {
-//             id: updateUserData.id,
-//             username: updateUserData.username,
-//             email: updateUserData.email,
-//             password: hashedPassword,
-//           },
-//           type: sequelize.QueryTypes.UPDATE,
-//         }
-//       );
-//       console.log(`${users}, Update Users successfully`);
-//     } catch (tokenError) {
-//       console.error(
-//         "Token verification failed immediately after generation:",
-//         tokenError.message
-//       );
-//       throw tokenError;
-//     }
-//   });
-// });
+      //  Here Give your actual Url:-
+      const path = `/api/user/updateuser/${updateUserData.id}`;
+      console.log("path:", path);
+
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "PUT",
+        headers: {
+          authorization: createdToken,
+        },
+      };
+
+      const reqst = http.request(options, (res) => {
+        let data = "";
+
+        res.on("data", (chunks) => {
+          data += chunks;
+        });
+
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
+
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
+
+          expect(res.statusCode).to.equal(200);
+        });
+      });
+
+      reqst.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      reqst.end();
+
+      console.log(`Update Users successfully`);
+    } catch (tokenError) {
+      console.error(
+        "Token verification failed immediately after generation!!",
+        tokenError.message
+      );
+      throw tokenError;
+    }
+  });
+});
 
 // // Delete Users:-
 // describe("Delete Users", () => {
