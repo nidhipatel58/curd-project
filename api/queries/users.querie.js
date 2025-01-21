@@ -47,7 +47,7 @@ let usersQueries = {
   },
 
   // Update User:-
-  updateUser: async (id) => {
+  updateUser: async (id, updates) => {
     // const { username, email, password } = updates;
 
     // const [result] = await sequelize.query(
@@ -59,9 +59,9 @@ let usersQueries = {
     //     type: sequelize.QueryTypes.UPDATE,
     //   }
     // );
-    let user = await UserModel.findByPk(id);
-    Object.assign(user);
-    // await user.save();
+    let user = await UserModel.findByPk(id, updates);
+    Object.assign(user, updates);
+    await user.save();
     return user;
   },
 
@@ -77,6 +77,7 @@ let usersQueries = {
     // return result[0];
 
     let users = await UserModel.findByPk(id);
+    Object.assign(users);
     await users.destroy();
     return { message: "User deleted successfully", users };
   },

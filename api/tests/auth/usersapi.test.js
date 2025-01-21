@@ -116,126 +116,27 @@ chai.use(chaiHttp);
 // });
 
 // //Update Users:-
-describe("Update Users", () => {
-  it("Update Users :)", async () => {
-    try {
-      // USER DATA =====>
-      const tokenUserData = {
-        id: 1,
-        username: "umi",
-        email: "umi@gmail",
-        password: "Pumi@123",
-      };
-
-      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
-
-      let createdToken = createToken({
-        id: tokenUserData.id,
-        email: tokenUserData.email,
-        username: tokenUserData.username,
-        password: hashedPassword,
-      });
-
-      const req = {
-        headers: { authorization: createdToken },
-      };
-
-      // VERIFY TOKEN ====>
-      const res = {
-        status: (code) => {
-          res.statusCode = code;
-          return res;
-        },
-        json: (message) => {
-          res.message = message;
-        },
-        send: (message) => {
-          res.message = message;
-        },
-      };
-
-      let nextCalled = false;
-      const next = () => {
-        nextCalled = true;
-      };
-
-      await verifyToken(req, res, next);
-
-      const updateUserData = {
-        id: 1,
-        username: "umi:)",
-        email: "umi@gmail.com",
-        password: "Pumi@123",
-      };
-
-      //  Here Give your actual Url:-
-      const path = `/api/user/updateuser/${updateUserData.id}`;
-      console.log("path:", path);
-
-      const options = {
-        hostname: "localhost",
-        port: 3001,
-        path: path,
-        method: "PUT",
-        headers: {
-          authorization: createdToken,
-        },
-      };
-
-      const reqst = http.request(options, (res) => {
-        let data = "";
-
-        res.on("data", (chunks) => {
-          data += chunks;
-        });
-
-        res.on("end", () => {
-          console.log("Response Status:", res.statusCode);
-
-          const parsedData = JSON.parse(data);
-          console.log("Response Body:", parsedData);
-
-          expect(res.statusCode).to.equal(200);
-        });
-      });
-
-      reqst.on("error", (error) => {
-        console.error("Request error:", error.message);
-        throw error;
-      });
-      reqst.end();
-
-      console.log(`Update Users successfully`);
-    } catch (tokenError) {
-      console.error(
-        "Token verification failed immediately after generation!!",
-        tokenError.message
-      );
-      throw tokenError;
-    }
-  });
-});
-
-// // Delete Users:-
-// describe("Delete Users", () => {
-//   it("Delete Users :)", async () => {
+// describe("Update Users", () => {
+//   it("Update Users :)", async () => {
 //     try {
-//       //  User Data:-
+//       // USER DATA =====>
 //       const tokenUserData = {
-//         id: 11,
-//         username: "Puno",
-//         email: "Puno@gmail.com",
-//         password: "Puno@123",
+//         id: 1,
+//         username: "umi",
+//         email: "umi@gmail",
+//         password: "Pumi@123",
 //       };
 
 //       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+
 //       let createdToken = createToken({
 //         id: tokenUserData.id,
 //         email: tokenUserData.email,
 //         username: tokenUserData.username,
+//         password: hashedPassword,
 //       });
 
-//       const req = {
+//       const reqs = {
 //         headers: { authorization: createdToken },
 //       };
 
@@ -257,18 +158,153 @@ describe("Update Users", () => {
 //         nextCalled = true;
 //       };
 
-//       await verifyToken(req, res, next);
+//       await verifyToken(reqs, res, next);
 
-//       const deleteData = {
-//         id: 11,
+//       const updateUserData = {
+//         id: 1,
+//         username: "umii",
+//         email: "umi@gmail.com",
+//         password: "Pumi@123",
 //       };
 
-//       let user = await sequelize.query(`DELETE FROM users WHERE  id = :id`, {
-//         replacements: {
-//           id: deleteData.id,
+//       const path = `/api/user/updateuser/${updateUserData.id}`;
+//       console.log("path:", path);
+
+//       const options = {
+//         hostname: "localhost",
+//         port: 3001,
+//         path: path,
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//           authorization: createdToken,
 //         },
-//         type: sequelize.QueryTypes.DELETE,
+//       };
+
+//       const reqst = http.request(options, (res) => {
+//         let data = "";
+
+//         res.on("data", (chunks) => {
+//           data += chunks;
+//         });
+
+//         res.on("end", () => {
+//           console.log("Response Status:", res.statusCode);
+//           const parsedData = JSON.parse(data);
+//           console.log("Response Body:", parsedData);
+//           expect(res.statusCode).to.equal(200);
+//         });
 //       });
+
+//       reqst.on("error", (error) => {
+//         console.error("Request error:", error.message);
+//         throw error;
+//       });
+//       reqst.write(JSON.stringify(updateUserData));
+//       reqst.end();
+
+//       console.log(`Update Users successfully`);
+//     } catch (tokenError) {
+//       console.error(
+//         "Token verification failed immediately after generation!!",
+//         tokenError.message
+//       );
+//       throw tokenError;
+//     }
+//   });
+// });
+
+// // Delete Users:-
+// describe("Delete Users", () => {
+//   it("Delete Users :)", async () => {
+//     try {
+//       //  User Data:-
+//       const tokenUserData = {
+//         id: 5,
+//         username: "krisha..",
+//         email: "krisha@gmail.com",
+//         password: "Krisha@123",
+//       };
+
+//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+//       let createdToken = createToken({
+//         id: tokenUserData.id,
+//         email: tokenUserData.email,
+//         username: tokenUserData.username,
+//         password: hashedPassword,
+//       });
+
+//       const reqs = {
+//         headers: { authorization: createdToken },
+//       };
+
+//       const res = {
+//         status: (code) => {
+//           res.statusCode = code;
+//           return res;
+//         },
+//         json: (message) => {
+//           res.message = message;
+//         },
+//         send: (message) => {
+//           res.message = message;
+//         },
+//       };
+
+//       let nextCalled = false;
+//       const next = () => {
+//         nextCalled = true;
+//       };
+
+//       await verifyToken(reqs, res, next);
+
+//       const deleteData = {
+//         id: 5,
+//       };
+
+//       const path = `/api/user/deleteuser/${deleteData.id}`;
+//       console.log("path:", path);
+
+//       const options = {
+//         hostname: "localhost",
+//         port: 3001,
+//         path: path,
+//         method: "DELETE",
+//         headers: {
+//           authorization: createdToken,
+//         },
+//       };
+
+//       const req = http.request(options, (res) => {
+//         let data = "";
+
+//         res.on("data", (chunk) => {
+//           data += chunk;
+//         });
+
+//         res.on("end", () => {
+//           console.log("Response Status:", res.statusCode);
+
+//           const parsedData = JSON.parse(data);
+//           console.log("Response Body:", parsedData);
+
+//           expect(res.statusCode).to.equal(200);
+//         });
+//       });
+
+//       req.on("error", (error) => {
+//         console.error("Request error:", error.message);
+//         throw error;
+//       });
+//       req.end();
+
+//       //   let user = await sequelize.query(`DELETE FROM users WHERE  id = :id`, {
+//       //     replacements: {
+//       //       id: deleteData.id,
+//       //     },
+//       //     type: sequelize.QueryTypes.DELETE,
+//       //   });
+
 //       console.log("Deleted user successfully", user);
 //     } catch (err) {
 //       console.log("Unauthorized user", err.message);
