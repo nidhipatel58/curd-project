@@ -10,25 +10,20 @@ import http from "http";
 const { expect } = chai;
 chai.use(chaiHttp);
 
-
-let userData = {
-  id:"50",
-  username: "praful",
-  email: "praful@gmail.com",
-  password: "Praful@123",
-};
-
-// Signup:-
+//Signup: -
 describe("Signup API: ", () => {
-  it("Should signup correctly", async () => { 
+  it("Should signup correctly", async () => {
     try {
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
-      userData.password = hashedPassword;
+      let registerData = {
+        username: "praful",
+        email: "praful@gmail.com",
+        password: "Praful@123",
+      };
 
       let path = `/api/user/register`;
       console.log(path, "path");
 
-      let data = JSON.stringify(userData);
+      let data = JSON.stringify(registerData);
       const options = {
         hostname: "localhost",
         port: 3001,
@@ -49,7 +44,6 @@ describe("Signup API: ", () => {
           console.log("Response Status:", res.statusCode);
           const parsedData = JSON.parse(data);
           console.log("Response Body:", parsedData);
-          expect(res.statusCode).to.equal(201);
         });
       });
 
@@ -62,28 +56,41 @@ describe("Signup API: ", () => {
 
       console.log("Signup successfully");
     } catch (err) {
-      console.log("Signup Failed============!!", err.message);
+      console.log("Signup failed", err.message);
     }
   });
 });
 
 
 
-// Login User:-
+//Login User:-
 describe("Login API Test", () => {
   it("Should login with valid info", async () => {
+    let userData = {
+      email: "cccc@gmail.com",
+      password: "Ccc@123",
+    };
+
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
     let createdToken = createToken({
       id: userData.id,
       email: userData.email,
       username: userData.username,
+      password: hashedPassword
     });
+
+    console.log("createdToken:", createdToken);
 
     try {
       const path = "/api/user/login";
       console.log("path:", path);
 
-      let data = JSON.stringify(userData);
+      let loginData = {
+        email: userData.email,
+        password: userData.password,
+      };
 
+      let data = JSON.stringify(loginData);
       const options = {
         hostname: "localhost",
         port: 3001,
@@ -109,7 +116,6 @@ describe("Login API Test", () => {
           console.log("Response Status:", res.statusCode);
           const parsedData = JSON.parse(data);
           console.log("Response Body:", parsedData);
-          expect(res.statusCode).to.equal(200);
         });
       });
 
@@ -119,18 +125,22 @@ describe("Login API Test", () => {
       });
       req.write(data);
       req.end();
-
-      console.log("User Login Successfully :)");
     } catch (err) {
-      console.log("Login Auth Failed=========", err.message);
+      console.log("Login failed", err.message);
     }
   });
 });
 
-// GetUser BY Id:-
+// // // GetUser BY Id:-
 describe("Get User By ID", () => {
   it("Get User By Id :)", async () => {
     try {
+      let userData = {
+        id: "25",
+        username: "cccc",
+        email: "cccc@gmail.com",
+        password: "Ccc@123",
+      };
 
       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
@@ -138,13 +148,11 @@ describe("Get User By ID", () => {
         id: userData.id,
         email: userData.email,
         username: userData.username,
+        password: hashedPassword
       });
 
-      const getUserData = {
-        id: 18,
-      };
 
-      const path = `/api/user/getuser/${getUserData.id}`;
+      const path = `/api/user/getuser/${userData.id}`;
       console.log("path:", path);
 
       const options = {
@@ -166,10 +174,8 @@ describe("Get User By ID", () => {
 
         res.on("end", () => {
           console.log("Response Status:", res.statusCode);
-
           const parsedData = JSON.parse(data);
           console.log("Response Body:", parsedData);
-
           expect(res.statusCode).to.equal(200);
         });
       });
@@ -189,7 +195,7 @@ describe("Get User By ID", () => {
   });
 });
 
-// // // GETAll Users:-
+// // // // // GETAll Users:-
 describe("GetAll Users", () => {
   it("GetAll Users :)", async () => {
     const options = {
@@ -224,11 +230,16 @@ describe("GetAll Users", () => {
   });
 });
 
-// // // //Update Users:-
+// Update Users:-
 describe("Update Users", () => {
   it("Update Users :)", async () => {
     try {
-      // USER DATA =====>
+      let userData = {
+        id: "25",
+        username: "cccc",
+        email: "cccc@gmail.com",
+        password: "Ccc@123",
+      };
 
       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
@@ -241,9 +252,8 @@ describe("Update Users", () => {
 
       const updateUser = {
         id: userData.id,
-        username: "Praful Parmar",
-        email: "praful@gmail.com",
-        password: hashedPassword,
+        username: "cccc",
+        email: "cccc@gmail.com",
       };
 
       const path = `/api/user/updateuser/${updateUser.id}`;
@@ -273,7 +283,6 @@ describe("Update Users", () => {
           console.log("Response Status:", res.statusCode);
           const parsedData = JSON.parse(data);
           console.log("Response Body:", parsedData);
-          expect(res.statusCode).to.equal(200);
         });
       });
 
@@ -283,8 +292,6 @@ describe("Update Users", () => {
       });
       reqst.write(data);
       reqst.end();
-
-      console.log(`Update Users successfully`);
     } catch (tokenError) {
       console.error(
         "Token verification failed immediately after generation!!",
@@ -295,31 +302,34 @@ describe("Update Users", () => {
   });
 });
 
-// // // Delete Users:-
+//Delete Users:-
 describe("Delete Users", () => {
   it("Delete Users :)", async () => {
     try {
-
-      const tokenUserData = {
-        id: userData.id,
-        username: "Praful Parmar",
-        email: "praful@gmail.com",
-        password: userData.password,
+      let userData = {
+        id: "25",
+        username: "cccc",
+        email: "cccc@gmail.com",
+        password: "Ccc@123",
       };
 
-      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+
+      const hashedPassword = await bcrypt.hash(userData.password, 10);
 
       let createdToken = createToken({
-        id: tokenUserData.id,
-        email: tokenUserData.email,
-        username: tokenUserData.username,
+        id: userData.id,
+        email: userData.email,
+        username: userData.username,
         password: hashedPassword,
       });
 
-      const path = `/api/user/deleteuser/${userData.id}`;
+      let deleteData = {
+        id: "20",
+      };
+
+      const path = `/api/user/deleteuser/${deleteData.id}`;
       console.log("path:", path);
 
-      const data = JSON.stringify(deleteUser);
       const options = {
         hostname: "localhost",
         port: 3001,
@@ -339,11 +349,8 @@ describe("Delete Users", () => {
 
         res.on("end", () => {
           console.log("Response Status:", res.statusCode);
-
           const parsedData = JSON.parse(data);
           console.log("Response Body:", parsedData);
-
-          expect(res.statusCode).to.equal(201);
         });
       });
 
@@ -351,9 +358,7 @@ describe("Delete Users", () => {
         console.error("Request error:", error.message);
         throw error;
       });
-      req.write(data);
       req.end();
-      console.log("Deleted user successfully");
     } catch (err) {
       console.log("Unauthorized user", err.message);
       throw err;

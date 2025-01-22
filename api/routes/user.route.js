@@ -10,7 +10,7 @@ route.put("/updateuser/:id", verifyToken, UserController.updateUser);
 route.delete("/deleteuser/:id", verifyToken, UserController.deleteUser);
 
 // Login & Signup:
-route.post("/signup", UserController.signup);
+//route.post("/signup", UserController.signup);
 route.post("/login", UserController.Login);
 
 export default route;

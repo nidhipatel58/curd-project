@@ -31,7 +31,7 @@ const findUserByEmail = async (email) => {
 // Update user by ID:-
 const updateUser = async (id, updates) => {
   const updatedUser = await usersQuerie.updateUser(id, updates);
-  if (!user) {
+  if (!updatedUser) {
     throw new Error("User not found");
   }
   return updatedUser;

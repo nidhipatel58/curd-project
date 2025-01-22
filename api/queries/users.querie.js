@@ -6,7 +6,6 @@ let usersQueries = {
   // Create User:-
   createUser: async (userData) => {
     const newUser = await UserModel.create(userData);
-    console.log("New user created:", newUser);
     return newUser;
     // const { username, email, password } = userData;
     // const result = await sequelize.query(
@@ -94,7 +93,6 @@ let usersQueries = {
     // return result[0];
 
     let users = await UserModel.findOne({ where: { email } });
-    console.log(users, "email");
     return users;
   },
 };

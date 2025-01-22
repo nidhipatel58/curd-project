@@ -4,33 +4,27 @@ import bcrypt from "bcryptjs";
 
 // Register Users:
 const createUser = async (req, res) => {
-  try {
-    let { email, password, username } = req.body;
-    if (!email || !password || !username) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-    // Check if email already exists:-
-    // const existingUser = await UserService.findUserByEmail(email);
-    // if (existingUser) {
-    //   return res.status(400).json({ message: "Email already registered" });
-    // }
-
-    // Hash the password:-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const userData = { email, password: hashedPassword, username };
-
-    // Create the new user:-
-    const user = await UserService.createUser(userData);
-    console.log("users-----------------", user);
-
-    res.status(201).json({
-      message: "User Created Successfully",
-      user,
-    });
-  } catch (err) {
-    console.error("Error creating user:", err.message);
-    return res.status(500).json({ message: "Internal Server Error" });
+  //try {
+  let { email, password, username } = req.body;
+  if (!email || !password || !username) {
+    return res.status(400).json({ message: "All fields are required" });
   }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  let registerData = {
+    username: username,
+    email: email,
+    password: hashedPassword,
+  };
+
+  // Create the new user:-
+  const user = await UserService.createUser(registerData);
+
+  res.status(201).json({
+    message: "User Created Successfully",
+    user,
+  });
 };
 
 // Get user by ID:-
@@ -111,44 +105,10 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// Signup:
-const signup = async (req, res) => {
-  try {
-    const { email, password, username } = req.body;
 
-    const existingUser = await UserService.findUserByEmail({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        message: "Email already exists",
-      });
-    }
-
-    // Hash password before storing
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const userData = { email, password: hashedPassword, username };
-    // Create the new user:-
-    const newUser = await UserService.createUser(userData);
-    console.log("users-----------------", newUser);
-
-    return res.status(201).json({
-      message: "User registered successfully",
-      newUser,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Internal Server Error",
-    });
-  }
-};
-
-// Login user:-
 const Login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    console.log(email, "email");
-    console.log(password, "pass");
-
-    // Find user by email:-
     const user = await UserService.findUserByEmail(email);
     if (!user) {
       return res
@@ -156,7 +116,6 @@ const Login = async (req, res) => {
         .json({ message: "Authentication failed: User not found" });
     }
 
-    // Compare passwords
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res
@@ -164,10 +123,7 @@ const Login = async (req, res) => {
         .json({ message: "Authentication failed: Invalid password" });
     }
 
-    // Generate token
     let token = createToken({ userId: user.id, username: user.username });
-    console.log("Generated token", token);
-
     res.status(200).json({
       message: "Authentication successful",
       user,
@@ -181,12 +137,12 @@ const Login = async (req, res) => {
   }
 };
 
+
 export {
   createUser,
   getAllUser,
   getUserById,
   deleteUser,
   updateUser,
-  signup,
   Login,
 };
