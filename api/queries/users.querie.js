@@ -95,7 +95,6 @@ let usersQueries = {
 
     let users = await UserModel.findOne({ where: { email } });
     console.log(users, "email");
-
     return users;
   },
 };

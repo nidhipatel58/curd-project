@@ -10,21 +10,20 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
     // Check if email already exists:-
-    const existingUser = await UserService.findUserByEmail(email);
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already registered" });
-    }
+    // const existingUser = await UserService.findUserByEmail(email);
+    // if (existingUser) {
+    //   return res.status(400).json({ message: "Email already registered" });
+    // }
 
-    // Hash the password
+    // Hash the password:-
     const hashedPassword = await bcrypt.hash(password, 10);
     const userData = { email, password: hashedPassword, username };
 
-    // Create the new user
+    // Create the new user:-
     const user = await UserService.createUser(userData);
     console.log("users-----------------", user);
 
-    // Respond with success
-    return res.status(201).json({
+    res.status(201).json({
       message: "User Created Successfully",
       user,
     });
@@ -103,7 +102,7 @@ const deleteUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({
+    res.status(201).json({
       message: "User deleted successfully",
       user,
     });
@@ -114,10 +113,10 @@ const deleteUser = async (req, res) => {
 
 // Signup:
 const signup = async (req, res) => {
-  const { email, password, username } = req.body;
-
   try {
-    const existingUser = await UserService.findUserByEmail(email);
+    const { email, password, username } = req.body;
+
+    const existingUser = await UserService.findUserByEmail({ email });
     if (existingUser) {
       return res.status(400).json({
         message: "Email already exists",
@@ -126,21 +125,18 @@ const signup = async (req, res) => {
 
     // Hash password before storing
     const hashedPassword = await bcrypt.hash(password, 10);
+    const userData = { email, password: hashedPassword, username };
+    // Create the new user:-
+    const newUser = await UserService.createUser(userData);
+    console.log("users-----------------", newUser);
 
-    // Create a new user:-
-    const newUser = await UserService.createUser({
-      email,
-      password: hashedPassword,
-      username,
-    });
-
-    res.status(201).json({
+    return res.status(201).json({
       message: "User registered successfully",
       newUser,
     });
   } catch (err) {
     res.status(500).json({
-      message: err.message,
+      message: "Internal Server Error",
     });
   }
 };
@@ -149,8 +145,8 @@ const signup = async (req, res) => {
 const Login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    // console.log(email, "email");
-    // console.log(password, "pass");
+    console.log(email, "email");
+    console.log(password, "pass");
 
     // Find user by email:-
     const user = await UserService.findUserByEmail(email);
