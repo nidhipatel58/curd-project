@@ -2,30 +2,20 @@ import TodoService from "../services/todo.service.js";
 
 // Create todos
 const CreateTodo = async (req, res) => {
-  try {
-    const { title, description } = req.body;
+  const { title, description, userId } = req.body;
+  // console.log(req.body, "=========");
 
-    if (!title) {
-      return res.status(400).json({ message: "Title is required" });
-    }
-
-    if (!description) {
-      return res.status(400).json({
-        message: "Description is required!",
-      });
-    }
-
-    const todo = await TodoService.CreateTodo({
-      ...req.body,
-      userId: req.userId,
-    });
-    res.status(201).json({
-      message: "Todo created successfully",
-      todo,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  if (!title || !description || !userId) {
+    return res
+      .status(400)
+      .json({ message: "Title , Description or userId is required!" });
   }
+
+  const todo = await TodoService.CreateTodo(title, description, userId);
+  res.status(201).json({
+    message: "Todo created successfully",
+    todo,
+  });
 };
 
 // Get single todo by ID

@@ -77,7 +77,6 @@ let usersQueries = {
     // return result[0];
 
     let user = await UserModel.findByPk(id);
-    // Object.assign(user);
     await user.destroy();
     return user;
   },

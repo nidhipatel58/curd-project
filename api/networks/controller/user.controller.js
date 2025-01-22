@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 
 // Register Users:
 const createUser = async (req, res) => {
-  //try {
   let { email, password, username } = req.body;
   if (!email || !password || !username) {
     return res.status(400).json({ message: "All fields are required" });
@@ -105,7 +104,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
 const Login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -137,12 +135,4 @@ const Login = async (req, res) => {
   }
 };
 
-
-export {
-  createUser,
-  getAllUser,
-  getUserById,
-  deleteUser,
-  updateUser,
-  Login,
-};
+export { createUser, getAllUser, getUserById, deleteUser, updateUser, Login };

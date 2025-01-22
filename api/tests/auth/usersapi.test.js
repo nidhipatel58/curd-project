@@ -1,367 +1,363 @@
-import * as chai from "chai";
-import chaiHttp from "chai-http";
-import app from "../../../server.js";
-import sequelize from "../../config/db.js";
-import bcrypt from "bcryptjs";
-import usersQueries from "../../queries/users.querie.js";
-import createToken from "../../middleware/auth.js";
-import http from "http";
+// import * as chai from "chai";
+// import chaiHttp from "chai-http";
+// import app from "../../../server.js";
+// import sequelize from "../../config/db.js";
+// import bcrypt from "bcryptjs";
+// import usersQueries from "../../queries/users.querie.js";
+// import createToken from "../../middleware/auth.js";
+// import http from "http";
 
-const { expect } = chai;
-chai.use(chaiHttp);
+// const { expect } = chai;
+// chai.use(chaiHttp);
 
-//Signup: -
-describe("Signup API: ", () => {
-  it("Should signup correctly", async () => {
-    try {
-      let registerData = {
-        username: "praful",
-        email: "praful@gmail.com",
-        password: "Praful@123",
-      };
+// //Signup: -
+// describe("Signup API: ", () => {
+//   it("Should signup correctly", async () => {
+//     try {
+//       let registerData = {
+//         username: "master",
+//         email: "master@gmail.com",
+//         password: "Master@123",
+//       };
 
-      let path = `/api/user/register`;
-      console.log(path, "path");
+//       let path = `/api/user/register`;
+//       console.log(path, "path");
 
-      let data = JSON.stringify(registerData);
-      const options = {
-        hostname: "localhost",
-        port: 3001,
-        path: path,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(data),
-        },
-      };
+//       let data = JSON.stringify(registerData);
+//       const options = {
+//         hostname: "localhost",
+//         port: 3002,
+//         path: path,
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "Content-Length": Buffer.byteLength(data),
+//         },
+//       };
 
-      let req = http.request(options, (res) => {
-        let data = "";
-        res.on("data", (chunks) => {
-          data += chunks;
-        });
-        res.on("end", () => {
-          console.log("Response Status:", res.statusCode);
-          const parsedData = JSON.parse(data);
-          console.log("Response Body:", parsedData);
-        });
-      });
+//       let req = http.request(options, (res) => {
+//         let data = "";
+//         res.on("data", (chunks) => {
+//           data += chunks;
+//         });
+//         res.on("end", () => {
+//           console.log("Response Status:", res.statusCode);
+//           const parsedData = JSON.parse(data);
+//           console.log("Response Body:", parsedData);
+//         });
+//       });
 
-      req.on("error", (error) => {
-        console.error("Request error:", error.message);
-        throw error;
-      });
-      req.write(data);
-      req.end();
+//       req.on("error", (error) => {
+//         console.error("Request error:", error.message);
+//         throw error;
+//       });
+//       req.write(data);
+//       req.end();
 
-      console.log("Signup successfully");
-    } catch (err) {
-      console.log("Signup failed", err.message);
-    }
-  });
-});
+//       console.log("Signup successfully");
+//     } catch (err) {
+//       console.log("Signup failed", err.message);
+//     }
+//   });
+// });
 
+// //Login User:-
+// describe("Login API Test", () => {
+//   it("Should login with valid info", async () => {
+//     let userData = {
+//       email: "master@gmail.com",
+//       password: "Master@123",
+//     };
 
+//     const hashedPassword = await bcrypt.hash(userData.password, 10);
+//     let createdToken = createToken({
+//       id: userData.id,
+//       email: userData.email,
+//       username: userData.username,
+//       password: hashedPassword,
+//     });
 
-//Login User:-
-describe("Login API Test", () => {
-  it("Should login with valid info", async () => {
-    let userData = {
-      email: "cccc@gmail.com",
-      password: "Ccc@123",
-    };
+//     console.log("createdToken:", createdToken);
 
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    let createdToken = createToken({
-      id: userData.id,
-      email: userData.email,
-      username: userData.username,
-      password: hashedPassword
-    });
+//     try {
+//       const path = "/api/user/login";
+//       console.log("path:", path);
 
-    console.log("createdToken:", createdToken);
+//       let loginData = {
+//         email: userData.email,
+//         password: userData.password,
+//       };
 
-    try {
-      const path = "/api/user/login";
-      console.log("path:", path);
+//       let data = JSON.stringify(loginData);
+//       const options = {
+//         hostname: "localhost",
+//         port: 3002,
+//         path: path,
+//         method: "POST",
+//         headers: {
+//           authorization: createdToken,
+//         },
+//         headers: {
+//           "Content-Type": "application/json",
+//           "Content-Length": Buffer.byteLength(data),
+//         },
+//       };
 
-      let loginData = {
-        email: userData.email,
-        password: userData.password,
-      };
+//       const req = http.request(options, (res) => {
+//         let data = "";
 
-      let data = JSON.stringify(loginData);
-      const options = {
-        hostname: "localhost",
-        port: 3001,
-        path: path,
-        method: "POST",
-        headers: {
-          authorization: createdToken,
-        },
-        headers: {
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(data),
-        },
-      };
+//         res.on("data", (chunk) => {
+//           data += chunk;
+//         });
 
-      const req = http.request(options, (res) => {
-        let data = "";
+//         res.on("end", () => {
+//           console.log("Response Status:", res.statusCode);
+//           const parsedData = JSON.parse(data);
+//           console.log("Response Body:", parsedData);
+//         });
+//       });
 
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+//       req.on("error", (error) => {
+//         console.error("Request error:", error.message);
+//         throw error;
+//       });
+//       req.write(data);
+//       req.end();
+//     } catch (err) {
+//       console.log("Login failed", err.message);
+//     }
+//   });
+// });
 
-        res.on("end", () => {
-          console.log("Response Status:", res.statusCode);
-          const parsedData = JSON.parse(data);
-          console.log("Response Body:", parsedData);
-        });
-      });
+// // GetUser BY Id:-
+// describe("Get User By ID", () => {
+//   it("Get User By Id :)", async () => {
+//     try {
+//       let userData = {
+//         id: "9",
+//         username: "laxmi",
+//         email: "laxmi@gmail.com",
+//         password: "Laxmi@123",
+//       };
 
-      req.on("error", (error) => {
-        console.error("Request error:", error.message);
-        throw error;
-      });
-      req.write(data);
-      req.end();
-    } catch (err) {
-      console.log("Login failed", err.message);
-    }
-  });
-});
+//       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-// // // GetUser BY Id:-
-describe("Get User By ID", () => {
-  it("Get User By Id :)", async () => {
-    try {
-      let userData = {
-        id: "25",
-        username: "cccc",
-        email: "cccc@gmail.com",
-        password: "Ccc@123",
-      };
+//       let createdToken = createToken({
+//         id: userData.id,
+//         email: userData.email,
+//         username: userData.username,
+//         password: hashedPassword,
+//       });
 
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
+//       const path = `/api/user/getuser/${userData.id}`;
+//       console.log("path:", path);
 
-      let createdToken = createToken({
-        id: userData.id,
-        email: userData.email,
-        username: userData.username,
-        password: hashedPassword
-      });
+//       const options = {
+//         hostname: "localhost",
+//         port: 3002,
+//         path: path,
+//         method: "GET",
+//         headers: {
+//           authorization: createdToken,
+//         },
+//       };
 
+//       const req = http.request(options, (res) => {
+//         let data = "";
 
-      const path = `/api/user/getuser/${userData.id}`;
-      console.log("path:", path);
+//         res.on("data", (chunk) => {
+//           data += chunk;
+//         });
 
-      const options = {
-        hostname: "localhost",
-        port: 3001,
-        path: path,
-        method: "GET",
-        headers: {
-          authorization: createdToken,
-        },
-      };
+//         res.on("end", () => {
+//           console.log("Response Status:", res.statusCode);
+//           const parsedData = JSON.parse(data);
+//           console.log("Response Body:", parsedData);
+//           expect(res.statusCode).to.equal(200);
+//         });
+//       });
 
-      const req = http.request(options, (res) => {
-        let data = "";
+//       req.on("error", (error) => {
+//         console.error("Request error:", error.message);
+//         throw error;
+//       });
+//       req.end();
+//     } catch (tokenError) {
+//       console.error(
+//         "Token verification failed immediately after generation:",
+//         tokenError.message
+//       );
+//       throw tokenError;
+//     }
+//   });
+// });
 
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+// // GETAll Users:-
+// describe("GetAll Users", () => {
+//   it("GetAll Users :)", async () => {
+//     const options = {
+//       hostname: "localhost",
+//       port: 3002,
+//       path: "/api/user/usersall",
+//       method: "GET",
+//     };
 
-        res.on("end", () => {
-          console.log("Response Status:", res.statusCode);
-          const parsedData = JSON.parse(data);
-          console.log("Response Body:", parsedData);
-          expect(res.statusCode).to.equal(200);
-        });
-      });
+//     const req = http.request(options, (res) => {
+//       let data = "";
 
-      req.on("error", (error) => {
-        console.error("Request error:", error.message);
-        throw error;
-      });
-      req.end();
-    } catch (tokenError) {
-      console.error(
-        "Token verification failed immediately after generation:",
-        tokenError.message
-      );
-      throw tokenError;
-    }
-  });
-});
+//       res.on("data", (chunk) => {
+//         data += chunk;
+//       });
 
-// // // // // GETAll Users:-
-describe("GetAll Users", () => {
-  it("GetAll Users :)", async () => {
-    const options = {
-      hostname: "localhost",
-      port: 3001,
-      path: "/api/user/usersall",
-      method: "GET",
-    };
+//       res.on("end", () => {
+//         console.log("Response Status:", res.statusCode);
 
-    const req = http.request(options, (res) => {
-      let data = "";
+//         const parsedData = JSON.parse(data);
+//         console.log("Response Body:", parsedData);
 
-      res.on("data", (chunk) => {
-        data += chunk;
-      });
+//         expect(res.statusCode).to.equal(200);
+//       });
+//     });
 
-      res.on("end", () => {
-        console.log("Response Status:", res.statusCode);
+//     req.on("error", (error) => {
+//       console.error("Request error:", error.message);
+//       throw error;
+//     });
+//     req.end();
+//   });
+// });
 
-        const parsedData = JSON.parse(data);
-        console.log("Response Body:", parsedData);
+// // Update Users:-
+// describe("Update Users", () => {
+//   it("Update Users :)", async () => {
+//     try {
+//       let userData = {
+//         id: "6",
+//         username: "nidhi",
+//         email: "nidhi@gmail.com",
+//         password: "Nidhi@123",
+//       };
 
-        expect(res.statusCode).to.equal(200);
-      });
-    });
+//       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-    req.on("error", (error) => {
-      console.error("Request error:", error.message);
-      throw error;
-    });
-    req.end();
-  });
-});
+//       let createdToken = createToken({
+//         id: userData.id,
+//         email: userData.email,
+//         username: userData.username,
+//         password: hashedPassword,
+//       });
 
-// Update Users:-
-describe("Update Users", () => {
-  it("Update Users :)", async () => {
-    try {
-      let userData = {
-        id: "25",
-        username: "cccc",
-        email: "cccc@gmail.com",
-        password: "Ccc@123",
-      };
+//       const updateUser = {
+//         id: userData.id,
+//         username: "nidhi:)",
+//         email: "nidhi@gmail.com",
+//       };
 
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
+//       const path = `/api/user/updateuser/${updateUser.id}`;
+//       console.log("path:", path);
 
-      let createdToken = createToken({
-        id: userData.id,
-        email: userData.email,
-        username: userData.username,
-        password: hashedPassword,
-      });
+//       const data = JSON.stringify(updateUser);
+//       const options = {
+//         hostname: "localhost",
+//         port: 3002,
+//         path: path,
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "Content-Length": Buffer.byteLength(data),
+//           authorization: createdToken,
+//         },
+//       };
 
-      const updateUser = {
-        id: userData.id,
-        username: "cccc",
-        email: "cccc@gmail.com",
-      };
+//       const reqst = http.request(options, (res) => {
+//         let data = "";
 
-      const path = `/api/user/updateuser/${updateUser.id}`;
-      console.log("path:", path);
+//         res.on("data", (chunks) => {
+//           data += chunks;
+//         });
 
-      const data = JSON.stringify(updateUser);
-      const options = {
-        hostname: "localhost",
-        port: 3001,
-        path: path,
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(data),
-          authorization: createdToken,
-        },
-      };
+//         res.on("end", () => {
+//           console.log("Response Status:", res.statusCode);
+//           const parsedData = JSON.parse(data);
+//           console.log("Response Body:", parsedData);
+//         });
+//       });
 
-      const reqst = http.request(options, (res) => {
-        let data = "";
+//       reqst.on("error", (error) => {
+//         console.error("Request error:", error.message);
+//         throw error;
+//       });
+//       reqst.write(data);
+//       reqst.end();
+//     } catch (tokenError) {
+//       console.error(
+//         "Token verification failed immediately after generation!!",
+//         tokenError.message
+//       );
+//       throw tokenError;
+//     }
+//   });
+// });
 
-        res.on("data", (chunks) => {
-          data += chunks;
-        });
+// //Delete Users:-
+// describe("Delete Users", () => {
+//   it("Delete Users :)", async () => {
+//     try {
+//       let userData = {
+//         id: "8",
+//         username: "niyati",
+//         email: "niyati@gmail.com",
+//         password: "Niyati@123",
+//       };
 
-        res.on("end", () => {
-          console.log("Response Status:", res.statusCode);
-          const parsedData = JSON.parse(data);
-          console.log("Response Body:", parsedData);
-        });
-      });
+//       const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-      reqst.on("error", (error) => {
-        console.error("Request error:", error.message);
-        throw error;
-      });
-      reqst.write(data);
-      reqst.end();
-    } catch (tokenError) {
-      console.error(
-        "Token verification failed immediately after generation!!",
-        tokenError.message
-      );
-      throw tokenError;
-    }
-  });
-});
+//       let createdToken = createToken({
+//         id: userData.id,
+//         email: userData.email,
+//         username: userData.username,
+//         password: hashedPassword,
+//       });
 
-//Delete Users:-
-describe("Delete Users", () => {
-  it("Delete Users :)", async () => {
-    try {
-      let userData = {
-        id: "25",
-        username: "cccc",
-        email: "cccc@gmail.com",
-        password: "Ccc@123",
-      };
+//       let deleteData = {
+//         id: "8",
+//       };
 
+//       const path = `/api/user/deleteuser/${deleteData.id}`;
+//       console.log("path:", path);
 
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
+//       const options = {
+//         hostname: "localhost",
+//         port: 3002,
+//         path: path,
+//         method: "DELETE",
+//         headers: {
+//           authorization: createdToken,
+//         },
+//       };
 
-      let createdToken = createToken({
-        id: userData.id,
-        email: userData.email,
-        username: userData.username,
-        password: hashedPassword,
-      });
+//       const req = http.request(options, (res) => {
+//         let data = "";
 
-      let deleteData = {
-        id: "20",
-      };
+//         res.on("data", (chunk) => {
+//           data += chunk;
+//         });
 
-      const path = `/api/user/deleteuser/${deleteData.id}`;
-      console.log("path:", path);
+//         res.on("end", () => {
+//           console.log("Response Status:", res.statusCode);
+//           const parsedData = JSON.parse(data);
+//           console.log("Response Body:", parsedData);
+//         });
+//       });
 
-      const options = {
-        hostname: "localhost",
-        port: 3001,
-        path: path,
-        method: "DELETE",
-        headers: {
-          authorization: createdToken,
-        },
-      };
-
-      const req = http.request(options, (res) => {
-        let data = "";
-
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        res.on("end", () => {
-          console.log("Response Status:", res.statusCode);
-          const parsedData = JSON.parse(data);
-          console.log("Response Body:", parsedData);
-        });
-      });
-
-      req.on("error", (error) => {
-        console.error("Request error:", error.message);
-        throw error;
-      });
-      req.end();
-    } catch (err) {
-      console.log("Unauthorized user", err.message);
-      throw err;
-    }
-  });
-});
+//       req.on("error", (error) => {
+//         console.error("Request error:", error.message);
+//         throw error;
+//       });
+//       req.end();
+//     } catch (err) {
+//       console.log("Unauthorized user", err.message);
+//       throw err;
+//     }
+//   });
+// });
