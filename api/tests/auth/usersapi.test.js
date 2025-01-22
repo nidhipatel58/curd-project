@@ -25,7 +25,7 @@ describe("Signup API: ", () => {
       const hashedPassword = await bcrypt.hash(userData.password, 10);
       userData.password = hashedPassword;
 
-      let path = `/api/user/signup`;
+      let path = `/api/user/register`;
       console.log(path, "path");
 
       let data = JSON.stringify(userData);
