@@ -10,23 +10,25 @@ import http from "http";
 const { expect } = chai;
 chai.use(chaiHttp);
 
-// Create Users:-
-describe("Create Users", () => {
-  it("Create User Succes", async () => {
+
+let userData = {
+  id:"50",
+  username: "praful",
+  email: "praful@gmail.com",
+  password: "Praful@123",
+};
+
+// Signup:-
+describe("Signup API: ", () => {
+  it("Should signup correctly", async () => { 
     try {
-      let createUser = {
-        username: "yashvi",
-        email: "yashvi@gmail.com",
-        password: "Pyashvi@123",
-      };
+      const hashedPassword = await bcrypt.hash(userData.password, 10);
+      userData.password = hashedPassword;
 
-      const hashedPassword = await bcrypt.hash(createUser.password, 10);
-      createUser.password = hashedPassword;
-
-      let path = `/api/user/register`;
+      let path = `/api/user/signup`;
       console.log(path, "path");
 
-      let data = JSON.stringify(createUser);
+      let data = JSON.stringify(userData);
       const options = {
         hostname: "localhost",
         port: 3001,
@@ -57,8 +59,70 @@ describe("Create Users", () => {
       });
       req.write(data);
       req.end();
+
+      console.log("Signup successfully");
     } catch (err) {
-      console.log("Creation of users Failed!!", err.message);
+      console.log("Signup Failed============!!", err.message);
+    }
+  });
+});
+
+
+
+// Login User:-
+describe("Login API Test", () => {
+  it("Should login with valid info", async () => {
+    let createdToken = createToken({
+      id: userData.id,
+      email: userData.email,
+      username: userData.username,
+    });
+
+    try {
+      const path = "/api/user/login";
+      console.log("path:", path);
+
+      let data = JSON.stringify(userData);
+
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "POST",
+        headers: {
+          authorization: createdToken,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(data),
+        },
+      };
+
+      const req = http.request(options, (res) => {
+        let data = "";
+
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
+          expect(res.statusCode).to.equal(200);
+        });
+      });
+
+      req.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      req.write(data);
+      req.end();
+
+      console.log("User Login Successfully :)");
+    } catch (err) {
+      console.log("Login Auth Failed=========", err.message);
     }
   });
 });
@@ -67,19 +131,13 @@ describe("Create Users", () => {
 describe("Get User By ID", () => {
   it("Get User By Id :)", async () => {
     try {
-      const tokenUserData = {
-        id: 18,
-        username: "yashvi",
-        email: "yashvi@gmail.com",
-        password: "Pyashvi@123",
-      };
 
-      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+      const hashedPassword = await bcrypt.hash(userData.password, 10);
 
       let createdToken = createToken({
-        id: tokenUserData.id,
-        email: tokenUserData.email,
-        username: tokenUserData.username,
+        id: userData.id,
+        email: userData.email,
+        username: userData.username,
       });
 
       const getUserData = {
@@ -171,33 +229,26 @@ describe("Update Users", () => {
   it("Update Users :)", async () => {
     try {
       // USER DATA =====>
-      const tokenUserData = {
-        id: 18,
-        username: "yashvi",
-        email: "yashvi@gmail.com",
-        password: "Pyashvi@123",
-      };
 
-      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
+      const hashedPassword = await bcrypt.hash(userData.password, 10);
 
       let createdToken = createToken({
-        id: tokenUserData.id,
-        email: tokenUserData.email,
-        username: tokenUserData.username,
+        id: userData.id,
+        email: userData.email,
+        username: userData.username,
         password: hashedPassword,
       });
 
       const updateUser = {
-        id: 18,
-        username: "yashvii",
-        email: "yashvi@gmail.com",
+        id: userData.id,
+        username: "Praful Parmar",
+        email: "praful@gmail.com",
         password: hashedPassword,
       };
 
       const path = `/api/user/updateuser/${updateUser.id}`;
       console.log("path:", path);
 
-      //   Pass here your json Data:-
       const data = JSON.stringify(updateUser);
       const options = {
         hostname: "localhost",
@@ -245,72 +296,67 @@ describe("Update Users", () => {
 });
 
 // // // Delete Users:-
-// describe("Delete Users", () => {
-//   it("Delete Users :)", async () => {
-//     try {
-//       //  User Data:-
-//       const tokenUserData = {
-//         id: 17,
-//         username: "yashvi",
-//         email: "yashvi@gmail.com",
-//         password: "Pyashvi@123",
-//       };
+describe("Delete Users", () => {
+  it("Delete Users :)", async () => {
+    try {
 
-//       const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
-//       let createdToken = createToken({
-//         id: tokenUserData.id,
-//         email: tokenUserData.email,
-//         username: tokenUserData.username,
-//         password: hashedPassword,
-//       });
+      const tokenUserData = {
+        id: userData.id,
+        username: "Praful Parmar",
+        email: "praful@gmail.com",
+        password: userData.password,
+      };
 
-//       let deleteUser = {
-//         id: 17,
-//       };
+      const hashedPassword = await bcrypt.hash(tokenUserData.password, 10);
 
-//       const path = `/api/user/deleteuser/${deleteUser.id}`;
-//       console.log("path:", path);
+      let createdToken = createToken({
+        id: tokenUserData.id,
+        email: tokenUserData.email,
+        username: tokenUserData.username,
+        password: hashedPassword,
+      });
 
-//       const data = JSON.stringify(deleteUser);
-//       const options = {
-//         hostname: "localhost",
-//         port: 3001,
-//         path: path,
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "Content-Length": Buffer.byteLength(data),
-//           authorization: createdToken,
-//         },
-//       };
+      const path = `/api/user/deleteuser/${userData.id}`;
+      console.log("path:", path);
 
-//       const req = http.request(options, (res) => {
-//         let data = "";
+      const data = JSON.stringify(deleteUser);
+      const options = {
+        hostname: "localhost",
+        port: 3001,
+        path: path,
+        method: "DELETE",
+        headers: {
+          authorization: createdToken,
+        },
+      };
 
-//         res.on("data", (chunk) => {
-//           data += chunk;
-//         });
+      const req = http.request(options, (res) => {
+        let data = "";
 
-//         res.on("end", () => {
-//           console.log("Response Status:", res.statusCode);
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
 
-//           const parsedData = JSON.parse(data);
-//           console.log("Response Body:", parsedData);
+        res.on("end", () => {
+          console.log("Response Status:", res.statusCode);
 
-//           expect(res.statusCode).to.equal(201);
-//         });
-//       });
+          const parsedData = JSON.parse(data);
+          console.log("Response Body:", parsedData);
 
-//       req.on("error", (error) => {
-//         console.error("Request error:", error.message);
-//         throw error;
-//       });
-//       req.write(data);
-//       req.end();
-//       console.log("Deleted user successfully");
-//     } catch (err) {
-//       console.log("Unauthorized user", err.message);
-//       throw err;
-//     }
-//   });
-// });
+          expect(res.statusCode).to.equal(201);
+        });
+      });
+
+      req.on("error", (error) => {
+        console.error("Request error:", error.message);
+        throw error;
+      });
+      req.write(data);
+      req.end();
+      console.log("Deleted user successfully");
+    } catch (err) {
+      console.log("Unauthorized user", err.message);
+      throw err;
+    }
+  });
+});
