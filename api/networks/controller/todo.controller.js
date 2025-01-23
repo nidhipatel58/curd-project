@@ -39,7 +39,8 @@ const GetTodoById = async (req, res) => {
 // Delete todo by ID
 const DeleteTodo = async (req, res) => {
   try {
-    const todo = await TodoService.DeleteTodo(req.userId);
+    let { id } = req.params;
+    const todo = await TodoService.DeleteTodo(id);
     if (!todo) {
       return res
         .status(404)
@@ -57,8 +58,13 @@ const DeleteTodo = async (req, res) => {
 // Update todo by ID
 const UpdateTodo = async (req, res) => {
   try {
+    let { id } = req.params;
     const body = req.body;
-    const todo = await TodoService.UpdateTodo(req.userId, body);
+    console.log(req.body, "req.body");
+    console.log("----------------",id);
+    
+
+    const todo = await TodoService.UpdateTodo(id, body);
     if (!todo) {
       return res
         .status(404)

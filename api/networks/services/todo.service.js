@@ -12,8 +12,10 @@ let GetTodoById = (userId) => {
 };
 
 // Update a Todo by id and user id
-let UpdateTodo = async (userId, body) => {
-  let todo = await TodoModel.findOne({ where: { userId } });
+let UpdateTodo = async (id, body) => {
+  let todo = await TodoModel.findOne({ where: { id } });
+   console.log(id, "todo userId");
+
   if (!todo) {
     throw new Error("Todo not found");
   }
@@ -23,8 +25,8 @@ let UpdateTodo = async (userId, body) => {
 };
 
 // Delete a Todo by id and user id
-let DeleteTodo = async (userId) => {
-  let todo = await TodoModel.findOne({ where: { userId } });
+let DeleteTodo = async (id) => {
+  let todo = await TodoModel.findOne({ where: { id } });
   if (!todo) {
     throw new Error("Todo not found");
   }
