@@ -15,9 +15,9 @@
 //   it("Should signup correctly", async () => {
 //     try {
 //       let registerData = {
-//         username: "master",
-//         email: "master@gmail.com",
-//         password: "Master@123",
+//         username: "native",
+//         email: "native@gmail.com",
+//         password: "Native@123",
 //       };
 
 //       let path = `/api/user/register`;
@@ -26,7 +26,7 @@
 //       let data = JSON.stringify(registerData);
 //       const options = {
 //         hostname: "localhost",
-//         port: 3002,
+//         port: 3003,
 //         path: path,
 //         method: "POST",
 //         headers: {
@@ -61,12 +61,12 @@
 //   });
 // });
 
-// //Login User:-
+// // //Login User:-
 // describe("Login API Test", () => {
 //   it("Should login with valid info", async () => {
 //     let userData = {
-//       email: "master@gmail.com",
-//       password: "Master@123",
+//       email: "native@gmail.com",
+//       password: "Native@123",
 //     };
 
 //     const hashedPassword = await bcrypt.hash(userData.password, 10);
@@ -91,7 +91,7 @@
 //       let data = JSON.stringify(loginData);
 //       const options = {
 //         hostname: "localhost",
-//         port: 3002,
+//         port: 3003,
 //         path: path,
 //         method: "POST",
 //         headers: {
@@ -129,7 +129,7 @@
 //   });
 // });
 
-// // GetUser BY Id:-
+// // // GetUser BY Id:-
 // describe("Get User By ID", () => {
 //   it("Get User By Id :)", async () => {
 //     try {
@@ -154,7 +154,7 @@
 
 //       const options = {
 //         hostname: "localhost",
-//         port: 3002,
+//         port: 3003,
 //         path: path,
 //         method: "GET",
 //         headers: {
@@ -192,12 +192,12 @@
 //   });
 // });
 
-// // GETAll Users:-
+// // // GETAll Users:-
 // describe("GetAll Users", () => {
 //   it("GetAll Users :)", async () => {
 //     const options = {
 //       hostname: "localhost",
-//       port: 3002,
+//       port: 3003,
 //       path: "/api/user/usersall",
 //       method: "GET",
 //     };
@@ -227,13 +227,13 @@
 //   });
 // });
 
-// // Update Users:-
+// // // // Update Users:-
 // describe("Update Users", () => {
 //   it("Update Users :)", async () => {
 //     try {
 //       let userData = {
 //         id: "6",
-//         username: "nidhi",
+//         username: "nidhi:)",
 //         email: "nidhi@gmail.com",
 //         password: "Nidhi@123",
 //       };
@@ -249,7 +249,7 @@
 
 //       const updateUser = {
 //         id: userData.id,
-//         username: "nidhi:)",
+//         username: "nidhi",
 //         email: "nidhi@gmail.com",
 //       };
 
@@ -259,7 +259,7 @@
 //       const data = JSON.stringify(updateUser);
 //       const options = {
 //         hostname: "localhost",
-//         port: 3002,
+//         port: 3003,
 //         path: path,
 //         method: "PUT",
 //         headers: {
@@ -299,12 +299,12 @@
 //   });
 // });
 
-// //Delete Users:-
+// // // //Delete Users:-
 // describe("Delete Users", () => {
 //   it("Delete Users :)", async () => {
 //     try {
 //       let userData = {
-//         id: "8",
+//         id: "24",
 //         username: "niyati",
 //         email: "niyati@gmail.com",
 //         password: "Niyati@123",
@@ -320,7 +320,7 @@
 //       });
 
 //       let deleteData = {
-//         id: "8",
+//         id: "24",
 //       };
 
 //       const path = `/api/user/deleteuser/${deleteData.id}`;
@@ -328,7 +328,7 @@
 
 //       const options = {
 //         hostname: "localhost",
-//         port: 3002,
+//         port: 3003,
 //         path: path,
 //         method: "DELETE",
 //         headers: {

@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import http from "http";
 import express from "express";
 import cors from "cors";
-import sequelize from "./api/config/db.js";
+import db from "./api/models/index.js";
 import routes from "./api/routes/index.js";
 const app = express();
 
@@ -24,15 +24,18 @@ app.use(express.urlencoded({ extended: false }));
 // Routes
 app.use("/api", routes);
 
-// Database Connection
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("Tables created successfully!");
-  })
-  .catch((error) => {
-    console.error("Error creating tables:", error);
-  });
+// Database Connection:-
+(async () => {
+  try {
+    await db.sequelize.authenticate();
+    console.log("Database connected successfully!");
+
+    await db.sequelize.sync({ force: false });
+    console.log("Tables synced successfully!");
+  } catch (error) {
+    console.error("Error connecting to the database:", error);
+  }
+})();
 
 // Server Setup
 const PORT = process.env.PORT_SERVER || 6001;

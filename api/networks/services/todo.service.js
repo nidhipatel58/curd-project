@@ -1,4 +1,4 @@
-import TodoModel from "../../models/todo.model.js";
+import TodoModel from "../../models/todo.js";
 
 // Create a new Todo
 let CreateTodo = async (title, description, userId) => {
@@ -14,7 +14,7 @@ let GetTodoById = (userId) => {
 // Update a Todo by id and user id
 let UpdateTodo = async (id, body) => {
   let todo = await TodoModel.findOne({ where: { id } });
-   console.log(id, "todo userId");
+  console.log(id, "todo userId");
 
   if (!todo) {
     throw new Error("Todo not found");
