@@ -1,0 +1,229 @@
+openapi: 3.0.0
+info:
+  title: "Nodejs API Project for Postgres"
+  description: "API documentation for Node.js with Postgres and JWT Authentication"
+  version: 1.0.0
+
+servers:
+  - url: "http://localhost:3003"
+    description: "Local server for development"
+
+paths:
+  # POST: User Registration
+  /api/user/register:
+    post:
+      tags:
+        - User Register API
+      summary: "User should register successfully"
+      description: "Endpoint for user registration"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "urmi"
+                email:
+                  type: string
+                  example: "urmi@gmail.com"
+                password:
+                  type: string
+                  example: "Urmi@123"
+      responses:
+        201:
+          description: "User successfully registered"
+        400:
+          description: "Bad Request, user already exists"
+        500:
+          description: "Internal Server Error"
+
+  # POST: User Login
+    /api/user/login:
+    post:
+      tags:
+        - User Login API
+      summary: "User should log in successfully and receive a token"
+      description: "Endpoint for user login, returns a JWT token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "nidhi@gmail.com"
+                password:
+                  type: string
+                  example: "Nidhi@123"
+      responses:
+        200:
+          description: "Login successful, returns a JWT token"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "your.jwt.token.here"
+        400:
+          description: "Bad Request, invalid credentials"
+        401:
+          description: "Unauthorized, invalid credentials"
+        500:
+          description: "Internal Server Error"
+
+  # GET: Get All Users (requires authentication)
+#   /api/user/usersall:
+#     get:
+#       tags:
+#         - Users
+#       summary: "Get all users"
+#       description: "Endpoint to get all users from the database"
+#       security:
+#         - BearerAuth: []
+#       responses:
+#         200:
+#           description: "List of all users"
+#           content:
+#             application/json:
+#               schema:
+#                 type: array
+#                 items:
+#                   type: object
+#                   properties:
+#                     id:
+#                       type: integer
+#                       example: 1
+#                     username:
+#                       type: string
+#                       example: "urmi"
+#                     email:
+#                       type: string
+#                       example: "urmi@gmail.com"
+#         401:
+#           description: "Unauthorized, token missing or invalid"
+#         500:
+#           description: "Internal Server Error"
+
+#   # GET: Get User by ID (requires authentication)
+#   /api/user/getuser/{id}:
+#     get:
+#       tags:
+#         - Users
+#       summary: "Get user by ID"
+#       description: "Endpoint to get a user by their ID"
+#       parameters:
+#         - in: path
+#           name: id
+#           required: true
+#           description: "User ID"
+#           schema:
+#             type: integer
+#             example: 1
+#       security:
+#         - BearerAuth: []
+#       responses:
+#         200:
+#           description: "User found"
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   id:
+#                     type: integer
+#                     example: 31
+#                   username:
+#                     type: string
+#                     example: "urmi"
+#                   email:
+#                     type: string
+#                     example: "urmi@gmail.com"
+#         404:
+#           description: "User not found"
+#         401:
+#           description: "Unauthorized, token missing or invalid"
+#         500:
+#           description: "Internal Server Error"
+
+#   # PUT: Update User (requires authentication)
+#   /api/user/updateuser/{id}:
+#     put:
+#       tags:
+#         - Users
+#       summary: "Update user information"
+#       description: "Endpoint to update a user's information by their ID"
+#       parameters:
+#         - in: path
+#           name: id
+#           required: true
+#           description: "User ID"
+#           schema:
+#             type: integer
+#             example: 1
+#       requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 username:
+#                   type: string
+#                   example: "newusername"
+#                 email:
+#                   type: string
+#                   example: "newemail@gmail.com"
+#       security:
+#         - BearerAuth: []
+#       responses:
+#         200:
+#           description: "User updated successfully"
+#         400:
+#           description: "Bad Request, invalid data"
+#         401:
+#           description: "Unauthorized, token missing or invalid"
+#         404:
+#           description: "User not found"
+#         500:
+#           description: "Internal Server Error"
+
+#   # DELETE: Delete User (requires authentication)
+#   /api/user/deleteuser/{id}:
+#     delete:
+#       tags:
+#         - Users
+#       summary: "Delete user by ID"
+#       description: "Endpoint to delete a user by their ID"
+#       parameters:
+#         - in: path
+#           name: id
+#           required: true
+#           description: "User ID"
+#           schema:
+#             type: integer
+#             example: 1
+#       security:
+#         - BearerAuth: []
+#       responses:
+#         200:
+#           description: "User deleted successfully"
+#         401:
+#           description: "Unauthorized, token missing or invalid"
+#         404:
+#           description: "User not found"
+#         500:
+#           description: "Internal Server Error"
+
+# components:
+#   securitySchemes:
+#     BearerAuth:
+#       type: http
+#       scheme: bearer
+#       bearerFormat: JWT

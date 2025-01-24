@@ -4,24 +4,30 @@ import express from "express";
 import cors from "cors";
 import db from "./api/models/index.js";
 import routes from "./api/routes/index.js";
+import { swaggerServe, swaggerSetup } from "./api/config/config.js";
+dotenv.config();
+
 const app = express();
 
-// CORS
+// CORS:-
 app.use(
   cors({
     origin: "*",
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+// Swagger Route:-
+app.use("/api-docs", swaggerServe, swaggerSetup);
 
-// Body-Parser
+// app.get("/", (req, res) => {
+//   res.send("Hello World");
+// });
+
+// Body-Parser:-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Routes
+// Routes:-
 app.use("/api", routes);
 
 // Database Connection:-
@@ -37,11 +43,12 @@ app.use("/api", routes);
   }
 })();
 
-// Server Setup
+// Server Setup:-
 const PORT = process.env.PORT_SERVER || 6001;
 
 http.createServer(app).listen(PORT, () => {
-  console.log(`Server Running on port ${PORT}`);
+  console.log(`Server Running on http://localhost:${PORT}`);
+  console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
 });
 
 export default app;

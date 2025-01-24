@@ -103,7 +103,7 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
+// Login:-
 const Login = async (req, res) => {
   const { email, password } = req.body;
   try {
