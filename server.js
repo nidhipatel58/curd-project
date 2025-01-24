@@ -6,22 +6,14 @@ import db from "./api/models/index.js";
 import routes from "./api/routes/index.js";
 import { swaggerServe, swaggerSetup } from "./api/config/config.js";
 dotenv.config();
-
 const app = express();
 
-// CORS:-
+// CORS
 app.use(
   cors({
     origin: "*",
   })
 );
-
-// Swagger Route:-
-app.use("/api-docs", swaggerServe, swaggerSetup);
-
-// app.get("/", (req, res) => {
-//   res.send("Hello World");
-// });
 
 // Body-Parser:-
 app.use(express.json());
@@ -29,6 +21,29 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes:-
 app.use("/api", routes);
+
+// Swagger Route:-
+app.use("/api-docs", swaggerServe, swaggerSetup);
+
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Root endpoint
+ *     tags: [General]
+ *     responses:
+ *       200:
+ *         description: Welcome message
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: "Hello World"
+ */
+
+// app.get("/", (req, res) => {
+//   res.send("Hello World");
+// });
 
 // Database Connection:-
 (async () => {
