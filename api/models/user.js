@@ -16,27 +16,14 @@ const UserModel = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: {
-        len: [3, 30],
-      },
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        len: {
-          args: [8, 255],
-          msg: "Password must be between 8 and 255 characters.",
-        },
-      },
     },
   },
   {

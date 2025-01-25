@@ -1,5 +1,4 @@
 import { Sequelize } from "sequelize";
-
 const configModule = {
   development: {
     username: process.env.DB_USER || "postgres",
