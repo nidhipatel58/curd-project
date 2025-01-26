@@ -1,17 +1,32 @@
 import TodoModel from "../../models/todo.js";
 
-// Create a new Todo
+// Create a new Todo:-
 let CreateTodo = async (title, description, userId) => {
   // console.log({ title, description, userId }, "--------------------");
-  return await TodoModel.create({ title, description, userId });
+  let user = TodoModel.create({ title, description, userId });
+  return user;
 };
 
-// GetTodo by id and user id
-let GetTodoById = (userId) => {
-  return TodoModel.findOne({ where: { userId } });
+// GetTodo by id and user id:-
+let GetTodoById =async (id) => {
+  try {
+    const todo = await TodoModel.findOne({
+      where: { id }, 
+    });
+
+    if (!todo) {
+      console.log(`Todo with id ${id} not found.`);
+      return null;
+    }
+
+    console.log("Todo details:", todo);
+    return todo;
+  } catch (error) {
+    console.error("Error fetching todo:", error);
+  }
 };
 
-// Update a Todo by id and user id
+// Update a Todo by id and user id:-
 let UpdateTodo = async (id, body) => {
   let todo = await TodoModel.findOne({ where: { id } });
   console.log(id, "todo userId");
@@ -24,7 +39,7 @@ let UpdateTodo = async (id, body) => {
   return todo;
 };
 
-// Delete a Todo by id and user id
+// Delete a Todo by id and user id:-
 let DeleteTodo = async (id) => {
   let todo = await TodoModel.findOne({ where: { id } });
   if (!todo) {

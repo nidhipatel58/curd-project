@@ -21,7 +21,8 @@ const CreateTodo = async (req, res) => {
 // Get single todo by ID
 const GetTodoById = async (req, res) => {
   try {
-    const todo = await TodoService.GetTodoById(req.userId);
+    let { id } = req.params;
+    const todo = await TodoService.GetTodoById(id);
     if (!todo) {
       return res
         .status(404)

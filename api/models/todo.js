@@ -1,10 +1,10 @@
 "use strict";
 
-import { Sequelize, DataTypes } from "sequelize";
-import db from "../models/index.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../config/db.js";
 
-const TodoModel = (sequelize) => {
-  const Todo = sequelize.define(
+
+  const TodoModel = sequelize.define(
     "Todo",
     {
       id: {
@@ -39,11 +39,9 @@ const TodoModel = (sequelize) => {
     }
   );
 
-  Todo.associate = (models) => {
-    Todo.belongsTo(models.User, { foreignKey: "userId" });
+  TodoModel.associate = (models) => {
+    TodoModel.belongsTo(models.User, { foreignKey: "userId" });
   };
 
-  return Todo;
-};
 
 export default TodoModel;
