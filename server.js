@@ -31,14 +31,13 @@ const __dirname = dirname(__filename);
     try {
       swaggerFile = await fs.readFile(swaggerPath, "utf-8");
     } catch (err) {
-      throw new Error(`Unable to load Swagger file at ${swaggerPath}: ${err.message}`);
+      throw new Error(
+        `Unable to load Swagger file at ${swaggerPath}: ${err.message}`
+      );
     }
 
     // Serve Swagger JSON file statically
-    app.use(
-      "/swagger.json",
-      express.static(swaggerPath)
-    );
+    app.use("/swagger.json", express.static(swaggerPath));
 
     // Middleware
     app.use(cors({ origin: "*" }));
