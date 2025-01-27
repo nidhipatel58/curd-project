@@ -39,6 +39,13 @@ const __dirname = dirname(__filename);
     // Serve Swagger JSON file statically
     app.use("/swagger.json", express.static(swaggerPath));
 
+    app.get("/hello", (req, res) => {
+      res.status(200).json({
+        message: "Hello, this is your serverless GET function!",
+        timestamp: new Date().toISOString(),
+      });
+    });
+
     // Middleware
     app.use(cors({ origin: "*" }));
     app.use(express.json());

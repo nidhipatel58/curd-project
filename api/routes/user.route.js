@@ -2,7 +2,7 @@ import express from "express";
 const route = express.Router();
 import { UserController } from "../networks/controller/index.js";
 import validate from "../middleware/validate.js";
-import  UserValidation  from "../validations/index.js";
+import UserValidation from "../validations/index.js";
 import verifyToken from "../middleware/verifyauth.js";
 
 route.post(
@@ -10,6 +10,8 @@ route.post(
   validate(UserValidation.user),
   UserController.createUser
 );
+
+route.get("/", UserController.getUser);
 route.get(
   "/usersall",
   validate(UserValidation.user),

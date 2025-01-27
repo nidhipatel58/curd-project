@@ -25,6 +25,10 @@ const createUser = async (req, res) => {
     user,
   });
 };
+// defalut:-
+let getUser = (req, res) => {
+  res.status(200).json({ message: "hello welcome" });
+};
 
 // Get user by ID:-
 const getUserById = async (req, res) => {
@@ -135,4 +139,12 @@ const Login = async (req, res) => {
   }
 };
 
-export { createUser, getAllUser, getUserById, deleteUser, updateUser, Login };
+export {
+  createUser,
+  getAllUser,
+  getUserById,
+  deleteUser,
+  updateUser,
+  Login,
+  getUser,
+};
