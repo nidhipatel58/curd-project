@@ -28,6 +28,8 @@ let usersQueries = {
     // return result;
 
     let users = await UserModel.findAll();
+    console.log("------------", users);
+
     return users;
   },
 

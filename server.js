@@ -42,7 +42,6 @@ const __dirname = dirname(__filename);
     app.get("/hello", (req, res) => {
       res.status(200).json({
         message: "Hello, this is your serverless GET function!",
-        timestamp: new Date().toISOString(),
       });
     });
 

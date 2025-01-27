@@ -4,10 +4,7 @@ dotenv.config();
 
 const configModule = {
   development: {
-    username: process.env.DB_USER || "admin",
-    password: process.env.DB_PASSWORD || "PTIY7xbOePwa1kukiV2Y1aub2socoRSg",
-    database: process.env.DB_NAME || "users_db",
-    host: process.env.DB_HOST || "dpg-cublf81opnds73ekbpu0-a",
+    use_env_variable: "DB_URL",
     dialect: "postgres",
     logging: false,
   },

@@ -10,8 +10,6 @@ route.post(
   validate(UserValidation.user),
   UserController.createUser
 );
-
-route.get("/", UserController.getUser);
 route.get(
   "/usersall",
   validate(UserValidation.user),
