@@ -135,12 +135,4 @@ const Login = async (req, res) => {
   }
 };
 
-export {
-  createUser,
-  getAllUser,
-  getUserById,
-  deleteUser,
-  updateUser,
-  Login,
-  getUser,
-};
+export { createUser, getAllUser, getUserById, deleteUser, updateUser, Login };
