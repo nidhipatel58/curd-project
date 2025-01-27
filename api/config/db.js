@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
 const configModule = {
   development: {
-    username: process.env.DB_USER || "postgres",
-    password: process.env.DB_PASSWORD || "password@123",
+    username: process.env.DB_USER || "admin",
+    password: process.env.DB_PASSWORD || "PTIY7xbOePwa1kukiV2Y1aub2socoRSg",
     database: process.env.DB_NAME || "users_db",
-    host: process.env.DB_HOST || "localhost",
+    host: process.env.DB_HOST || "dpg-cublf81opnds73ekbpu0-a",
     dialect: "postgres",
     logging: false,
   },
