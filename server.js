@@ -23,7 +23,6 @@ const __dirname = dirname(__filename);
 
 (async () => {
   try {
-    // Generate Swagger file
     await generateSwaggerFile();
 
     // Load Swagger file
