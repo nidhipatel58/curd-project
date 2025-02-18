@@ -2,51 +2,39 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 import { FaUser, FaLock } from "react-icons/fa";
-import axios from "axios";
-import { handleError, handleSuccess } from "../../utils/utils";
 import { ToastContainer } from "react-toastify";
 import ButtonComponent from "../Button/Button.component";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store";
 
-function Login() {
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
+function Login({ setIsLoggedIn }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  let handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent from page refresh
-    try {
-      let response = await axios.post("http://localhost:3003/api/user/login", {
-        email,
-        password,
-      });
+  // Handle Login Submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      handleSuccess("Login Successfull!");
-      setTimeout(() => {
-        navigate("/todo");
-      }, 1000);
+    // Simulate successful login (Without API)
+    localStorage.setItem("isLoggedIn", "true");
+    dispatch(authActions.login()); // Update Redux Store
+    setIsLoggedIn(true); // Update Local State
 
-      console.log(response.data);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("id", response.data.user.id);
-      dispatch(authActions.login());
-    } catch (err) {
-      handleError(err.message);
-    }
+    navigate("/todo"); // Redirect to ToDo Page
   };
 
   return (
     <div className="wrapper">
       <div className="form-box login">
         <form onSubmit={handleSubmit}>
-          <h1>SignIn</h1>
+          <h1>Sign In</h1>
           <div className="input-box">
             <input
-              type="text"
-              placeholder="Email:"
-              required
+              type="email"
+              placeholder="Email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <FaUser className="icon" />
@@ -54,8 +42,8 @@ function Login() {
           <div className="input-box">
             <input
               type="password"
-              placeholder="Password:"
-              required
+              placeholder="Password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <FaLock className="icon" />
@@ -64,18 +52,18 @@ function Login() {
             <label>
               <input type="checkbox" /> Remember me
             </label>
-            <a> Forget Password</a>
+            <a href="#">Forget Password?</a>
           </div>
           <ButtonComponent
             type="submit"
-            text="SignIn"
+            text="Sign In"
             className="w-100 mt-3"
-            variant="outline-light"
+            variant="dark"
           />
           <div className="register-link">
             <p>
               Don't have an account?
-              <Link to="/signup"> Signup</Link>
+              <Link to="/signup"> Sign Up</Link>
             </p>
           </div>
         </form>

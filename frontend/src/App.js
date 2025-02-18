@@ -1,33 +1,26 @@
-import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./App.css";
-import "./index.css";
+import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Components/Login/login";
 import Signup from "./Components/Signup/signup";
-import { Navbar } from "./Components/Navbar/Navbar";
-// import Todo from "./Components/Todo/Todo";
-import Todo from "./Components/Todo/Todo.component";
-// import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
-// import { authActions } from "./store";
 
 function App() {
-  // let dispatch = useDispatch();
-  // useEffect(() => {
-  // console.log(localStorage.getItem("id"));
-  // let id = localStorage.getItem("id");
-  // if (id) {
-  //   dispatch(authActions.login());
-  // }
-  // });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showAuthPage, setShowAuthPage] = useState("login"); // Default to login
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+  }, []);
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Navbar />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/todo" element={<Todo />}></Route>
-      </Routes>
+      <Navbar isLoggedIn={isLoggedIn} setShowAuthPage={setShowAuthPage} setIsLoggedIn={setIsLoggedIn} />
+
+      <div className="container">
+        {/* Show Sign In or Sign Up below Navbar when not logged in */}
+        {!isLoggedIn && showAuthPage === "login" && <Login setIsLoggedIn={setIsLoggedIn} setShowAuthPage={setShowAuthPage} />}
+        {!isLoggedIn && showAuthPage === "signup" && <Signup setIsLoggedIn={setIsLoggedIn} setShowAuthPage={setShowAuthPage} />}
+      </div>
     </div>
   );
 }
