@@ -1,0 +1,70 @@
+.todo {
+  position: relative;
+}
+
+.input-todo input {
+  width: 100%;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  font-size: 18px;
+  color: black;
+  padding: 10px 20px 10px 10px;
+}
+
+.input-todo textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  font-size: 18px;
+  color: black;
+  padding: 10px 20px 10px 10px;
+}
+
+.todocard {
+  border: 1px solid rgb(56, 56, 56);
+}
+
+.todocard h1 {
+  text-align: left;
+  color: white;
+}
+
+.todocard p {
+  text-align: left;
+}
+
+.todo-text {
+  overflow: hidden;
+}
+
+.cards-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.del {
+  color: white;
+}
+
+.card-icon-head {
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 15px;
+}
+
+.card-icon-head:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.todo-update {
+  display: none;
+  width: 100%;
+  height: 89vh;
+  position: absolute;
+  position: fixed;
+  top: 80px;
+  left: 16%;
+  background-color: blanchedalmond;
+}

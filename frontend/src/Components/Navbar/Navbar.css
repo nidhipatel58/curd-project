@@ -1,0 +1,48 @@
+.home-btn button {
+  width: 120px;
+  height: 45px;
+  background-color: #fff;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin-left: 20px;
+}
+
+.home-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.home-container {
+  position: relative;
+  height: 450px;
+  width: 420px;
+  border-radius: 12px;
+  background-image: linear-gradient(-225deg, #e3fdf5 50%, #ffe6fa 50%);
+  color: rgb(19, 20, 20);
+  box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
+  padding-top: 39%;
+  overflow: hidden;
+  transition: height 0.2s ease;
+}
+
+.home-container h1 {
+  margin-bottom: 45px;
+  font-size: 35px;
+  color: #131414;
+}
+
+.home {
+  width: 100%;
+  height: 100vh;
+}
+
+.home h1 {
+  font-size: 60px;
+}
