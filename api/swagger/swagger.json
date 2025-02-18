@@ -5,9 +5,9 @@
     "title": "REST API",
     "description": "This is a REST API documentation with authentication support for token verification."
   },
-  "host": "localhost:3003",
+  "host": "1654d229-3003.inc1.devtunnels.ms",
   "basePath": "/",
-  "schemes": ["http"],
+  "$schema": "https",
   "securityDefinitions": {
     "Bearer": {
       "type": "apiKey",
@@ -106,10 +106,6 @@
                 "description": {
                   "type": "string",
                   "example": "Milk, eggs, bread, and cheese"
-                },
-                "userId": {
-                  "type": "string",
-                  "example": "12345"
                 }
               }
             }

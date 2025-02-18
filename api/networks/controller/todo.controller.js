@@ -2,16 +2,18 @@ import TodoService from "../services/todo.service.js";
 
 // Create todos
 const CreateTodo = async (req, res) => {
-  const { title, description, userId } = req.body;
+  console.log(req.userId);
+
+  const { title, description } = req.body;
   // console.log(req.body, "=========");
 
-  if (!title || !description || !userId) {
+  if (!title || !description) {
     return res
       .status(400)
-      .json({ message: "Title , Description or userId is required!" });
+      .json({ message: "Title , Description  is required!" });
   }
 
-  const todo = await TodoService.CreateTodo(title, description, userId);
+  const todo = await TodoService.CreateTodo(title, description, req.userId);
   res.status(201).json({
     message: "Todo created successfully",
     todo,
@@ -61,8 +63,7 @@ const UpdateTodo = async (req, res) => {
     let { id } = req.params;
     const body = req.body;
     console.log(req.body, "req.body");
-    console.log("----------------",id);
-    
+    console.log("----------------", id);
 
     const todo = await TodoService.UpdateTodo(id, body);
     if (!todo) {

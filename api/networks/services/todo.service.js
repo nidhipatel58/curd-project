@@ -1,14 +1,14 @@
 import TodoModel from "../../models/todo.js";
 
 // Create a new Todo
-let CreateTodo = async (title, description, userId) => {
-  // console.log({ title, description, userId }, "--------------------");
-  return await TodoModel.create({ title, description, userId });
+let CreateTodo = async (title, description) => {
+  // console.log({ title, description,}, "--------------------");
+  return await TodoModel.create(title, description, req.userId);
 };
 
 // GetTodo by id and user id
 let GetTodoById = (userId) => {
-  return TodoModel.findOne({ where: { userId } });
+  return TodoModel.findAll({ where: { userId } });
 };
 
 // Update a Todo by id and user id

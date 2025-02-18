@@ -19,7 +19,7 @@
     "yamljs": "^0.3.0"
   },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon api/server.js",
     "test": "mocha 'api/tests/**/*.test.js'"
   },
   "devDependencies": {

@@ -22,13 +22,14 @@ function Login() {
         email,
         password,
       });
+
       handleSuccess("Login Successfull!");
       setTimeout(() => {
         navigate("/todo");
       }, 1000);
 
       console.log(response.data);
-      localStorage.setItem("Token", response.data.token);
+      localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.user.id);
       dispatch(authActions.login());
     } catch (err) {

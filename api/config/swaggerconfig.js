@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 //Paths for Swagger generation:-
 const swaggerOutputFile = resolve(__dirname, "../swagger/swagger.json");
-const swaggerEndpointsFiles = [resolve(__dirname, "../server.js")];
+const swaggerEndpointsFiles = [resolve(__dirname, "../api/server.js")];
 
 // Swagger file exist or not:-
 async function generateSwaggerFile() {

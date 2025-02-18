@@ -5,7 +5,7 @@ import { handleError, handleSuccess } from "../../utils/utils";
 import axios from "axios";
 import TodoCards from "./TodoCards";
 import Update from "./Update";
-let Token = localStorage.getItem("Token");
+let Token = localStorage.getItem("token");
 console.log("Token------", Token);
 let id = localStorage.getItem("id");
 console.log(id, "id-----");
