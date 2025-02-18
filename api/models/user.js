@@ -33,8 +33,8 @@ const UserModel = sequelize.define(
 );
 
 // Compare Password
-UserModel.prototype.comparePassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
-};
+// UserModel.prototype.comparePassword = async function (password) {
+//   return await bcrypt.compare(password, this.password);
+// };
 
 export default UserModel;

@@ -113,6 +113,9 @@ const Login = async (req, res) => {
         .status(401)
         .json({ message: "Authentication failed: User not found" });
     }
+    console.log(user, "=============== user");
+    console.log(user.password, "=============== user.password");
+    console.log(password, "=============== user.password");
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
@@ -122,6 +125,7 @@ const Login = async (req, res) => {
     }
 
     let token = createToken({ userId: user.id, username: user.username });
+    console.log(token, "=============== login token");
     res.status(200).json({
       message: "Authentication successful",
       user,

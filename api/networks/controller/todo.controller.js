@@ -2,10 +2,8 @@ import TodoService from "../services/todo.service.js";
 
 // Create todos
 const CreateTodo = async (req, res) => {
-  console.log(req.userId);
-
   const { title, description } = req.body;
-  // console.log(req.body, "=========");
+  console.log(req.body, "========= todo params");
 
   if (!title || !description) {
     return res
