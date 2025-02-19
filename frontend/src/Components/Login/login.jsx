@@ -17,7 +17,6 @@ function Login({ setIsLoggedIn }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simulate successful login (Without API)
     localStorage.setItem("isLoggedIn", "true");
     dispatch(authActions.login()); // Update Redux Store
     setIsLoggedIn(true); // Update Local State
