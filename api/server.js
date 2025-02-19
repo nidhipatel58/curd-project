@@ -12,7 +12,7 @@ import fs from "fs/promises";
 dotenv.config();
 const app = express();
 
-// CORS configuration
+// CORS :-
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-// dirname and path
+// dirname and path:-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -30,7 +30,7 @@ async function initializeServer() {
   try {
     await generateSwaggerFile();
 
-    // Load Swagger file
+    // Load Swagger file:-
     const swaggerPath = join(__dirname, "swagger", "swagger.json");
     let swaggerFile;
     try {
@@ -41,7 +41,7 @@ async function initializeServer() {
       );
     }
 
-    // Serve Swagger JSON file statically
+    // Serve Swagger JSON file statically:-
     app.use("/swagger.json", express.static(swaggerPath));
 
     app.get("/hello", (req, res) => {
@@ -50,21 +50,21 @@ async function initializeServer() {
       });
     });
 
-    // Middleware
+    // Middleware:-
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
-    // Routes
+    // Routes:-
     app.use("/api", routes);
 
-    // Swagger UI Setup
+    // Swagger UI Setup:-
     app.use(
       "/api-docs",
       swaggerUi.serve,
       swaggerUi.setup(JSON.parse(swaggerFile))
     );
 
-    // Database Connection
+    // Database Connection:-
     try {
       await db.sequelize.authenticate();
       console.log("Database connected successfully!");
@@ -74,7 +74,7 @@ async function initializeServer() {
       console.error("Error connecting to the database:", dbError.message);
     }
 
-    // Server Setup
+    // Server Setup:-
     const PORT = process.env.PORT_SERVER || 6001;
     startServer(app, PORT);
   } catch (error) {
