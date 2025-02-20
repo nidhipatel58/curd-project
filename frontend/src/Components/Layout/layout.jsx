@@ -4,9 +4,9 @@ import { Navbar } from "../Navbar/Navbar";
 const Layout = () => {
   return (
     <>
-      <Navbar /> {/* Navbar stays the same */}
+      <Navbar />
       <div className="container">
-        <Outlet /> {/* This will be replaced by the clicked page */}
+        <Outlet />
       </div>
     </>
   );

@@ -1,4 +1,5 @@
 import createToken from "../../middleware/auth.js";
+import UserModel from "../../models/user.js";
 import UserService from "../services/user.service.js";
 import bcrypt from "bcryptjs";
 
@@ -7,6 +8,12 @@ const createUser = async (req, res) => {
   let { email, password, username } = req.body;
   if (!email || !password || !username) {
     return res.status(400).json({ message: "All fields are required" });
+  }
+  const existingUser = await UserModel.findOne({ email });
+  if (existingUser) {
+    return res
+      .status(400)
+      .json({ message: "User with this email already exists!" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);

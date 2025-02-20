@@ -14,15 +14,28 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar isLoggedIn={isLoggedIn} setShowAuthPage={setShowAuthPage} setIsLoggedIn={setIsLoggedIn} />
+      <Navbar
+        isLoggedIn={isLoggedIn}
+        setShowAuthPage={setShowAuthPage}
+        setIsLoggedIn={setIsLoggedIn}
+      />
 
       <div className="container">
         {/* Show Sign In or Sign Up below Navbar when not logged in */}
-        {!isLoggedIn && showAuthPage === "login" && <Login setIsLoggedIn={setIsLoggedIn} setShowAuthPage={setShowAuthPage} />}
-        {!isLoggedIn && showAuthPage === "signup" && <Signup setIsLoggedIn={setIsLoggedIn} setShowAuthPage={setShowAuthPage} />}
+        {!isLoggedIn && showAuthPage === "login" && (
+          <Login
+            setIsLoggedIn={setIsLoggedIn}
+            setShowAuthPage={setShowAuthPage}
+          />
+        )}
+        {!isLoggedIn && showAuthPage === "signup" && (
+          <Signup
+            setIsLoggedIn={setIsLoggedIn}
+            setShowAuthPage={setShowAuthPage}
+          />
+        )}
       </div>
     </div>
   );
 }
-
 export default App;

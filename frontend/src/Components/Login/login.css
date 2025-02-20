@@ -146,3 +146,10 @@ form .register-link {
   padding: 20px;
   border-radius: 10px;
 }
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+}
