@@ -25,7 +25,7 @@ function Todo() {
         await axios
           .get(`http://localhost:3003/api/todos/gettodo/${id}`, {
             headers: {
-              Authorization: `${Token}`,
+              Authorization: `Bearer ${Token}`,
             },
           })
           .then((response) => {

@@ -1,20 +1,19 @@
 .wrapper {
   position: relative;
-  height: 450px;
+  height: 525px;
   width: 420px;
   border-radius: 12px;
   background-image: linear-gradient(-225deg, #e3fdf5 50%, #ffe6fa 50%);
   color: rgb(19, 20, 20);
   box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  margin: 0 auto;
   overflow: hidden;
   transition: height 0.2s ease;
+  margin-top: 10%;
 }
 
 .wrapper.active {
-  height: 500px;
+  height: 450px;
 }
 
 .wrapper .form-box {
@@ -129,68 +128,9 @@ form .register-link {
   text-decoration: underline;
 }
 
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-}
-
 .error {
   color: red;
   font-size: 14px;
   margin-top: 5px;
-  display: block;
-}
-
-.remember-forget label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #333;
-}
-
-.remember-forget label input[type="checkbox"] {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #333;
-  border-radius: 4px;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-  transition: 0.2s all ease-in-out;
-}
-
-.remember-forget label input[type="checkbox"]:checked {
-  background-color: #333;
-  border-color: #333;
-}
-
-.remember-forget label input[type="checkbox"]::before {
-  content: "✔";
-  font-size: 12px;
-  color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-}
-
-.remember-forget label input[type="checkbox"]:checked::before {
   display: block;
 }

@@ -1,46 +1,77 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import profileImg from "../../assets/profile.png";
 
-const Navbar = ({ isLoggedIn, setShowAuthPage, setIsLoggedIn }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
+    setShowDropdown(false);
+    navigate("/");
   };
+
+  // Toggle dropdown :-
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev);
+  };
+
+  // Close dropdown:-
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="navbar">
-      <h4>Todo App</h4>
-      <ul className="nav-links">
-        {!isLoggedIn ? (
-          <li>
-            <button onClick={() => setShowAuthPage("login")}>Sign In</button>
-          </li>
-        ) : (
-          <>
-            <li>
-              <button className="create-todo-btn">Create Todo</button>
-            </li>
-            <li className="profile-dropdown">
+      <div className="container">
+        <h4 className="logo">Todo App</h4>
+
+        <div className="nav-buttons">
+          {!isLoggedIn ? (
+            <button className="nav-button" onClick={() => navigate("/login")}>
+              Sign In
+            </button>
+          ) : (
+            <>
               <button
-                className="profile-btn"
-                onClick={() => setShowDropdown(!showDropdown)}
+                className="create-todo-btn"
+                onClick={() => {
+                  navigate("/todo");
+                }}
               >
-                <img src={profileImg} alt="Profile" className="profile-img" />
+                Create Todo
               </button>
-              {showDropdown && (
-                <div className="dropdown-menu">
-                  <button>My Account</button>
+              <div className="profile-dropdown" ref={dropdownRef}>
+                <button className="profile-btn" onClick={toggleDropdown}>
+                  <img src={profileImg} alt="Profile" className="profile-img" />
+                </button>
+                <div
+                  className={`dropdown-menu ${showDropdown ? "active" : ""}`}
+                >
+                  <button onClick={() => navigate("/profile")}>
+                    My Account
+                  </button>
                   <button>Change Password</button>
                   <button onClick={handleLogout}>Logout</button>
                 </div>
-              )}
-            </li>
-          </>
-        )}
-      </ul>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </nav>
   );
 };

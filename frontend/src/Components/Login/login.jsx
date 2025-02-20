@@ -5,23 +5,19 @@ import "./login.css";
 import { FaUser, FaLock } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
 import ButtonComponent from "../Button/Button.component";
-import { useDispatch } from "react-redux";
-// import { authActions } from "../../store";
 import { handleError, handleSuccess } from "../../utils/utils";
 import ApiConstants from "../../config/apiconstant";
 import ValidationError from "../../Validation/ValidationError";
 
-function Login({ setIsLoggedIn, setShowAuthPage }) {
+function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // Handle Login Submit:
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Validation Inputs:-
+    // setIsLoggedIn(true);
     if (!ValidationError.isLoginValidate(email, password, setError)) {
       return;
     }
@@ -32,17 +28,16 @@ function Login({ setIsLoggedIn, setShowAuthPage }) {
       });
       handleSuccess("Login Successfully");
       console.log(response.data);
-      setTimeout(() => {
-        if (response.data?.token) {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("id", response.data.user.id);
-          localStorage.setItem("isLoggedIn", "true");
-          setIsLoggedIn(true);
-          //navigate("/todo");
-        } else {
-          handleError("Login failed");
-        }
-      }, 1000);
+      if (response.data?.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("id", response.data.user.id);
+        localStorage.setItem("Username", response.data.user.username);
+        localStorage.setItem("Email", response.data.user.email);
+        localStorage.setItem("isLoggedIn", "true");
+        setIsLoggedIn(true);
+      } else {
+        handleError("Login failed");
+      }
     } catch (err) {
       handleError(err.message);
     }
@@ -88,14 +83,10 @@ function Login({ setIsLoggedIn, setShowAuthPage }) {
               Don't have an account?{" "}
               <span
                 className="signup-link"
-                onClick={() => setShowAuthPage("signup")}
-                style={{
-                  color: "black",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                }}
+                onClick={() => navigate("/signup")}
+                style={{ color: "black", cursor: "pointer" }}
               >
-                SignUp
+                Sign Up
               </span>
             </p>
           </div>

@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Components/Login/login";
 import Signup from "./Components/Signup/signup";
+import Profile from "./Components/Profile/profile";
+import Todo from "./Components/Todo/Todo.component";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showAuthPage, setShowAuthPage] = useState("login"); // Default to login
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
@@ -14,28 +16,33 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar
-        isLoggedIn={isLoggedIn}
-        setShowAuthPage={setShowAuthPage}
-        setIsLoggedIn={setIsLoggedIn}
-      />
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
 
       <div className="container">
-        {/* Show Sign In or Sign Up below Navbar when not logged in */}
-        {!isLoggedIn && showAuthPage === "login" && (
-          <Login
-            setIsLoggedIn={setIsLoggedIn}
-            setShowAuthPage={setShowAuthPage}
+        <Routes>
+          {" "}
+          {}
+          <Route
+            path="/login"
+            element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
-        )}
-        {!isLoggedIn && showAuthPage === "signup" && (
-          <Signup
-            setIsLoggedIn={setIsLoggedIn}
-            setShowAuthPage={setShowAuthPage}
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/todo" element={<Todo />} />
+          <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <h1>Welcome Home</h1>
+              ) : (
+                <Login setIsLoggedIn={setIsLoggedIn} />
+              )
+            }
           />
-        )}
+        </Routes>
       </div>
     </div>
   );
 }
+
 export default App;

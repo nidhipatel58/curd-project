@@ -8,7 +8,6 @@ import ButtonComponent from "../Button/Button.component";
 import ApiConstants from "../../config/apiconstant";
 import ValidationError from "../../Validation/ValidationError";
 import { ToastContainer } from "react-toastify";
-// import { response } from "express";
 
 function Signup({ setShowAuthPage, setIsLoggedIn }) {
   const [username, setUsername] = useState("");
@@ -18,7 +17,6 @@ function Signup({ setShowAuthPage, setIsLoggedIn }) {
   const navigate = useNavigate();
   const handleSignup = async (e) => {
     e.preventDefault();
-
     if (
       !ValidationError.isSignupValidate(username, email, password, setError)
     ) {
@@ -30,15 +28,9 @@ function Signup({ setShowAuthPage, setIsLoggedIn }) {
         email,
         password,
       });
-
       handleSuccess("Registration Successful!");
       console.log(response.data);
-      if (response.data?.token) {
-        localStorage.setItem("isLoggedIn", "false");
-        setIsLoggedIn(false);
-      } else {
-        handleError("Signup successful, but login failed.");
-      }
+      navigate("/login");
     } catch (err) {
       if (err.response.data && err.response.status === 400) {
         handleError(err.response.data.message);
@@ -94,11 +86,10 @@ function Signup({ setShowAuthPage, setIsLoggedIn }) {
               Already have an account?{" "}
               <span
                 className="login-link"
-                onClick={() => setShowAuthPage("login")}
+                onClick={() => navigate("/login")}
                 style={{
                   color: "black",
                   cursor: "pointer",
-                  textDecoration: "underline",
                 }}
               >
                 Login
