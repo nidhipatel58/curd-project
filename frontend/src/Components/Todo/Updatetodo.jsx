@@ -22,7 +22,7 @@ function UpdateTodo() {
       let response = await axios.put(
         `http://localhost:3006/api/todos/updatetodo/${id}`,
         {
-          Title,
+          Title, 
           Description,
         },
         {

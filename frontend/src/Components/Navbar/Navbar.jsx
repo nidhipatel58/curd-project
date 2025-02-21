@@ -18,8 +18,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const handleProfileClick = () => {
     setShowDropdown(false);
-    handleSuccess("Loading profile")
-    navigate("/signup");
+    navigate("/profile");
   };
   
 

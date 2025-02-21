@@ -194,3 +194,17 @@ form .register-link {
 .remember-forget label input[type="checkbox"]:checked::before {
   display: block;
 }
+
+
+.password-toggle {
+  position: absolute;
+  right: 10px; /* Matches the email icon's left positioning */
+  margin-left: 50px; /* Creates a gap between text input and eye icon */
+  margin-top: 10px;
+  cursor: pointer;
+  color: #000;
+}
+
+.password-toggle:hover {
+  color: black;
+}

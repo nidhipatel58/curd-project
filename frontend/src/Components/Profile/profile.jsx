@@ -6,7 +6,7 @@ import { handleError, handleSuccess } from "../../utils/utils";
 import { FaUser, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import ApiConstants from "../../config/apiconstant";
-// import ValidationError from "../../Validation/ValidationError";
+import ValidationError from "../../Validation/ValidationError";
 import { ToastContainer } from "react-toastify";
 let Token = localStorage.getItem("token");
 console.log(Token, "-----------Token");
@@ -16,8 +16,8 @@ console.log(id, "-------------id");
 function Profile() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  //   const [error, setError] = useState("");
-  //   const navigate = useNavigate();
+     const [error, setError] = useState("");
+   const navigate = useNavigate();
 
   useEffect(() => {
     let StoreUser = localStorage.getItem("Username");
@@ -33,9 +33,9 @@ function Profile() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    // if (!ValidationError.isSignupValidate(username, email, setError)) {
-    //   return;
-    // }
+    if (!ValidationError.isProfileValidate(username, email, setError)) {
+      return;
+    }
     try {
       let response = await axios.put(
         `http://localhost:3006/api/user/updateuser/${id}`,
@@ -50,12 +50,11 @@ function Profile() {
         }
       );
 
-      handleSuccess("Your Account Update Successfully!");
+      handleSuccess("Profile Update Successfully");
       console.log(response.data);
       localStorage.setItem("Username", response.data.user.username);
       localStorage.setItem("Email", response.data.user.email);
-      setUsername("");
-      setEmail("");
+      navigate("/todo")
     } catch (err) {
       if (err.response.data && err.response.status === 400) {
         handleError(err.response.data.message);
@@ -88,7 +87,7 @@ function Profile() {
             />
             <FaEnvelope className="icon" />
           </div>
-          {/* {error && <span className="error">{error}</span>} */}
+          {error && <span className="error">{error}</span>} 
           <ButtonComponent
             type="submit"
             text="Update"
@@ -97,7 +96,6 @@ function Profile() {
           />
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 }

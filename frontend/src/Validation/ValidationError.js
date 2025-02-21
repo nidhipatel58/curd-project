@@ -57,6 +57,24 @@ class ValidationError {
     setError("");
     return true;
   }
+
+  static isProfileValidate(username, email, setError) {
+    if (!username || !email) {
+      setError("* All fields are required");
+      return false;
+    } else if (username.length < 6) {
+      setError("Username must be at least 6 characters");
+      return false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Invalid email format");
+      return false;
+    } 
+    setError("");
+    return true;
+  }
 }
+
+
+
 
 export default ValidationError;

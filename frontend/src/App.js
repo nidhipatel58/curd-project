@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Components/Login/login";
 import Signup from "./Components/Signup/signup";
@@ -11,20 +11,24 @@ import { ToastContainer } from "react-toastify";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
-    if (loggedIn) {
+
+    // List of routes where redirection is needed after login
+    const restrictedRoutes = ["/login", "/signup"];
+
+    if (loggedIn && restrictedRoutes.includes(location.pathname)) {
       navigate("/todo");
     }
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return (
     <div className="App">
       <>
         <ToastContainer />
-        {/* Other components */}
       </>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <div className="container">
