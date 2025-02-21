@@ -5,6 +5,7 @@ import Login from "./Components/Login/login";
 import Signup from "./Components/Signup/signup";
 import Profile from "./Components/Profile/profile";
 import Todo from "./Components/Todo/Todo.component";
+import UpdateTodo from "./Components/Todo/Updatetodo";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,6 +28,7 @@ function App() {
             element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/updatetodo" element={<UpdateTodo />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/todo" element={<Todo />} />
           <Route

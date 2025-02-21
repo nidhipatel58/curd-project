@@ -11,27 +11,24 @@
 
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   max-width: 100%;
   margin: 0 auto;
 }
 
-/* Logo Title */
 .logo {
   font-size: 22px;
   font-weight: bold;
   color: #333;
 }
 
-/* Right Side Navigation */
 .nav-buttons {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* Buttons */
 .nav-button,
 .create-todo-btn {
   background: transparent;
@@ -44,7 +41,6 @@
   transition: background 0.3s ease;
 }
 
-/* Profile Dropdown */
 .profile-dropdown {
   position: relative;
   display: inline-block;
@@ -65,7 +61,6 @@
   object-fit: cover;
 }
 
-/* Hide dropdown by default */
 .dropdown-menu {
   position: absolute;
   top: 50px;
@@ -74,7 +69,7 @@
   border-radius: 6px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  display: none; /* Ensure it is hidden initially */
+  display: none;
   flex-direction: column;
   min-width: 180px;
   opacity: 0;
@@ -83,14 +78,12 @@
   z-index: 1100;
 }
 
-/* Show dropdown only when active */
 .dropdown-menu.active {
   display: flex;
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Dropdown Buttons */
 .dropdown-menu button {
   background: none;
   border: none;

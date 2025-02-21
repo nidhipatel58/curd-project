@@ -5,7 +5,7 @@
     "title": "REST API",
     "description": "This is a REST API documentation with authentication support for token verification."
   },
-  "host": "1654d229-3003.inc1.devtunnels.ms",
+  "host": "1654d229-3006.inc1.devtunnels.ms",
   "basePath": "/",
   "schemes": ["https"],
   "securityDefinitions": {

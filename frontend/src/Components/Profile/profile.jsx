@@ -33,13 +33,12 @@ function Profile() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
     // if (!ValidationError.isSignupValidate(username, email, setError)) {
     //   return;
     // }
     try {
       let response = await axios.put(
-        ApiConstants.UPDATE_USER,
+        `http://localhost:3006/api/user/updateuser/${id}`,
         {
           username,
           email,
@@ -55,6 +54,8 @@ function Profile() {
       console.log(response.data);
       localStorage.setItem("Username", response.data.user.username);
       localStorage.setItem("Email", response.data.user.email);
+      setUsername("");
+      setEmail("");
     } catch (err) {
       if (err.response.data && err.response.status === 400) {
         handleError(err.response.data.message);

@@ -28,6 +28,8 @@ function Login({ setIsLoggedIn }) {
       });
       handleSuccess("Login Successfully");
       console.log(response.data);
+      setEmail("");
+      setPassword("");
       if (response.data?.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("id", response.data.user.id);
@@ -39,6 +41,9 @@ function Login({ setIsLoggedIn }) {
         handleError("Login failed");
       }
     } catch (err) {
+      if (err.response.data.token && err.response.status === 401) {
+        handleError(err.response.data.message);
+      }
       handleError(err.message);
     }
   };

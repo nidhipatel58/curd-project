@@ -1,5 +1,5 @@
 class ApiConstants {
-  static BASE_URL = "http://localhost:3003/api";
+  static BASE_URL = "http://localhost:3006/api";
 
   // Auth Endpoints:-
   static LOGIN = `${ApiConstants.BASE_URL}/user/login`;

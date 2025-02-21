@@ -42,6 +42,21 @@ class ValidationError {
     setError("");
     return true;
   }
+
+  static isTodoValidate(title, description, setError) {
+    if (!title || !description) {
+      setError("* All fields are required");
+      return false;
+    } else if (title <= 30) {
+      setError("Title is less then or equal to 30 character");
+      return false;
+    } else if (description <= 25) {
+      setError("Description is less then or equal to 25 character");
+      return false;
+    }
+    setError("");
+    return true;
+  }
 }
 
 export default ValidationError;

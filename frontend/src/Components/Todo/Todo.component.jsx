@@ -1,108 +1,86 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./Todo.css";
 import { handleError, handleSuccess } from "../../utils/utils";
 import axios from "axios";
-import TodoCards from "./TodoCards";
-import Update from "./Update";
+// import Update from "./Update";
+// import ButtonComponent from "../Button/Button.component";
+import ValidationError from "../../Validation/ValidationError";
 let Token = localStorage.getItem("token");
-console.log("Token------", Token);
 let id = localStorage.getItem("id");
-console.log(id, "id-----");
-let toUpdateArray = [];
 
 function Todo() {
-  let [Inputs, setInput] = useState({
-    title: "",
-    description: "",
-  });
-  let [Array, setArray] = useState([]);
+  const [Inputs, setInputs] = useState({ title: "", description: "" });
+  const [Array, setArray] = useState([]);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  // Get User Todo By Id and Token:-
   useEffect(() => {
     if (id) {
-      let fetch = async () => {
-        await axios
-          .get(`http://localhost:3003/api/todos/gettodo/${id}`, {
-            headers: {
-              Authorization: `Bearer ${Token}`,
-            },
-          })
-          .then((response) => {
-            setArray(response.data.todo);
-          });
+      const fetchTodos = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3006/api/todos/gettodo/${id}`,
+            {
+              headers: { Authorization: `Bearer ${Token}` },
+            }
+          );
+          setArray(response.data.todo);
+        } catch (error) {
+          handleError("Error fetching todos");
+        }
       };
-      fetch();
+      fetchTodos();
     } else {
       handleError("Please Signup First!");
     }
-  });
+  }, [id]);
 
-  // Target Value:-
-  let handleChange = (e) => {
-    let { name, value } = e.target;
-    let copyinput = { ...Inputs };
-    copyinput[name] = value;
-    setInput(copyinput);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  // console.log("Inputs-------------", Inputs);
-  let Submit = async (e) => {
-    e.preventDefault(); // Prevent from page refresh
-    let { title, description } = Inputs;
-    if (title === "" || description === "") {
-      handleError("Title and discription should not be Empty");
-    } else if (id) {
-      // Create Todo:-
+  const Submit = async (e) => {
+    e.preventDefault();
+    const { title, description } = Inputs;
+    if (!ValidationError.isTodoValidate(title, description, setError)) {
+      return;
+    }
+    try {
       let response = await axios.post(
-        "http://localhost:3003/api/todos/create",
-        {
-          title,
-          description,
-        },
-        {
-          headers: {
-            Authorization: `${Token}`,
-          },
-        }
+        "http://localhost:3006/api/todos/create",
+        { title, description },
+        { headers: { Authorization: `Bearer ${Token}` } }
       );
-      setInput({ title: "", description: "" });
-      handleSuccess("Your Task is Added!");
       handleSuccess("Todo Created Successfully!");
       console.log(response.data);
-    } else {
-      setArray([...Array, Inputs]);
-      setInput({ title: "", description: "" });
-      handleSuccess("Your Task is Added!");
-      handleError("Your Task is not Added! Please Signup!");
+      setArray([...Array, { title, description }]);
+      setInputs({ title: "", description: "" });
+    } catch (error) {
+      handleError("Error creating todo");
     }
   };
-
-  // Update Form :-
-  let dis = (value) => {
-    console.log(value);
-    document.getElementById("todo-update").style.display = value;
-  };
-  // Update User Todo By Id and Token:-
-  let update = (value) => {
-    toUpdateArray = Array[value];
-    // console.log(Array[value]);
+  const Clear = () => {
+    setInputs({ title: "", description: "" });
   };
 
-  // Delete User Todo With Id and Token:-
-  let del = async (id) => {
-    console.log(id);
+  const handleDelete = async (id) => {
     if (id) {
-      await axios
-        .delete(`http://localhost:3003/api/todos/deletetodo/${id}`, {
-          headers: {
-            Authorization: `${Token}`,
-          },
-          data: { id: id },
-        })
-        .then(() => handleSuccess("Your Task Deleted Successfully!"));
-    } else {
-      handleError("Please Signup First!");
+      try {
+        let res = await axios.delete(
+          `http://localhost:3006/api/todos/deletetodo/${id}`,
+          {
+            headers: { Authorization: `Bearer ${Token}` },
+          }
+        );
+        handleSuccess("Todo Deleted Successfully!");
+        console.log(res.data);
+        setArray(Array.filter((item) => item.id !== id));
+      } catch (error) {
+        handleError("Error deleting todo");
+      }
     }
   };
 
@@ -110,57 +88,86 @@ function Todo() {
     <>
       <div className="todo">
         <ToastContainer />
-        <div className="todo-main conatiner d-flex justify-content-center align-items-center">
-          <div className="flex-column input-todo">
-            <input
-              type="text"
-              placeholder="Title"
-              className="my-3 mx-3 mt-5"
-              name="title"
-              onChange={handleChange}
-            />
-            <textarea
-              type="text"
-              placeholder="Discription"
-              className="mx-3"
-              name="description"
-              onChange={handleChange}
-            />
-            <div className="todo-btn d-flex justify-content-end align-items-center">
-              <button
-                className="w-25 p-2 mt-3 px-4 border border-0"
-                type="submit"
-                onClick={Submit}
-              >
-                Add
-              </button>
+        <div className="center-container">
+          <div className="row">
+            <div className="col-lg-4">
+              <div className="todo-card">
+                <h6 className="todo-form-title">Create new todo</h6>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Enter title"
+                  className="form-input"
+                  value={Inputs.title}
+                  onChange={handleChange}
+                />
+                <textarea
+                  name="description"
+                  placeholder="Enter description"
+                  className="form-input"
+                  value={Inputs.description}
+                  onChange={handleChange}
+                />
+                {error && <span className="error">{error}</span>}
+                <div className="button-group">
+                  <button className="btn-clear" onClick={Clear}>
+                    Clear
+                  </button>
+                  <button className="btn-submit" onClick={Submit}>
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-8">
+              <div className="todo-card">
+                <h6 className="todo-form-title">#Your todos</h6>
+                <div className="table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.length > 0 ? (
+                        Array.map((todo, index) => (
+                          <tr key={todo.id}>
+                            <td>{index + 1}</td>
+                            <td>{todo.title}</td>
+                            <td>{todo.description}</td>
+                            <td className="action-cell">
+                              <button
+                                className="action-btn update-btn"
+                                onClick={() => navigate("/updatetodo")}
+                              >
+                                Update
+                              </button>
+                              <button
+                                className="action-btn delete-btn"
+                                onClick={() => handleDelete(todo.id)}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4" style={{ textAlign: "center" }}>
+                            No Todos Added
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="todo-body">
-          <div className="container-fluid">
-            <div className="row justify-content-center mt-5">
-              {Array &&
-                Array.map((items, index) => (
-                  <div className="col-lg-3 mx-4 my-2" key={index}>
-                    <TodoCards
-                      title={items.title}
-                      description={items.description}
-                      id={items.id}
-                      delid={del}
-                      display={dis}
-                      updateId={index}
-                      toBeUpdate={update}
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="todo">
-        <div className="container todo-update" id="todo-update">
-          <Update display={dis} update={toUpdateArray} />
         </div>
       </div>
     </>
