@@ -7,7 +7,6 @@ import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import ApiConstants from "../../config/apiconstant";
 import ValidationError from "../../Validation/ValidationError";
-import { ToastContainer } from "react-toastify";
 
 function Signup({ setShowAuthPage, setIsLoggedIn }) {
   const [username, setUsername] = useState("");
@@ -98,7 +97,6 @@ function Signup({ setShowAuthPage, setIsLoggedIn }) {
           </div>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 }

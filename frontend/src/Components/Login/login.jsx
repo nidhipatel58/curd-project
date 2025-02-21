@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { FaUser, FaLock } from "react-icons/fa";
-import { ToastContainer } from "react-toastify";
 import ButtonComponent from "../Button/Button.component";
 import { handleError, handleSuccess } from "../../utils/utils";
 import ApiConstants from "../../config/apiconstant";
@@ -17,7 +16,6 @@ function Login({ setIsLoggedIn }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setIsLoggedIn(true);
     if (!ValidationError.isLoginValidate(email, password, setError)) {
       return;
     }
@@ -37,14 +35,14 @@ function Login({ setIsLoggedIn }) {
         localStorage.setItem("Email", response.data.user.email);
         localStorage.setItem("isLoggedIn", "true");
         setIsLoggedIn(true);
+        navigate("/todo");
       } else {
         handleError("Login failed");
       }
     } catch (err) {
-      if (err.response.data.token && err.response.status === 401) {
+      if (err.response.status === 401) {
         handleError(err.response.data.message);
       }
-      handleError(err.message);
     }
   };
 
@@ -97,7 +95,6 @@ function Login({ setIsLoggedIn }) {
           </div>
         </form>
       </div>
-      <ToastContainer />
     </div>
   );
 }

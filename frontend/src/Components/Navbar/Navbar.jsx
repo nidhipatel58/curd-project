@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import profileImg from "../../assets/profile.png";
+import { handleSuccess } from "../../utils/utils";
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -14,6 +15,13 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     setShowDropdown(false);
     navigate("/");
   };
+
+  const handleProfileClick = () => {
+    setShowDropdown(false);
+    handleSuccess("Loading profile")
+    navigate("/signup");
+  };
+  
 
   // Toggle dropdown :-
   const toggleDropdown = () => {
@@ -58,12 +66,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                 <button className="profile-btn" onClick={toggleDropdown}>
                   <img src={profileImg} alt="Profile" className="profile-img" />
                 </button>
-                <div
-                  className={`dropdown-menu ${showDropdown ? "active" : ""}`}
+                <div className={`dropdown-menu ${showDropdown ? "active" : ""}`}
                 >
-                  <button onClick={() => navigate("/profile")}>
-                    My Account
-                  </button>
+                  <button onClick={handleProfileClick}>My Account</button>
                   <button>Change Password</button>
                   <button onClick={handleLogout}>Logout</button>
                 </div>

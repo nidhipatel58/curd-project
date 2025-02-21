@@ -17,13 +17,16 @@ function Todo() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (id) {
+    const userId = localStorage.getItem("id");
+    const userToken = localStorage.getItem("token");
+  
+    if (userId) {
       const fetchTodos = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3006/api/todos/gettodo/${id}`,
+            `http://localhost:3006/api/todos/gettodo/${userId}`,
             {
-              headers: { Authorization: `Bearer ${Token}` },
+              headers: { Authorization: `Bearer ${userToken}` },
             }
           );
           setArray(response.data.todo);
@@ -35,7 +38,7 @@ function Todo() {
     } else {
       handleError("Please Signup First!");
     }
-  }, [id]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
