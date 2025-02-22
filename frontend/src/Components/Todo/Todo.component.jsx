@@ -4,32 +4,30 @@ import { useNavigate } from "react-router-dom";
 import "./Todo.css";
 import { handleError, handleSuccess } from "../../utils/utils";
 import axios from "axios";
-// import Update from "./Update";
-// import ButtonComponent from "../Button/Button.component";
 import ValidationError from "../../Validation/ValidationError";
-let Token = localStorage.getItem("token");
-let id = localStorage.getItem("id");
+import TodoTable from "./TodoCards";
+import UpdateTodo from "./Updatetodo";
 
 function Todo() {
-  const [Inputs, setInputs] = useState({ title: "", description: "" });
-  const [Array, setArray] = useState([]);
+  const [inputs, setInputs] = useState({ title: "", description: "" });
+  const [todoArray, setTodoArray] = useState([]);
   const [error, setError] = useState("");
+  const [toBeUpdate, setToBeUpdate] = useState(null);
   const navigate = useNavigate();
+  const Token = localStorage.getItem("token");
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
-    const userId = localStorage.getItem("id");
-    const userToken = localStorage.getItem("token");
-  
     if (userId) {
       const fetchTodos = async () => {
         try {
           const response = await axios.get(
             `http://localhost:3006/api/todos/gettodo/${userId}`,
             {
-              headers: { Authorization: `Bearer ${userToken}` },
+              headers: { Authorization: `Bearer ${Token}` },
             }
           );
-          setArray(response.data.todo);
+          setTodoArray(response.data.todo || []);
         } catch (error) {
           handleError("Error fetching todos");
         }
@@ -38,49 +36,53 @@ function Todo() {
     } else {
       handleError("Please Signup First!");
     }
-  }, []);
+  }, [userId, Token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const Submit = async (e) => {
+  const submitTodo = async (e) => {
     e.preventDefault();
-    const { title, description } = Inputs;
+    const { title, description } = inputs;
     if (!ValidationError.isTodoValidate(title, description, setError)) {
       return;
     }
     try {
-      let response = await axios.post(
+      const response = await axios.post(
         "http://localhost:3006/api/todos/create",
         { title, description },
         { headers: { Authorization: `Bearer ${Token}` } }
       );
       handleSuccess("Todo Created Successfully!");
-      console.log(response.data);
-      setArray([...Array, { title, description }]);
+      setTodoArray([...todoArray, response.data.todo]);
       setInputs({ title: "", description: "" });
     } catch (error) {
       handleError("Error creating todo");
     }
   };
-  const Clear = () => {
+
+  const clearInputs = () => {
     setInputs({ title: "", description: "" });
   };
 
-  const handleDelete = async (id) => {
-    if (id) {
+  // Update Specific todo:-
+  const updateTodo = (index) => {
+    setToBeUpdate(todoArray[index]);
+  };
+
+  const handleDelete = async (todoId) => {
+    if (todoId) {
       try {
-        let res = await axios.delete(
-          `http://localhost:3006/api/todos/deletetodo/${id}`,
+        await axios.delete(
+          `http://localhost:3006/api/todos/deletetodo/${todoId}`,
           {
             headers: { Authorization: `Bearer ${Token}` },
           }
         );
         handleSuccess("Todo Deleted Successfully!");
-        console.log(res.data);
-        setArray(Array.filter((item) => item.id !== id));
+        setTodoArray(todoArray.filter((item) => item.id !== todoId));
       } catch (error) {
         handleError("Error deleting todo");
       }
@@ -101,22 +103,22 @@ function Todo() {
                   name="title"
                   placeholder="Enter title"
                   className="form-input"
-                  value={Inputs.title}
+                  value={inputs.title}
                   onChange={handleChange}
                 />
                 <textarea
                   name="description"
                   placeholder="Enter description"
                   className="form-input"
-                  value={Inputs.description}
+                  value={inputs.description}
                   onChange={handleChange}
                 />
                 {error && <span className="error">{error}</span>}
                 <div className="button-group">
-                  <button className="btn-clear" onClick={Clear}>
+                  <button className="btn-clear" onClick={clearInputs}>
                     Clear
                   </button>
-                  <button className="btn-submit" onClick={Submit}>
+                  <button className="btn-submit" onClick={submitTodo}>
                     Add
                   </button>
                 </div>
@@ -136,27 +138,17 @@ function Todo() {
                       </tr>
                     </thead>
                     <tbody>
-                      {Array.length > 0 ? (
-                        Array.map((todo, index) => (
-                          <tr key={todo.id}>
-                            <td>{index + 1}</td>
-                            <td>{todo.title}</td>
-                            <td>{todo.description}</td>
-                            <td className="action-cell">
-                              <button
-                                className="action-btn update-btn"
-                                onClick={() => navigate("/updatetodo")}
-                              >
-                                Update
-                              </button>
-                              <button
-                                className="action-btn delete-btn"
-                                onClick={() => handleDelete(todo.id)}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
+                      {todoArray.length > 0 ? (
+                        todoArray.map((item, index) => (
+                          <TodoTable
+                            key={item.id || index}
+                            Title={item.title}
+                            Description={item.description}
+                            id={item.id}
+                            updateId={index}
+                            handleDelete={handleDelete}
+                            toBeUpdate={updateTodo}
+                          />
                         ))
                       ) : (
                         <tr>
@@ -171,6 +163,10 @@ function Todo() {
               </div>
             </div>
           </div>
+        </div>
+        {/* Update Section */}
+        <div className="center-container">
+          <UpdateTodo update={toBeUpdate} />
         </div>
       </div>
     </>

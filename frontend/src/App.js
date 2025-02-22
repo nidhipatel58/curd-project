@@ -16,8 +16,6 @@ function App() {
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
-
-    // List of routes where redirection is needed after login
     const restrictedRoutes = ["/login", "/signup"];
 
     if (loggedIn && restrictedRoutes.includes(location.pathname)) {
