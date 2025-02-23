@@ -21,6 +21,7 @@ route.get(
   verifyToken,
   UserController.getUser
 );
+
 route.put(
   "/updateuser",
   validate(UserValidation.user),

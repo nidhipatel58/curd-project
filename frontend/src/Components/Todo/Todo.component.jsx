@@ -7,6 +7,7 @@ import axios from "axios";
 import ValidationError from "../../Validation/ValidationError";
 import TodoTable from "./TodoCards";
 import UpdateTodo from "./Updatetodo";
+import { Modal, Button } from "react-bootstrap";
 
 function Todo() {
   const [inputs, setInputs] = useState({ title: "", description: "" });
@@ -16,20 +17,29 @@ function Todo() {
   const navigate = useNavigate();
   const Token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [deleteTodoId, setDeleteTodoId] = useState(null);
 
   useEffect(() => {
     if (userId) {
       const fetchTodos = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3006/api/todos/gettodo/${userId}`,
+            `http://localhost:3006/api/todos/gettodo`,
             {
               headers: { Authorization: `Bearer ${Token}` },
             }
           );
-          setTodoArray(response.data.todo || []);
-        } catch (error) {
-          handleError("Error fetching todos");
+          let data = response.data.todo;
+          if(data.length!=0){
+            setTodoArray(response.data.todo || []);
+          }
+          else{
+            handleError("Todo not found");
+          }
+      
+        } catch (err) {
+            handleError(err.response.data.message);
         }
       };
       fetchTodos();
@@ -72,20 +82,27 @@ function Todo() {
     setToBeUpdate(todoArray[index]);
   };
 
-  const handleDelete = async (todoId) => {
-    if (todoId) {
+  const confirmDelete = (todoId) => {
+    setDeleteTodoId(todoId);
+    setShowConfirmDialog(true);
+  };
+
+  const handleDelete = async () => {
+    if (deleteTodoId) {
       try {
         await axios.delete(
-          `http://localhost:3006/api/todos/deletetodo/${todoId}`,
+          `http://localhost:3006/api/todos/deletetodo/${deleteTodoId}`,
           {
             headers: { Authorization: `Bearer ${Token}` },
           }
         );
         handleSuccess("Todo Deleted Successfully!");
-        setTodoArray(todoArray.filter((item) => item.id !== todoId));
-      } catch (error) {
-        handleError("Error deleting todo");
+        setTodoArray(todoArray.filter((item) => item.id !== deleteTodoId));
+      } catch (err) {
+        handleError(err.response.data.message);
+
       }
+      setShowConfirmDialog(false);
     }
   };
 
@@ -146,7 +163,7 @@ function Todo() {
                             Description={item.description}
                             id={item.id}
                             updateId={index}
-                            handleDelete={handleDelete}
+                            handleDelete={confirmDelete}
                             toBeUpdate={updateTodo}
                           />
                         ))
@@ -164,11 +181,17 @@ function Todo() {
             </div>
           </div>
         </div>
-        {/* Update Section */}
-        <div className="center-container">
-          <UpdateTodo update={toBeUpdate} />
-        </div>
+       
       </div>
+      <Modal show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered>
+        <Modal.Body>
+          <p>Are you sure you want to delete this ToDo?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleDelete}>Yes</Button>
+          <Button variant="secondary" onClick={() => setShowConfirmDialog(false)}>No</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

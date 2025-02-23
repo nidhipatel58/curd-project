@@ -1,4 +1,5 @@
 import TodoService from "../services/todo.service.js";
+import UserService from "../services/user.service.js";
 
 // Create todos
 const CreateTodo = async (req, res) => {
@@ -18,16 +19,11 @@ const CreateTodo = async (req, res) => {
   });
 };
 
-// Get single todo by ID
 const GetTodo = async (req, res) => {
   try {
-    // const { id } = req.params;
-    const userId = req.userId;  //aa token mathi id brbr haa haa brbr hve samjayu
-
-    // Fetch todo by its ID:-
+    const userId = req.userId;
     const todo = await TodoService.GetTodo(userId);
 
-    // Check if the todo exists and belongs to the authenticated user
     if (!todo) {
       return res
         .status(404)
@@ -38,6 +34,35 @@ const GetTodo = async (req, res) => {
       message: "Todo fetched successfully",
       todo,
     });
+  } catch (err) {
+    console.error("Error in GetTodoById:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const GetTodoByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await UserService.getUser(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Todo not found for this user id" });
+    } else {
+      const todo = await TodoService.GetTodo(userId);
+      if (!todo) {
+        return res
+          .status(404)
+          .json({ message: "Todo not found" });
+      }
+      else{
+        res.status(200).json({
+          message: "Todo fetched successfully",
+          todo,
+        });
+      }
+      
+    }
   } catch (err) {
     console.error("Error in GetTodoById:", err);
     res.status(500).json({ message: "Internal Server Error" });
@@ -87,4 +112,4 @@ const UpdateTodo = async (req, res) => {
   }
 };
 
-export default { CreateTodo, GetTodo, DeleteTodo, UpdateTodo };
+export default { CreateTodo, GetTodo, GetTodoByUserId, DeleteTodo, UpdateTodo };

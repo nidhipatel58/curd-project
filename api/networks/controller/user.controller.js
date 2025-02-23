@@ -50,6 +50,7 @@ const getUser = async (req, res) => {
   }
 };
 
+
 // Get All Users:-
 const getAllUser = async (req, res) => {
   try {

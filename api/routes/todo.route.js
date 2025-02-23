@@ -17,6 +17,13 @@ route.get(
   verifyToken,
   TodoController.GetTodo
 );
+route.get(
+  "/getTodoByUserId/:userId",
+  validate(TodoValidation.todo),
+  verifyToken,
+  TodoController.GetTodoByUserId
+);
+
 route.delete(
   "/deletetodo/:id",
   validate(TodoValidation.todo),

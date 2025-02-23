@@ -21,9 +21,6 @@ const getAllUser = async () => {
 const getUser = async (id) => {
   console.log("getUserId, "+id);
   const user = await usersQuerie.getUserById(id);
-  if (!user) {
-    throw new Error("User not found");
-  }
   return user;
 };
 

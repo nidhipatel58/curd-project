@@ -38,7 +38,7 @@ function Profile() {
     }
     try {
       let response = await axios.put(
-        `http://localhost:3006/api/user/updateuser/${id}`,
+        `http://localhost:3006/api/user/updateuser`,
         {
           username,
           email,
