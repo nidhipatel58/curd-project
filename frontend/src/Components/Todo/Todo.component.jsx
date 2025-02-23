@@ -31,15 +31,13 @@ function Todo() {
             }
           );
           let data = response.data.todo;
-          if(data.length!=0){
+          if (data.length != 0) {
             setTodoArray(response.data.todo || []);
-          }
-          else{
+          } else {
             handleError("Todo not found");
           }
-      
         } catch (err) {
-            handleError(err.response.data.message);
+          handleError(err.response.data.message);
         }
       };
       fetchTodos();
@@ -79,7 +77,16 @@ function Todo() {
 
   // Update Specific todo:-
   const updateTodo = (index) => {
-    setToBeUpdate(todoArray[index]);
+    handleSuccess("todo call")
+    const selectedTodo = todoArray[index];
+    navigate("/updatetodo", {
+      state: {
+        todoid: selectedTodo.id,
+        title: selectedTodo.title,
+        description: selectedTodo.description,
+        userId: userId,
+      },
+    });
   };
 
   const confirmDelete = (todoId) => {
@@ -100,7 +107,6 @@ function Todo() {
         setTodoArray(todoArray.filter((item) => item.id !== deleteTodoId));
       } catch (err) {
         handleError(err.response.data.message);
-
       }
       setShowConfirmDialog(false);
     }
@@ -164,7 +170,7 @@ function Todo() {
                             id={item.id}
                             updateId={index}
                             handleDelete={confirmDelete}
-                            toBeUpdate={updateTodo}
+                            toBeUpdate={()=>updateTodo(index)}
                           />
                         ))
                       ) : (
@@ -181,15 +187,25 @@ function Todo() {
             </div>
           </div>
         </div>
-       
       </div>
-      <Modal show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered>
+      <Modal
+        show={showConfirmDialog}
+        onHide={() => setShowConfirmDialog(false)}
+        centered
+      >
         <Modal.Body>
           <p>Are you sure you want to delete this ToDo?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={handleDelete}>Yes</Button>
-          <Button variant="secondary" onClick={() => setShowConfirmDialog(false)}>No</Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Yes
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setShowConfirmDialog(false)}
+          >
+            No
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

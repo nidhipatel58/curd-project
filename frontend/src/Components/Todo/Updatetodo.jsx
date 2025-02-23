@@ -1,98 +1,89 @@
 import React, { useEffect, useState } from "react";
-import ButtonComponent from "../Button/Button.component";
 import axios from "axios";
 import "./Updatetodo.css";
 import { handleError, handleSuccess } from "../../utils/utils";
-import { ToastContainer } from "react-toastify";
-// let Token = localStorage.getItem("token");
-// console.log(Token, "-----------Token");
-// let id = localStorage.getItem("id");
-// console.log(id, "-------------id");
+import {useLocation, useNavigate } from "react-router-dom";
+import ValidationError from "../../Validation/ValidationError";
 
 function UpdateTodo({ update }) {
-  console.log("-----------ToBeUpdate", update);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { todoid, title, description, userId } = location.state || {};
+  const Token = localStorage.getItem("token");
+  
+  const [inputs, setInputs] = useState({
+    title: title || "", 
+    description: description || ""
+  });
+  const [error, setError] = useState("");
 
-  // useEffect(() => {
-  //   setInput({ title: update.title, description: update.description });
-  // }, [update]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
+  };
 
-  // let [Inputs, setInput] = useState({
-  //   title: "",
-  //   description: "",
-  // });
+  const clearInputs = () => {
+    setInputs({ title: "", description: "" });
+  };
 
-  // let change = (e) => {
-  //   let { name, value } = e.target;
-  //   setInput({ ...Inputs, [name]: value });
-  // };===================
-
-  // const [Title, setTitle] = useState("");
-  // const [Description, setDes] = useState("");
-
-  // let Updatetodo = async (e) => {
-  //   let Token = localStorage.getItem("token");
-  //   let id = localStorage.getItem("id");
-  //   e.preventDefault();
-  //   // try {
-  //   if (id) {
-  //     let response = await axios.put(
-  //       `http://localhost:3006/api/todos/updatetodo/${id}`,
-  //       {
-  //         Title: Title,
-  //         Description: Description,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${Token}`,
-  //         },
-  //       }
-  //     );
-  //     handleSuccess("Your Todo Update Successfully!");
-  //     console.log(response.data);
-  //     localStorage.setItem("Title", response.data.user.title);
-  //     localStorage.setItem("Description", response.data.user.description);
-  //   } else {
-  //     console.log("todo update fail!!");
-  //   }
-  //   // } catch (err) {
-  //   //   console.log(err.message);
-  //   // }
-  // };
+  const submitTodo = async (e) => {
+    e.preventDefault();
+    const { title, description } = inputs;
+    if (!ValidationError.isTodoValidate(title, description, setError)) {
+      return;
+    }
+    try {
+      const response = await axios.put(
+        `http://localhost:3006/api/todos/updatetodo/${todoid}`,
+        { title, description },
+        { headers: { Authorization: `Bearer ${Token}` } }
+      );
+      handleSuccess("Todo updated successfully!");
+      navigate("/todo")
+    } catch (err) {
+       handleError(err.response.data.message);
+    }
+  };
 
   return (
     <>
-      <div className="row">
-        <div className="col-lg-4">
-          <div className="todo-card">
-            <h6 className="todo-form-title">#Update Your todo</h6>
-            <input
-              type="text"
-              name="title"
-              placeholder="Enter title"
-              className="form-input"
-            // value={Inputs.title}
-            // onChange={change}
-            />
-            <textarea
-              name="description"
-              placeholder="Enter description"
-              className="form-input"
-            // value={Inputs.Description}
-            // onChange={change}
-            />
-            {/* {error && <span className="error">{error}</span>} */}
-            <div className="button-group">
-              <button className="btn-clear">Close</button>
-              {/* <button className="btn-submit" onClick={Updatetodo}>
-              Update
-            </button> */}
-            </div>
+      <div className="todo">
+        <div className="center-container">
+          <div className="row">
+            <div className="col-lg-4">
+              <div className="todo-card">
+                <h6 className="todo-form-title">Update todo</h6>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Enter title"
+                  className="form-input"
+                  value={inputs.title}  
+                  onChange={handleChange}
+                />
+                <textarea
+                  name="description"
+                  placeholder="Enter description"
+                  className="form-input"
+                  value={inputs.description} 
+                  onChange={handleChange}
+                />
+                {error && <span className="error">{error}</span>}
+                <div className="button-group">
+                  <button className="btn-clear" onClick={clearInputs}>
+                    Clear
+                  </button>
+                  <button className="btn-submit" onClick={submitTodo}>
+                    Update
+                  </button>
+                </div>
+              </div>
+            </div>  
           </div>
         </div>
-      </div >
+      </div>
     </>
   );
 }
 
 export default UpdateTodo;
-
