@@ -7,8 +7,12 @@ let CreateTodo = async (title, description, userId) => {
 };
 
 // GetTodo by id and user id
-let GetTodoById = (userId) => {
-  return TodoModel.findAll({ where: { userId } });
+let GetTodo = async (userId) => {
+  let user = await TodoModel.findAll({ where: { userId } });
+  if (!user) {
+    throw new Error("Todo not found");
+  }
+  return user;
 };
 
 // Update a Todo by id and user id
@@ -34,4 +38,4 @@ let DeleteTodo = async (id) => {
   return todo;
 };
 
-export default { CreateTodo, GetTodoById, UpdateTodo, DeleteTodo };
+export default { CreateTodo, GetTodo, UpdateTodo, DeleteTodo };

@@ -28,10 +28,14 @@ const createUser = async (req, res) => {
 };
 
 // Get user by ID:-
-const getUserById = async (req, res) => {
+const getUser = async (req, res) => {
   try {
-    let { id } = req.params;
-    const user = await UserService.getUserById(id);
+    const userId = req.userId;  
+    const username = req.username;  
+    console.log(userId,"token based userId");//
+    console.log(username,"token based username");//
+    
+    const user = await UserService.getUser(userId);
     if (!user) {
       throw new Error("User not found");
     }
@@ -64,11 +68,11 @@ const getAllUser = async (req, res) => {
 // Update user by ID:-
 const updateUser = async (req, res) => {
   try {
-    let { id } = req.params;
+    const userId = req.userId;  
     let updates = req.body;
-    console.log("Update id", id, "and data", updates);
+    console.log("Update id", userId, "and data", updates);
 
-    const user = await UserService.updateUser(id, updates);
+    const user = await UserService.updateUser(userId, updates);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -87,11 +91,10 @@ const updateUser = async (req, res) => {
 // Delete user by ID:-
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const userId = req.userId;  
+    const user = await UserService.deleteUser(userId);
 
-    const user = await UserService.deleteUser(id);
-
-    console.log("Update id", id);
+    console.log("Update id", userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -140,4 +143,4 @@ const Login = async (req, res) => {
   }
 };
 
-export { createUser, getAllUser, getUserById, deleteUser, updateUser, Login };
+export { createUser, getAllUser, getUser, deleteUser, updateUser, Login };

@@ -16,19 +16,19 @@ route.get(
   UserController.getAllUser
 );
 route.get(
-  "/getuser/:id",
+  "/getuser",
   validate(UserValidation.user),
   verifyToken,
-  UserController.getUserById
+  UserController.getUser
 );
 route.put(
-  "/updateuser/:id",
+  "/updateuser",
   validate(UserValidation.user),
   verifyToken,
   UserController.updateUser
 );
 route.delete(
-  "/deleteuser/:id",
+  "/deleteuser",
   validate(UserValidation.user),
   verifyToken,
   UserController.deleteUser

@@ -18,7 +18,8 @@ const getAllUser = async () => {
 };
 
 // Get user by ID:-
-const getUserById = async (id) => {
+const getUser = async (id) => {
+  console.log("getUserId, "+id);
   const user = await usersQuerie.getUserById(id);
   if (!user) {
     throw new Error("User not found");
@@ -50,7 +51,7 @@ const deleteUser = async (id) => {
 
 export default {
   createUser,
-  getUserById,
+  getUser,
   updateUser,
   getAllUser,
   findUserByEmail,

@@ -19,20 +19,28 @@ const CreateTodo = async (req, res) => {
 };
 
 // Get single todo by ID
-const GetTodoById = async (req, res) => {
+const GetTodo = async (req, res) => {
   try {
-    const todo = await TodoService.GetTodoById(req.userId);
+    // const { id } = req.params;
+    const userId = req.userId;  //aa token mathi id brbr haa haa brbr hve samjayu
+
+    // Fetch todo by its ID:-
+    const todo = await TodoService.GetTodo(userId);
+
+    // Check if the todo exists and belongs to the authenticated user
     if (!todo) {
       return res
         .status(404)
         .json({ message: "Todo not found or unauthorized access" });
     }
+
     res.status(200).json({
       message: "Todo fetched successfully",
       todo,
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error in GetTodoById:", err);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -79,4 +87,4 @@ const UpdateTodo = async (req, res) => {
   }
 };
 
-export default { CreateTodo, GetTodoById, DeleteTodo, UpdateTodo };
+export default { CreateTodo, GetTodo, DeleteTodo, UpdateTodo };

@@ -5,7 +5,7 @@
     "title": "REST API",
     "description": "This is a REST API documentation with authentication support for token verification."
   },
-  "host": "1654d229-3006.inc1.devtunnels.ms",
+  "host": "c0nnxnkm-3006.inc1.devtunnels.ms",
   "basePath": "/",
   "schemes": ["https"],
   "securityDefinitions": {
@@ -140,18 +140,10 @@
         }
       }
     },
-    "/api/user/getuser/{id}": {
+    "/api/user/getuser": {
       "get": {
-        "summary": "Get user by ID",
-        "description": "Fetch details of a specific user by their ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "summary": "Get user authorized user",
+        "description": "Fetch details of a specific authorized user",
         "security": [
           {
             "Bearer": []
@@ -170,17 +162,11 @@
         }
       }
     },
-    "/api/user/updateuser/{id}": {
+    "/api/user/updateuser": {
       "put": {
         "summary": "Update user details",
         "description": "Modify the details of a specific user.",
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
@@ -217,18 +203,10 @@
         }
       }
     },
-    "/api/user/deleteuser/{id}": {
+    "/api/user/deleteuser": {
       "delete": {
         "summary": "Delete a user",
         "description": "Remove a user by their ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "security": [
           {
             "Bearer": []
@@ -247,18 +225,11 @@
         }
       }
     },
-    "/api/todos/gettodo/{id}": {
+    "/api/todos/gettodo": {
       "get": {
-        "summary": "Get todo by ID",
+        "summary": "Get todo ",
         "description": "Retrieve a specific todo item by its ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        
         "security": [
           {
             "Bearer": []
@@ -277,13 +248,13 @@
         }
       }
     },
-    "/api/todos/deletetodo/{id}": {
+    "/api/todos/deletetodo/{todoId}": {
       "delete": {
         "summary": "Delete a todo",
         "description": "Remove a todo item by its ID.",
         "parameters": [
           {
-            "name": "id",
+            "name": "todoId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -307,13 +278,13 @@
         }
       }
     },
-    "/api/todos/updatetodo/{id}": {
+    "/api/todos/updatetodo/{todoId}": {
       "put": {
         "summary": "Update a todo",
         "description": "Modify a specific todo item by its ID.",
         "parameters": [
           {
-            "name": "id",
+            "name": "todoId",
             "in": "path",
             "required": true,
             "type": "string"

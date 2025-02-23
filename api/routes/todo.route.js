@@ -12,10 +12,10 @@ route.post(
   TodoController.CreateTodo
 );
 route.get(
-  "/gettodo/:id",
+  "/gettodo",
   validate(TodoValidation.todo),
   verifyToken,
-  TodoController.GetTodoById
+  TodoController.GetTodo
 );
 route.delete(
   "/deletetodo/:id",
