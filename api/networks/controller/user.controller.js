@@ -94,6 +94,10 @@ const updateUser = async (req, res) => {
   try {
     const userId = req.userId;
     let updates = req.body;
+    //Chek if the file is there:-
+    if (req.file) {
+      updates.profile = `/images/${req.file.filename}`;
+    }
     console.log("Update id", userId, "and data", updates);
     console.log(req.profile, "------profile");
 

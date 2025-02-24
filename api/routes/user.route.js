@@ -4,6 +4,7 @@ import { UserController } from "../networks/controller/index.js";
 import validate from "../middleware/validate.js";
 import UserValidation from "../validations/index.js";
 import verifyToken from "../middleware/verifyauth.js";
+import upload from "../middleware/upload.js";
 
 // User Routes:-
 route.post(
@@ -27,6 +28,7 @@ route.put(
   "/updateuser",
   validate(UserValidation.user),
   verifyToken,
+  upload.single("profile"),
   UserController.updateUser
 );
 route.delete(

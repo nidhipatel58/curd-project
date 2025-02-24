@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import { showToast } from "../../utils/utils";
-import { FaUser, FaEnvelope, FaPencilAlt } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaCamera } from "react-icons/fa";
 import { updateUser, deleteUser } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
@@ -10,29 +10,30 @@ import { Modal, Button } from "react-bootstrap";
 import InputFields from "../common/Input/inputfields";
 import ProgressBtn from "../common/Progressbar/progressbar";
 import ErrorMessage from "../common/Error/errormsg";
-import { FaCamera } from "react-icons/fa";
 
 const userId = localStorage.getItem("id");
 
 function Profile({ setIsLoggedIn }) {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
+  const [profileFile, setProfileFile] = useState(null);
 
   useEffect(() => {
-    let StoreUser = localStorage.getItem("Username");
-    let StoreEmail = localStorage.getItem("Email");
+    let storedUser = localStorage.getItem("Username");
+    let storedEmail = localStorage.getItem("Email");
+    let storedProfile = localStorage.getItem("Profile");
 
-    if (StoreUser) {
-      setUsername(StoreUser);
-    }
-    if (StoreEmail) {
-      setEmail(StoreEmail);
-    }
+    if (storedUser) setUsername(storedUser);
+    if (storedEmail) setEmail(storedEmail);
+
+    const path ="http://localhost:3006"+storedProfile;
+    if (path) 
+      setProfile(path);
   }, []);
 
   const handleUpdate = async (e) => {
@@ -40,11 +41,23 @@ function Profile({ setIsLoggedIn }) {
     if (!ValidationError.isProfileValidate(username, email, setError)) {
       return;
     }
+
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("email", email);
+    if (profileFile) {
+      formData.append("profile", profileFile);
+    }
+
     try {
-      let response = await updateUser({ profile, username, email });
+      let response = await updateUser(formData);
       showToast("Profile updated successfully", "success");
+
       localStorage.setItem("Username", response.data.user.username);
       localStorage.setItem("Email", response.data.user.email);
+      if (response.data.user.profile) {
+        localStorage.setItem("Profile", response.data.user.profile);
+      }
       navigate("/profile");
     } catch (err) {
       ResponseHandler.error(err);
@@ -60,10 +73,10 @@ function Profile({ setIsLoggedIn }) {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfile(imageUrl);
+      setProfileFile(file);
+      setProfile(URL.createObjectURL(file));
     }
-  };
+  }; 
 
   const handleDeleteAccount = async () => {
     setShowConfirmDialog(true);
@@ -86,16 +99,19 @@ function Profile({ setIsLoggedIn }) {
     <div className="wrapper">
       <div className="form-box login">
         <h1>My Account</h1>
-
-        {/* Profile Image Container */}
         <div className="profile-image-container">
           {profile ? (
-            <img src={profile} alt="Profile" className="profile-image" />
+            <img
+              src={profile}
+              alt="Profile"
+              className="profile-image"
+            />
           ) : (
             <div className="default-profile">
               <FaUser className="default-user-icon" />
             </div>
           )}
+
           <label htmlFor="fileInput" className="edit-icon">
             <FaCamera />
           </label>
@@ -107,8 +123,7 @@ function Profile({ setIsLoggedIn }) {
             style={{ display: "none" }}
           />
         </div>
-
-        <form onSubmit={handleUpdate}>
+        <form onSubmit={handleUpdate} encType="multipart/form-data">
           <InputFields
             type="text"
             placeholder="Username"
@@ -129,8 +144,6 @@ function Profile({ setIsLoggedIn }) {
           <ProgressBtn type="button" text="Close your account" className="w-100 mt-3" variant="danger" onClick={handleDeleteAccount} />
         </form>
       </div>
-
-      {/* Confirmation Dialog for Delete */}
       <Modal show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered>
         <Modal.Body>
           <p>Are you sure you want to delete this user?</p>

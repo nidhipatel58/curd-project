@@ -1,19 +1,21 @@
 import multer from "multer";
-import fs from "fs";
 import path from "path";
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    fs.mkdirSync(path.join(__dirname, "../public/images"), {
-      recursive: true,
-    });
-    cb(null, path.join(__dirname, "../public/images"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+  destination: "public/images",
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed!"), false);
+  }
+};
+
+const upload = multer({ storage, fileFilter });
 
 export default upload;

@@ -7,12 +7,15 @@ import routes from "../api/routes/index.js";
 import startServer from "../api/ServerSetup/ServerSetup.js";
 import { generateSwaggerFile } from "../api/config/swaggerconfig.js";
 import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import path, { dirname, join } from "path";
 import fs from "fs/promises";
+
 dotenv.config();
 const app = express();
 
-// CORS configuration:-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -22,59 +25,44 @@ app.use(
   })
 );
 
-// dirname and path:-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 async function initializeServer() {
   try {
     await generateSwaggerFile();
 
-    // Load Swagger file:-
     const swaggerPath = join(__dirname, "swagger", "swagger.json");
     let swaggerFile;
     try {
       swaggerFile = await fs.readFile(swaggerPath, "utf-8");
     } catch (err) {
-      throw new Error(
-        `Unable to load Swagger file at ${swaggerPath}: ${err.message}`
-      );
+      throw new Error(`Unable to load Swagger file: ${err.message}`);
     }
 
-    // Serve Swagger JSON file statically:-
     app.use("/swagger.json", express.static(swaggerPath));
 
     app.get("/hello", (req, res) => {
-      res.status(200).json({
-        message: "Hello, this is your serverless GET function!",
-      });
+      res.status(200).json({ message: "Hello, this is your serverless GET function!" });
     });
 
-    // Middleware:-
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-
-    // Routes:-
     app.use("/api", routes);
 
-    // Swagger UI Setup:-
-    app.use(
-      "/api-docs",
-      swaggerUi.serve,
-      swaggerUi.setup(JSON.parse(swaggerFile))
-    );
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(JSON.parse(swaggerFile)));
 
-    // Database Connection:-
     try {
       await db.sequelize.authenticate();
       console.log("Database connected successfully!");
       await db.sequelize.sync({ force: false });
       console.log("Tables synchronized successfully!");
     } catch (dbError) {
-      console.error("Error connecting to the database:", dbError.message);
+      console.error("Database connection error:", dbError.message);
     }
 
-    // Server Setup:-
+    const imagesPath = path.join(process.cwd(), "public/images");
+    console.log("Serving images from:", imagesPath); 
+
+    app.use("/images", express.static(imagesPath));
+
     const PORT = process.env.PORT_SERVER || 6001;
     startServer(app, PORT);
   } catch (error) {
@@ -82,4 +70,5 @@ async function initializeServer() {
     process.exit(1);
   }
 }
+
 initializeServer();
