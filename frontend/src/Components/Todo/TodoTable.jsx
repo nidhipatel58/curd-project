@@ -8,7 +8,7 @@ function TodoTable({
   Description,
   id,
   updateId,
-  toBeUpdate,
+  toBeUpdate
 }) {
   return (
     <tr key={id}>
@@ -27,7 +27,7 @@ function TodoTable({
           text="Delete"
         />
       </td>
-    </tr >
+    </tr>
   );
 }
 

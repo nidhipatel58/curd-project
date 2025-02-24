@@ -5,16 +5,17 @@ import { handleError, handleSuccess } from "../../utils/utils";
 import { useLocation, useNavigate } from "react-router-dom";
 import ValidationError from "../../Validation/ValidationError";
 import ButtonComponent from "../Button/Button.component";
+import { updateTodo } from "../../api/todo";
 
 function UpdateTodo() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { todoid, title, description, } = location.state || {};
+  const { todoid, title, description } = location.state || {};
   const Token = localStorage.getItem("token");
 
   const [inputs, setInputs] = useState({
     title: title || "",
-    description: description || ""
+    description: description || "",
   });
   const [error, setError] = useState("");
 
@@ -27,20 +28,23 @@ function UpdateTodo() {
     setInputs({ title: "", description: "" });
   };
 
-  const submitTodo = async (e) => {
-    e.preventDefault();
+  const submitTodo = async () => {
+    // e.preventDefault();
     const { title, description } = inputs;
     if (!ValidationError.isTodoValidate(title, description, setError)) {
       return;
     }
     try {
-      const response = await axios.put(
-        `http://localhost:3006/api/todos/updatetodo/${todoid}`,
-        { title, description },
-        { headers: { Authorization: `Bearer ${Token}` } }
-      );
+      // const response = await axios.put(
+      //   `http://localhost:3006/api/todos/updatetodo/${todoid}`,
+      //   { title, description },
+      //   { headers: { Authorization: `Bearer ${Token}` } }
+      // );
+      await updateTodo(`${updateId}`, { title, description });
       handleSuccess("Todo updated successfully!");
-      navigate("/todo")
+      console.log(response.data);
+
+      navigate("/todo");
     } catch (err) {
       handleError(err.response.data.message);
     }
@@ -71,8 +75,16 @@ function UpdateTodo() {
                 />
                 {error && <span className="error">{error}</span>}
                 <div className="button-group">
-                  <ButtonComponent className="btn-clear" onClick={clearInputs} text="Clear" />
-                  <ButtonComponent className="btn-submit" onClick={submitTodo} text="Update" />
+                  <ButtonComponent
+                    className="btn-clear"
+                    onClick={clearInputs}
+                    text="Clear"
+                  />
+                  <ButtonComponent
+                    className="btn-submit"
+                    onClick={submitTodo}
+                    text="Update"
+                  />
                 </div>
               </div>
             </div>

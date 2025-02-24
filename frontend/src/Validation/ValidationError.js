@@ -50,10 +50,11 @@ class ValidationError {
     } else if (title.length <= 10) {
       setError("Title is less then or equal to 10 character");
       return false;
-    } else if (description.length <= 15) {
-      setError("Description is less then or equal to 15 character");
-      return false;
     }
+    // else if (description.length <= 15) {
+    //   setError("Description is less then or equal to 15 character");
+    //   return false;
+    // }
     setError("");
     return true;
   }

@@ -13,10 +13,10 @@ export const getTodo = (data) => {
   return axiosInstance.get(GET_TODO, data);
 };
 
-export const updateTodo = (id) => {
-  return axiosInstance.put(`UPDATE_TODO/${id}`);
+export const updateTodo = (id, data) => {
+  return axiosInstance.put(`${UPDATE_TODO}/${id}`, data);
 };
 
 export const deleteTodo = (id) => {
-  return axiosInstance.delete(`DELETE_TODO/${id}`);
+  return axiosInstance.delete(`${DELETE_TODO}/${id}`);
 };

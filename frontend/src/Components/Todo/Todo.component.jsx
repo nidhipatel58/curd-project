@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./Todo.css";
+import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import TodoTable from "./TodoTable";
-import { getTodo, createTodo, deleteTodo } from "../../api/todo";
+import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
 import { Modal, Button } from "react-bootstrap";
 import ButtonComponent from "../Button/Button.component";
 
@@ -19,13 +20,14 @@ function Todo() {
   const userId = localStorage.getItem("id");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [deleteTodoId, setDeleteTodoId] = useState(null);
-  const [setUpdate, setPageUpdate] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updateId, setUpdateId] = useState(null);
 
   useEffect(() => {
     if (userId) {
       const fetchTodos = async () => {
         try {
-          const response = await getTodo()
+          const response = await getTodo();
           handleSuccess("Todos fetch Successfully!");
           let data = response.data.todo;
           if (data.length != 0) {
@@ -53,31 +55,65 @@ function Todo() {
     if (!ValidationError.isTodoValidate(title, description, setError)) {
       return;
     }
-    try {
-      const response = await createTodo({ title, description },)
-      handleSuccess("Todo Created Successfully!");
-      setTodoArray([...todoArray, response.data.todo]);
-      setInputs({ title: "", description: "" });
-    } catch (error) {
-      handleError("Error creating todo");
+    if (isUpdating) {
+      try {
+        // const response = await axios.put(
+        //   `http://localhost:3006/api/todos/updatetodo/${updateId}`,
+        //   { title, description },
+        //   { headers: { Authorization: `Bearer ${Token}` } }
+        // );
+        await updateTodo(`${updateId}`, { title, description });
+        handleSuccess("Todo updated successfully!");
+        setTodoArray((prevTodos) =>
+          prevTodos.map((todo) =>
+            todo.id === updateId ? { ...todo, title, description } : todo
+          )
+        );
+      } catch (err) {
+        handleError(err.message);
+      }
+    } else {
+      try {
+        const response = await createTodo({ title, description });
+        handleSuccess("Todo Created Successfully!");
+        setTodoArray([...todoArray, response.data.todo]);
+        setInputs({ title: "", description: "" });
+      } catch (error) {
+        handleError("Error creating todo");
+      }
     }
+
+    setInputs({ title: "", description: "" });
+    setIsUpdating(false);
+    setUpdateId(null);
   };
 
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
+    setIsUpdating(false);
+    setUpdateId(null);
+  };
+
+  const handleUpdate = (todo) => {
+    setInputs({ title: todo.title, description: todo.description });
+    setIsUpdating(true);
+    setUpdateId(todo.id);
   };
 
   // Update Specific todo:-
-  const updateTodo = (index) => {
-    handleSuccess("todo call")
-    const selectedTodo = todoArray[index];
-    navigate("/updatetodo", {
-      state: {
-        todoid: selectedTodo.id,
-        title: selectedTodo.title,
-        description: selectedTodo.description,
-      },
-    });
+  const updateTodo = (todo) => {
+    // handleSuccess("todo call");
+    // const selectedTodo = todoArray[index];
+    // navigate("/updatetodo", {
+    //   state: {
+    //     todoid: selectedTodo.id,
+    //     title: selectedTodo.title,
+    //     description: selectedTodo.description,
+    //   },
+    // });
+    setInputs({ title: todo.title, description: todo.description });
+    setIsUpdating(true);
+    setUpdateId(todo.id);
   };
 
   const confirmDelete = (todoId) => {
@@ -94,11 +130,11 @@ function Todo() {
         //     headers: { Authorization: `Bearer ${Token}` },
         //   }
         // );
-        await deleteTodo(`${deleteTodoId}`)
+        await deleteTodo(`${deleteTodoId}`);
         handleSuccess("Todo Deleted Successfully!");
         setTodoArray(todoArray.filter((item) => item.id !== deleteTodoId));
       } catch (err) {
-        handleError(err.response.data.message);
+        handleError(err.message);
       }
       setShowConfirmDialog(false);
     }
@@ -112,7 +148,9 @@ function Todo() {
           <div className="row">
             <div className="col-lg-4">
               <div className="todo-card">
-                <h6 className="todo-form-title">Create new todo</h6>
+                <h6 className="todo-form-title">
+                  {isUpdating ? "Update Todo" : "Create New Todo"}
+                </h6>
                 <input
                   type="text"
                   name="title"
@@ -130,8 +168,31 @@ function Todo() {
                 />
                 {error && <span className="error">{error}</span>}
                 <div className="button-group">
-                  <ButtonComponent className="btn-clear" onClick={clearInputs} text="Clear" />
-                  <ButtonComponent className="btn-submit" onClick={submitTodo} text=" Add" />
+                  <ButtonComponent
+                    className="btn-clear"
+                    onClick={clearInputs}
+                    text="Clear"
+                    disabled={!inputs.title && !inputs.description}
+                  />
+                  <button
+                    className="btn-submit"
+                    onClick={submitTodo}
+                    disabled={
+                      !inputs.title.trim() || !inputs.description.trim()
+                    }
+                    style={{
+                      cursor:
+                        !inputs.title.trim() || !inputs.description.trim()
+                          ? "not-allowed"
+                          : "pointer",
+                      opacity:
+                        !inputs.title.trim() || !inputs.description.trim()
+                          ? 0.4
+                          : 1,
+                    }}
+                  >
+                    {isUpdating ? "Update" : "Add"}
+                  </button>
                 </div>
               </div>
             </div>
@@ -158,7 +219,7 @@ function Todo() {
                             id={item.id}
                             updateId={index}
                             handleDelete={confirmDelete}
-                            toBeUpdate={() => updateTodo(index)}
+                            toBeUpdate={() => updateTodo(item)}
                           />
                         ))
                       ) : (
