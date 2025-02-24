@@ -1,5 +1,6 @@
 import React from "react";
 import "./Todo.css";
+import ButtonComponent from "../Button/Button.component";
 
 function TodoTable({
   handleDelete,
@@ -15,20 +16,18 @@ function TodoTable({
       <td>{Title}</td>
       <td>{Description}</td>
       <td className="action-cell">
-        <button
+        <ButtonComponent
           className="action-btn update-btn"
           onClick={() => toBeUpdate(updateId)}
-        >
-          Update
-        </button>
-        <button
+          text="Update"
+        />
+        <ButtonComponent
           className="action-btn delete-btn"
           onClick={() => handleDelete(id)}
-        >
-          Delete
-        </button>
+          text="Delete"
+        />
       </td>
-    </tr>
+    </tr >
   );
 }
 

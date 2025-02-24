@@ -134,3 +134,16 @@ form .register-link {
   margin-top: 5px;
   display: block;
 }
+
+.password-toggle {
+  position: absolute;
+  right: 20px;
+  margin-left: 50px;
+  margin-top: 10px;
+  cursor: pointer;
+  color: #000;
+}
+
+.password-toggle:hover {
+  color: black;
+}

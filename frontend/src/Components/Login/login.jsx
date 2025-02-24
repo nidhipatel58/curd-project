@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import { handleError, handleSuccess } from "../../utils/utils";
-import ApiConstants from "../../config/apiconstant";
 import ValidationError from "../../Validation/ValidationError";
+import { login } from "../../api/user";
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -21,10 +20,7 @@ function Login({ setIsLoggedIn }) {
       return;
     }
     try {
-      const response = await axios.post(ApiConstants.LOGIN, {
-        email,
-        password,
-      });
+      const response = await login({ email, password })
       handleSuccess("Login Successfully");
       console.log(response.data);
       setEmail("");
@@ -72,7 +68,7 @@ function Login({ setIsLoggedIn }) {
               className="password-toggle"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
             </span>
           </div>
           <div className="remember-forget">
@@ -94,9 +90,9 @@ function Login({ setIsLoggedIn }) {
               <span
                 className="signup-link"
                 onClick={() => navigate("/signup")}
-                style={{ color: "black", cursor: "pointer" }}
+                style={{ color: "black", cursor: "pointer", textDecoration: "underline" }}
               >
-                Sign Up
+                SignUp
               </span>
             </p>
           </div>

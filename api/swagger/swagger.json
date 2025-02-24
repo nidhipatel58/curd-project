@@ -5,7 +5,7 @@
     "title": "REST API",
     "description": "This is a REST API documentation with authentication support for token verification."
   },
-  "host": "c0nnxnkm-3006.inc1.devtunnels.ms",
+  "host": "1654d229-3006.inc1.devtunnels.ms",
   "basePath": "/",
   "schemes": ["https"],
   "securityDefinitions": {
@@ -229,7 +229,7 @@
       "get": {
         "summary": "Get todo by authorized user",
         "description": "Retrieve a specific todo item by its id.",
-        
+
         "security": [
           {
             "Bearer": []

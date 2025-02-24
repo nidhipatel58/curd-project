@@ -47,11 +47,11 @@ class ValidationError {
     if (!title || !description) {
       setError("* All fields are required");
       return false;
-    } else if (title <= 30) {
-      setError("Title is less then or equal to 30 character");
+    } else if (title.length <= 10) {
+      setError("Title is less then or equal to 10 character");
       return false;
-    } else if (description <= 25) {
-      setError("Description is less then or equal to 25 character");
+    } else if (description.length <= 15) {
+      setError("Description is less then or equal to 15 character");
       return false;
     }
     setError("");
@@ -68,13 +68,10 @@ class ValidationError {
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       setError("Invalid email format");
       return false;
-    } 
+    }
     setError("");
     return true;
   }
 }
-
-
-
 
 export default ValidationError;

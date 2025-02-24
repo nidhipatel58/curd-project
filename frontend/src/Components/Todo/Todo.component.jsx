@@ -3,11 +3,11 @@ import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./Todo.css";
 import { handleError, handleSuccess } from "../../utils/utils";
-import axios from "axios";
 import ValidationError from "../../Validation/ValidationError";
-import TodoTable from "./TodoCards";
-import UpdateTodo from "./Updatetodo";
+import TodoTable from "./TodoTable";
+import { getTodo, createTodo, deleteTodo } from "../../api/todo";
 import { Modal, Button } from "react-bootstrap";
+import ButtonComponent from "../Button/Button.component";
 
 function Todo() {
   const [inputs, setInputs] = useState({ title: "", description: "" });
@@ -19,17 +19,14 @@ function Todo() {
   const userId = localStorage.getItem("id");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [deleteTodoId, setDeleteTodoId] = useState(null);
+  const [setUpdate, setPageUpdate] = useState(false)
 
   useEffect(() => {
     if (userId) {
       const fetchTodos = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:3006/api/todos/gettodo`,
-            {
-              headers: { Authorization: `Bearer ${Token}` },
-            }
-          );
+          const response = await getTodo()
+          handleSuccess("Todos fetch Successfully!");
           let data = response.data.todo;
           if (data.length != 0) {
             setTodoArray(response.data.todo || []);
@@ -51,18 +48,13 @@ function Todo() {
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const submitTodo = async (e) => {
-    e.preventDefault();
+  const submitTodo = async () => {
     const { title, description } = inputs;
     if (!ValidationError.isTodoValidate(title, description, setError)) {
       return;
     }
     try {
-      const response = await axios.post(
-        "http://localhost:3006/api/todos/create",
-        { title, description },
-        { headers: { Authorization: `Bearer ${Token}` } }
-      );
+      const response = await createTodo({ title, description },)
       handleSuccess("Todo Created Successfully!");
       setTodoArray([...todoArray, response.data.todo]);
       setInputs({ title: "", description: "" });
@@ -84,7 +76,6 @@ function Todo() {
         todoid: selectedTodo.id,
         title: selectedTodo.title,
         description: selectedTodo.description,
-        userId: userId,
       },
     });
   };
@@ -97,12 +88,13 @@ function Todo() {
   const handleDelete = async () => {
     if (deleteTodoId) {
       try {
-        await axios.delete(
-          `http://localhost:3006/api/todos/deletetodo/${deleteTodoId}`,
-          {
-            headers: { Authorization: `Bearer ${Token}` },
-          }
-        );
+        // await axios.delete(
+        //   `http://localhost:3006/api/todos/deletetodo/${deleteTodoId}`,
+        //   {
+        //     headers: { Authorization: `Bearer ${Token}` },
+        //   }
+        // );
+        await deleteTodo(`${deleteTodoId}`)
         handleSuccess("Todo Deleted Successfully!");
         setTodoArray(todoArray.filter((item) => item.id !== deleteTodoId));
       } catch (err) {
@@ -138,12 +130,8 @@ function Todo() {
                 />
                 {error && <span className="error">{error}</span>}
                 <div className="button-group">
-                  <button className="btn-clear" onClick={clearInputs}>
-                    Clear
-                  </button>
-                  <button className="btn-submit" onClick={submitTodo}>
-                    Add
-                  </button>
+                  <ButtonComponent className="btn-clear" onClick={clearInputs} text="Clear" />
+                  <ButtonComponent className="btn-submit" onClick={submitTodo} text=" Add" />
                 </div>
               </div>
             </div>
@@ -170,7 +158,7 @@ function Todo() {
                             id={item.id}
                             updateId={index}
                             handleDelete={confirmDelete}
-                            toBeUpdate={()=>updateTodo(index)}
+                            toBeUpdate={() => updateTodo(index)}
                           />
                         ))
                       ) : (

@@ -20,7 +20,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     setShowDropdown(false);
     navigate("/profile");
   };
-  
+
 
   // Toggle dropdown :-
   const toggleDropdown = () => {

@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Updatetodo.css";
 import { handleError, handleSuccess } from "../../utils/utils";
-import {useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ValidationError from "../../Validation/ValidationError";
+import ButtonComponent from "../Button/Button.component";
 
-function UpdateTodo({ update }) {
+function UpdateTodo() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { todoid, title, description, userId } = location.state || {};
+  const { todoid, title, description, } = location.state || {};
   const Token = localStorage.getItem("token");
-  
+
   const [inputs, setInputs] = useState({
-    title: title || "", 
+    title: title || "",
     description: description || ""
   });
   const [error, setError] = useState("");
@@ -41,7 +42,7 @@ function UpdateTodo({ update }) {
       handleSuccess("Todo updated successfully!");
       navigate("/todo")
     } catch (err) {
-       handleError(err.response.data.message);
+      handleError(err.response.data.message);
     }
   };
 
@@ -58,27 +59,23 @@ function UpdateTodo({ update }) {
                   name="title"
                   placeholder="Enter title"
                   className="form-input"
-                  value={inputs.title}  
+                  value={inputs.title}
                   onChange={handleChange}
                 />
                 <textarea
                   name="description"
                   placeholder="Enter description"
                   className="form-input"
-                  value={inputs.description} 
+                  value={inputs.description}
                   onChange={handleChange}
                 />
                 {error && <span className="error">{error}</span>}
                 <div className="button-group">
-                  <button className="btn-clear" onClick={clearInputs}>
-                    Clear
-                  </button>
-                  <button className="btn-submit" onClick={submitTodo}>
-                    Update
-                  </button>
+                  <ButtonComponent className="btn-clear" onClick={clearInputs} text="Clear" />
+                  <ButtonComponent className="btn-submit" onClick={submitTodo} text="Update" />
                 </div>
               </div>
-            </div>  
+            </div>
           </div>
         </div>
       </div>
