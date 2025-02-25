@@ -19,7 +19,7 @@ const getAllUser = async () => {
 
 // Get user by ID:-
 const getUser = async (id) => {
-  console.log("getUserId, "+id);
+  console.log("getUserId, " + id);
   const user = await usersQuerie.getUserById(id);
   return user;
 };

@@ -9,7 +9,6 @@ const createUser = async (req, res) => {
   if (!email || !password || !username) {
     return res.status(400).json({ message: "All fields are required" });
   }
-
   const hashedPassword = await bcrypt.hash(password, 10);
 
   let registerData = {
@@ -30,11 +29,11 @@ const createUser = async (req, res) => {
 // Get user by ID:-
 const getUser = async (req, res) => {
   try {
-    const userId = req.userId;  
-    const username = req.username;  
-    console.log(userId,"token based userId");//
-    console.log(username,"token based username");//
-    
+    const userId = req.userId;
+    const username = req.username;
+    console.log(userId, "token based userId"); //
+    console.log(username, "token based username"); //
+
     const user = await UserService.getUser(userId);
     if (!user) {
       throw new Error("User not found");
@@ -49,7 +48,6 @@ const getUser = async (req, res) => {
     });
   }
 };
-
 
 // Get All Users:-
 const getAllUser = async (req, res) => {
@@ -69,7 +67,7 @@ const getAllUser = async (req, res) => {
 // Update user by ID:-
 const updateUser = async (req, res) => {
   try {
-    const userId = req.userId;  
+    const userId = req.userId;
     let updates = req.body;
     console.log("Update id", userId, "and data", updates);
 
@@ -92,7 +90,7 @@ const updateUser = async (req, res) => {
 // Delete user by ID:-
 const deleteUser = async (req, res) => {
   try {
-    const userId = req.userId;  
+    const userId = req.userId;
     const user = await UserService.deleteUser(userId);
 
     console.log("Update id", userId);

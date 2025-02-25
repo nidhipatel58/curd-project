@@ -6,7 +6,6 @@ import { FaUser, FaEye, FaEyeSlash, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import { signup } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
-import { ToastContainer } from "react-toastify";
 
 function Signup() {
     const [username, setUsername] = useState("");
@@ -25,20 +24,19 @@ function Signup() {
         try {
             let response = await signup({ username, email, password })
             handleSuccess("Registration Successful!");
-            console.log(response.data);
+            console.log(response.data.message);
+
             navigate("/login");
         } catch (err) {
-            if (err.response.data && err.response.status === 400) {
-                handleError(err.response.data.message);
+            if (err.message) {
+                handleError(err.message, "User already Exist");
             }
-            handleError(err.message);
         }
     };
 
     return (
 
         <div className="wrapper">
-            <ToastContainer />
             <div className="form-box login">
                 <form onSubmit={handleSignup}>
                     <h1>Signup</h1>

@@ -6,7 +6,7 @@ import ButtonComponent from "../Button/Button.component";
 import { handleError, handleSuccess } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import { login } from "../../api/user";
-import { ToastContainer } from "react-toastify";
+import Progressbtn from "../Progressbar/progressbar";
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -14,13 +14,22 @@ function Login({ setIsLoggedIn }) {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const stopLoading = () => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!ValidationError.isLoginValidate(email, password, setError)) {
       return;
     }
     try {
+      setLoading(true);
       const response = await login({ email, password })
       handleSuccess("Login Successfully");
       console.log(response.data);
@@ -42,11 +51,13 @@ function Login({ setIsLoggedIn }) {
         handleError(err.response.data.message);
       }
     }
+    finally {
+      stopLoading();
+    }
   };
 
   return (
     <div className="wrapper">
-      <ToastContainer />
       <div className="form-box login">
         <form onSubmit={handleSubmit}>
           <h1>Sign In</h1>
@@ -80,11 +91,12 @@ function Login({ setIsLoggedIn }) {
             <a href="#">Forget Password?</a>
           </div>
           {error && <span className="error">{error}</span>}
-          <ButtonComponent
+          <Progressbtn
             type="submit"
             text="Sign In"
             className="w-100 mt-3"
             variant="dark"
+            loading={loading}
           />
           <div className="register-link">
             <p>
