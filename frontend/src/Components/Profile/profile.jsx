@@ -7,85 +7,77 @@ import { FaUser, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import { updateUser } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
-import { ToastContainer } from "react-toastify";
-let Token = localStorage.getItem("token");
-console.log(Token, "-----------Token");
-let id = localStorage.getItem("id");
-console.log(id, "-------------id");
+import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 
 function Profile() {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        let StoreUser = localStorage.getItem("Username");
-        let StoreEmail = localStorage.getItem("Email");
+  useEffect(() => {
+    let StoreUser = localStorage.getItem("Username");
+    let StoreEmail = localStorage.getItem("Email");
 
-        if (StoreUser) {
-            setUsername(StoreUser);
-        }
-        if (StoreEmail) {
-            setEmail(StoreEmail);
-        }
-    }, []);
+    if (StoreUser) {
+      setUsername(StoreUser);
+    }
+    if (StoreEmail) {
+      setEmail(StoreEmail);
+    }
+  }, []);
 
-    const handleUpdate = async (e) => {
-        e.preventDefault();
-        if (!ValidationError.isProfileValidate(username, email, setError)) {
-            return;
-        }
-        try {
-            let response = await updateUser({ username, email })
-            handleSuccess("Profile Update Successfully");
-            console.log(response.data);
-            localStorage.setItem("Username", response.data.user.username);
-            localStorage.setItem("Email", response.data.user.email);
-            navigate("/todo")
-        } catch (err) {
-            if (err.response.data && err.response.status === 400) {
-                handleError(err.response.data.message);
-            }
-            handleError(err.message);
-        }
-    };
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (!ValidationError.isProfileValidate(username, email, setError)) {
+      return;
+    }
+    try {
+      let response = await updateUser({ username, email });
+      handleSuccess("Profile updated successfully");
+      localStorage.setItem("Username", response.data.user.username);
+      localStorage.setItem("Email", response.data.user.email);
+      navigate("/todo");
+    } catch (err) {
+      ResponseHandler.error(err);
+    }
+  };
 
-    return (
-        <div className="wrapper">
-            <div className="form-box login">
-                <form onSubmit={handleUpdate}>
-                    <h1>My Account</h1>
-                    <div className="input-box">
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            name="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <FaUser className="icon" />
-                    </div>
-                    <div className="input-box">
-                        <input
-                            placeholder="Email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            name="email"
-                            value={email}
-                        />
-                        <FaEnvelope className="icon" />
-                    </div>
-                    {error && <span className="error">{error}</span>}
-                    <ButtonComponent
-                        type="submit"
-                        text="Update"
-                        className="w-100 mt-3"
-                        variant="dark"
-                    />
-                </form>
-            </div>
-        </div>
-    );
+  return (
+    <div className="wrapper">
+      <div className="form-box login">
+        <form onSubmit={handleUpdate}>
+          <h1>My Account</h1>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <FaUser className="icon" />
+          </div>
+          <div className="input-box">
+            <input
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              value={email}
+            />
+            <FaEnvelope className="icon" />
+          </div>
+          {error && <span className="error">{error}</span>}
+          <ButtonComponent
+            type="submit"
+            text="Update"
+            className="w-100 mt-3"
+            variant="dark"
+          />
+        </form>
+      </div>
+    </div>
+  );
 }
 
 export default Profile;

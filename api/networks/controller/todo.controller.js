@@ -9,11 +9,11 @@ const CreateTodo = async (req, res) => {
   if (!title || !description) {
     return res
       .status(400)
-      .json({ message: "Title , Description  is required!" });
+      .json({ message: "All fields are required" });
   }
 
   const todo = await TodoService.CreateTodo(title, description, req.userId);
-  res.status(201).json({
+  res.status(200).json({
     message: "Todo created successfully",
     todo,
   });
@@ -26,8 +26,8 @@ const GetTodo = async (req, res) => {
 
     if (!todo) {
       return res
-        .status(404)
-        .json({ message: "Todo not found or unauthorized access" });
+        .status(400)
+        .json({ message: "Todo not found" });
     }
 
     res.status(200).json({
@@ -46,13 +46,13 @@ const GetTodoByUserId = async (req, res) => {
     const user = await UserService.getUser(userId);
     if (!user) {
       return res
-        .status(404)
+        .status(400)
         .json({ message: "Todo not found for this user id" });
     } else {
       const todo = await TodoService.GetTodo(userId);
       if (!todo) {
         return res
-          .status(404)
+          .status(400)
           .json({ message: "Todo not found" });
       }
       else{
@@ -76,8 +76,8 @@ const DeleteTodo = async (req, res) => {
     const todo = await TodoService.DeleteTodo(id);
     if (!todo) {
       return res
-        .status(404)
-        .json({ message: "Todo not found or unauthorized access" });
+        .status(400)
+        .json({ message: "Todo not found" });
     }
     res.status(200).json({
       message: "Todo deleted successfully",
@@ -93,14 +93,13 @@ const UpdateTodo = async (req, res) => {
   try {
     let { id } = req.params;
     const body = req.body;
-    console.log(req.body, "req.body");
     console.log("----------------", id);
 
     const todo = await TodoService.UpdateTodo(id, body);
     if (!todo) {
       return res
-        .status(404)
-        .json({ message: "Todo not found or unauthorized access" });
+        .status(400)
+        .json({ message: "Todo not found" });
     }
 
     res.status(200).json({

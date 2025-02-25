@@ -7,6 +7,7 @@ import { handleError, handleSuccess } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import { login } from "../../api/user";
 import Progressbtn from "../Progressbar/progressbar";
+import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -47,9 +48,7 @@ function Login({ setIsLoggedIn }) {
         handleError("Login failed");
       }
     } catch (err) {
-      if (err.response.status === 401) {
-        handleError(err.response.data.message);
-      }
+      ResponseHandler.error(err);
     }
     finally {
       stopLoading();

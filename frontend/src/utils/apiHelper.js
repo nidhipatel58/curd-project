@@ -1,6 +1,4 @@
 import axios from "axios";
-let token = localStorage.getItem("token");
-console.log(token, "-----------Token");
 
 // class ApiConstants {
 //   static BASE_URL = "http://localhost:3006/api";
@@ -27,9 +25,9 @@ const axiosInstance = axios.create({
   baseURL: "http://localhost:3006/api",
 });
 axiosInstance.interceptors.request.use((config) => {
-  //if (token) {
+  let token = localStorage.getItem("token");
+  console.log(token, "-----------Token");
   config.headers.Authorization = `Bearer ${token}`;
-  //}
   return config;
 });
 

@@ -17,13 +17,15 @@ const createUser = async (req, res) => {
     password: hashedPassword,
   };
 
-  // Create the new user:-
   const user = await UserService.createUser(registerData);
-
-  res.status(201).json({
-    message: "User Created Successfully",
-    user,
-  });
+  if (user != null) {
+    res.status(201).json({
+      message: "User Created Successfully",
+      user,
+    });
+  } else {
+    return res.status(400).json({ message: "User e-mail already exists" });
+  }
 };
 
 // Get user by ID:-
@@ -36,7 +38,7 @@ const getUser = async (req, res) => {
 
     const user = await UserService.getUser(userId);
     if (!user) {
-      throw new Error("User not found");
+      return res.status(400).json({ message: "User not found" });
     }
     res.status(200).json({
       message: "User fetched successfully",
@@ -73,7 +75,7 @@ const updateUser = async (req, res) => {
 
     const user = await UserService.updateUser(userId, updates);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(401).json({ message: "Unauthorized user" });
     }
 
     return res.status(200).json({
@@ -95,10 +97,10 @@ const deleteUser = async (req, res) => {
 
     console.log("Update id", userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(401).json({ message: "Unauthorized user" });
     }
 
-    res.status(201).json({
+    res.status(200).json({
       message: "User deleted successfully",
       user,
     });
@@ -113,13 +115,10 @@ const Login = async (req, res) => {
     const user = await UserService.findUserByEmail(email);
     if (!user) {
       return res
-        .status(401)
-        .json({ message: "Authentication failed: User not found" });
+        .status(400)
+        .json({ message: "Unauthorized user: User not found" });
     }
-    console.log(user, "=============== user");
-    console.log(user.password, "=============== user.password");
-    console.log(password, "=============== user.password");
-
+  
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res
@@ -128,7 +127,6 @@ const Login = async (req, res) => {
     }
 
     let token = createToken({ userId: user.id, username: user.username });
-    console.log(token, "=============== login token");
     res.status(200).json({
       message: "Authentication successful",
       user,

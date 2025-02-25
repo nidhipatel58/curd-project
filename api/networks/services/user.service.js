@@ -4,9 +4,8 @@ import usersQuerie from "../../queries/users.querie.js";
 let createUser = async (userData) => {
   let existingUser = await usersQuerie.findUserByEmail(userData.email);
   if (existingUser) {
-    throw new Error("User already exists");
+      return null; 
   }
-
   let newUser = await usersQuerie.createUser(userData);
   return newUser;
 };

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./Todo.css";
-import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import TodoTable from "./TodoTable";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
 import { Modal, Button } from "react-bootstrap";
 import ButtonComponent from "../Button/Button.component";
+import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 
 function Todo() {
   const [inputs, setInputs] = useState({ title: "", description: "" });
@@ -27,25 +27,18 @@ function Todo() {
     if (userId) {
       const fetchTodos = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:3006/api/todos/gettodo`,
-            { headers: { Authorization: `Bearer ${Token}` } }
-          );
-          //const response = await getTodo();
-          handleSuccess("Todos fetch Successfully!");
+          const response = await getTodo();
           let data = response.data.todo;
           if (data.length != 0) {
             setTodoArray(response.data.todo || []);
-          } else {
-            handleError("Todo not found");
-          }
+          } 
         } catch (err) {
-          handleError(err.response.data.message);
+          ResponseHandler.error(err);
         }
       };
       fetchTodos();
     } else {
-      handleError("Please Signup First!");
+      handleError("Please login first");
     }
   }, [userId, Token]);
 
@@ -61,29 +54,24 @@ function Todo() {
     }
     if (isUpdating) {
       try {
-        // const response = await axios.put(
-        //   `http://localhost:3006/api/todos/updatetodo/${updateId}`,
-        //   { title, description },
-        //   { headers: { Authorization: `Bearer ${Token}` } }
-        // );
         await updateTodo(`${updateId}`, { title, description });
-        handleSuccess("Todo updated successfully!");
+        handleSuccess("Todo updated successfully");
         setTodoArray((prevTodos) =>
           prevTodos.map((todo) =>
             todo.id === updateId ? { ...todo, title, description } : todo
           )
         );
       } catch (err) {
-        handleError(err.message);
+        ResponseHandler.error(err);
       }
     } else {
       try {
         const response = await createTodo({ title, description });
-        handleSuccess("Todo Created Successfully!");
+        handleSuccess("Todo created successfully");
         setTodoArray([...todoArray, response.data.todo]);
         setInputs({ title: "", description: "" });
       } catch (error) {
-        handleError("Error creating todo");
+        ResponseHandler.error(err);
       }
     }
 
@@ -128,17 +116,11 @@ function Todo() {
   const handleDelete = async () => {
     if (deleteTodoId) {
       try {
-        // await axios.delete(
-        //   `http://localhost:3006/api/todos/deletetodo/${deleteTodoId}`,
-        //   {
-        //     headers: { Authorization: `Bearer ${Token}` },
-        //   }
-        // );
         await deleteTodo(`${deleteTodoId}`);
-        handleSuccess("Todo Deleted Successfully!");
+        handleSuccess("Todo deleted successfully");
         setTodoArray(todoArray.filter((item) => item.id !== deleteTodoId));
       } catch (err) {
-        handleError(err.message);
+        ResponseHandler.error(err);
       }
       setShowConfirmDialog(false);
     }
@@ -147,7 +129,6 @@ function Todo() {
   return (
     <>
       <div className="todo">
-        <ToastContainer />
         <div className="center-container">
           <div className="row">
             <div className="col-lg-4">
@@ -181,18 +162,13 @@ function Todo() {
                   <button
                     className="btn-submit"
                     onClick={submitTodo}
-                    disabled={
-                      !inputs.title || !inputs.description
-                    }
+                    disabled={!inputs.title || !inputs.description}
                     style={{
                       cursor:
                         !inputs.title || !inputs.description
                           ? "not-allowed"
                           : "pointer",
-                      opacity:
-                        !inputs.title || !inputs.description
-                          ? 0.4
-                          : 1,
+                      opacity: !inputs.title || !inputs.description ? 0.4 : 1,
                     }}
                   >
                     {isUpdating ? "Update" : "Add"}
@@ -229,7 +205,7 @@ function Todo() {
                       ) : (
                         <tr>
                           <td colSpan="4" style={{ textAlign: "center" }}>
-                            No Todos Added
+                            No data avaiable
                           </td>
                         </tr>
                       )}
