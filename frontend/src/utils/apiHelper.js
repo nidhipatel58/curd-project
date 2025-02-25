@@ -27,9 +27,9 @@ const axiosInstance = axios.create({
   baseURL: "http://localhost:3006/api",
 });
 axiosInstance.interceptors.request.use((config) => {
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  //if (token) {
+  config.headers.Authorization = `Bearer ${token}`;
+  //}
   return config;
 });
 

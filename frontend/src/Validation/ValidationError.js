@@ -1,7 +1,7 @@
 class ValidationError {
   static isLoginValidate(email, password, setError) {
     if (!email || !password) {
-      setError("All fields are required");
+      setError("*All fields are required");
       return false;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
@@ -18,7 +18,7 @@ class ValidationError {
 
   static isSignupValidate(username, email, password, setError) {
     if (!username || !email || !password) {
-      setError("* All fields are required");
+      setError("*All fields are required");
       return false;
     } else if (username.length < 6) {
       setError("Username must be at least 6 characters");
@@ -45,7 +45,7 @@ class ValidationError {
 
   static isTodoValidate(title, description, setError) {
     if (!title || !description) {
-      setError("* All fields are required");
+      setError("*All fields are required");
       return false;
     } else if (title.length <= 10) {
       setError("Title is less then or equal to 10 character");

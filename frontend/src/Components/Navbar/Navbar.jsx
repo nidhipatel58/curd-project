@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import profileImg from "../../assets/profile.png";
-import { handleSuccess } from "../../utils/utils";
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -11,6 +10,10 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    localStorage.removeItem("Username");
+    localStorage.removeItem("Email");
     setIsLoggedIn(false);
     setShowDropdown(false);
     navigate("/");

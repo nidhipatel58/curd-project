@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./Todo.css";
-import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import TodoTable from "./TodoTable";
@@ -27,11 +26,7 @@ function Todo() {
     if (userId) {
       const fetchTodos = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:3006/api/todos/gettodo`,
-            { headers: { Authorization: `Bearer ${Token}` } }
-          );
-          //const response = await getTodo();
+          const response = await getTodo();
           handleSuccess("Todos fetch Successfully!");
           let data = response.data.todo;
           if (data.length != 0) {

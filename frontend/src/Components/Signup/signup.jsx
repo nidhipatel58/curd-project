@@ -6,6 +6,7 @@ import { FaUser, FaEye, FaEyeSlash, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import { signup } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
+import { ToastContainer } from "react-toastify";
 
 function Signup() {
     const [username, setUsername] = useState("");
@@ -35,7 +36,9 @@ function Signup() {
     };
 
     return (
+
         <div className="wrapper">
+            <ToastContainer />
             <div className="form-box login">
                 <form onSubmit={handleSignup}>
                     <h1>Signup</h1>

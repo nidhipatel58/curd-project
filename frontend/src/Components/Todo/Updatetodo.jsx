@@ -40,9 +40,8 @@ function UpdateTodo() {
       //   { title, description },
       //   { headers: { Authorization: `Bearer ${Token}` } }
       // );
-      await updateTodo(`${updateId}`, { title, description });
+      await updateTodo(`${todoid}`, { title, description });
       handleSuccess("Todo updated successfully!");
-      console.log(response.data);
 
       navigate("/todo");
     } catch (err) {

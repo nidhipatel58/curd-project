@@ -6,6 +6,7 @@ import ButtonComponent from "../Button/Button.component";
 import { handleError, handleSuccess } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import { login } from "../../api/user";
+import { ToastContainer } from "react-toastify";
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -45,6 +46,7 @@ function Login({ setIsLoggedIn }) {
 
   return (
     <div className="wrapper">
+      <ToastContainer />
       <div className="form-box login">
         <form onSubmit={handleSubmit}>
           <h1>Sign In</h1>
