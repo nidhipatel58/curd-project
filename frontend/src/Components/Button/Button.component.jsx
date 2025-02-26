@@ -9,6 +9,8 @@ function ButtonComponent({
   className = "",
   type,
   navigate,
+  style,
+  disabled,
   variant,
 }) {
   let nav = useNavigate(); // For navigate one page to other:-
@@ -29,10 +31,12 @@ function ButtonComponent({
         className={className}
         variant={variant}
         type={type}
+        style={style}
+        disabled={disabled}
       >
         {text}
       </Button>
-      
+
     </div>
   );
 }

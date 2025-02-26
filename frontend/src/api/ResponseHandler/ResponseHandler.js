@@ -20,7 +20,7 @@ class ResponseHandler {
         errorMessage = errMessage || "Bad request. Please check your input.";
         break;
       case 401:
-        errorMessage = "Unauthorized user.";
+        errorMessage = "Unauthorized Invalid Password!!";
         break;
       case 403:
         errorMessage = "Forbidden. You do not have access.";

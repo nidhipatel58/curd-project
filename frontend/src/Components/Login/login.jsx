@@ -63,7 +63,6 @@ function Login({ setIsLoggedIn }) {
           <div className="input-box">
             <FaUser className="icon" />
             <input
-              type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

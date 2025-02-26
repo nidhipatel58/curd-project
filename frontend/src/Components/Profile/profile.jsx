@@ -5,15 +5,20 @@ import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/utils";
 import { FaUser, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
-import { updateUser } from "../../api/user";
+import { updateUser, deleteUser } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
+import { Modal, Button } from "react-bootstrap";
+import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
+const userId = localStorage.getItem("id");
 
 function Profile() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [todoArray, setTodoArray] = useState([]);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   useEffect(() => {
     let StoreUser = localStorage.getItem("Username");
@@ -25,7 +30,22 @@ function Profile() {
     if (StoreEmail) {
       setEmail(StoreEmail);
     }
+
+    fetchTodos();
   }, []);
+
+
+  const fetchTodos = async () => {
+    try {
+      const response = await getTodo();
+      let data = response.data.todo;
+      if (data.length != 0) {
+        setTodoArray(response.data.todo || []);
+      }
+    } catch (err) {
+      ResponseHandler.error("fetch err");
+    }
+  };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -42,6 +62,31 @@ function Profile() {
       ResponseHandler.error(err);
     }
   };
+
+  const handleDeleteAccount = async () => {
+    if (todoArray.length != 0) {
+      handleError("Can’t delete yourself as todos exist in your bucket");
+    }
+    else {
+      setShowConfirmDialog(true);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      let response = await deleteUser();
+      handleSuccess("User deleted successfulyy")
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("Username");
+      localStorage.removeItem("Email");
+      navigate("/login");
+    } catch (err) {
+      ResponseHandler.error(err);
+    }
+  };
+
 
   return (
     <div className="wrapper">
@@ -74,8 +119,24 @@ function Profile() {
             className="w-100 mt-3"
             variant="dark"
           />
+          <ButtonComponent
+            type="button"
+            text="Close your account"
+            className="w-100 mt-3"
+            variant="danger"
+            onClick={handleDeleteAccount}
+          />
         </form>
       </div>
+      <Modal show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered>
+        <Modal.Body>
+          <p>Are you sure you want to delete this user?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleDeleteUser}>Yes</Button>
+          <Button variant="secondary" onClick={() => setShowConfirmDialog(false)}>No</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

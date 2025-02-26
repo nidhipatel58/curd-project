@@ -12,7 +12,7 @@ function TodoTable({
 }) {
   return (
     <tr key={id}>
-      <td>{updateId + 1}</td>
+      <td>{id}</td>
       <td>{Title}</td>
       <td>{Description}</td>
       <td className="action-cell">

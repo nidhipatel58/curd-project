@@ -31,7 +31,7 @@ function Todo() {
           let data = response.data.todo;
           if (data.length != 0) {
             setTodoArray(response.data.todo || []);
-          } 
+          }
         } catch (err) {
           ResponseHandler.error(err);
         }
@@ -70,7 +70,7 @@ function Todo() {
         handleSuccess("Todo created successfully");
         setTodoArray([...todoArray, response.data.todo]);
         setInputs({ title: "", description: "" });
-      } catch (error) {
+      } catch (err) {
         ResponseHandler.error(err);
       }
     }
@@ -92,8 +92,9 @@ function Todo() {
     setUpdateId(todo.id);
   };
 
-  // Update Specific todo:-
+  // Update Specific todo on Same Page:-
   const updateTodo = (todo) => {
+    //<<<<<<<<<<<------- For Update on Another Page open a comment >>>>>>>>>>:-
     // handleSuccess("todo call");
     // const selectedTodo = todoArray[index];
     // navigate("/updatetodo", {
@@ -102,7 +103,7 @@ function Todo() {
     //     title: selectedTodo.title,
     //     description: selectedTodo.description,
     //   },
-    // });
+    // }); 
     setInputs({ title: todo.title, description: todo.description });
     setIsUpdating(true);
     setUpdateId(todo.id);

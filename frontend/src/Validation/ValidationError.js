@@ -8,26 +8,35 @@ class ValidationError {
       setError("Invalid email format");
       return false;
     }
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return false;
-    }
     setError("");
     return true;
   }
 
-  static isSignupValidate(username, email, password, setError) {
-    if (!username || !email || !password) {
-      setError("*All fields are required");
+  static isSignupValidate(username, email, password, confirmpass, setError) {
+    if (!username || !email || !password || !confirmpass) {
+      if (!username && !email && !password && !confirmpass) {
+        setError("*All fields are required");
+      } else if (!username && !email) {
+        setError("Username and Email are required!");
+      } else if (!username && !password) {
+        setError("Username and Password are required!");
+      } else if (!email && !password) {
+        setError("Email and Password are required!");
+      } else if (!username) {
+        setError("Username is required!");
+      } else if (!email) {
+        setError("Email is required!");
+      } else if (!confirmpass) {
+        setError("Confirm password is required");
+      } else {
+        setError("Password is required!");
+      }
       return false;
     } else if (username.length < 6) {
-      setError("Username must be at least 6 characters");
+      setError("Username must be at least 6 character");
       return false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Invalid email format");
-      return false;
-    } else if (password.length <= 6) {
-      setError("Password must be at least 6characters");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Invalid email format.");
       return false;
     } else if (
       !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/.test(
@@ -38,6 +47,9 @@ class ValidationError {
         "Password must be contain one lower case,one uper case , one special character and digits!"
       );
       return false;
+    } else if (password !== confirmpass) {
+      setError("Password and confirm password do not match!!");
+      return false;
     }
     setError("");
     return true;
@@ -47,8 +59,8 @@ class ValidationError {
     if (!title || !description) {
       setError("*All fields are required");
       return false;
-    } else if (title.length <= 10) {
-      setError("Title is less then or equal to 10 character");
+    } else if (title.length < 8) {
+      setError("Title is at least 8 character");
       return false;
     }
     // else if (description.length <= 15) {

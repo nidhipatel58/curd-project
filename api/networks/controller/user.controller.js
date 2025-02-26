@@ -118,7 +118,7 @@ const Login = async (req, res) => {
         .status(400)
         .json({ message: "Unauthorized user: User not found" });
     }
-  
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res
