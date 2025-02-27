@@ -45,6 +45,7 @@ function Todo() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
+    
   };
 
   const submitTodo = async () => {
