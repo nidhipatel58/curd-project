@@ -16,13 +16,10 @@ function Signup() {
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const [isTouched, setIsTouched] = useState(false); 
+
     const handleSignup = async (e) => {
         e.preventDefault();
-        if (
-            !ValidationError.isSignupValidate(username, email, password, confirmpass, setError)
-        ) {
-            return;
-        }
         try {
             let response = await signup({ username, email, password });
             handleSuccess("User registered successfully");
@@ -31,21 +28,21 @@ function Signup() {
             ResponseHandler.error(err);
         }
     };
-    // const handleSignup = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         let response = await signup({ username, email, password });
-    //         handleSuccess("User registered successfully");
-    //         navigate("/login");
-    //     } catch (err) {
-    //         ResponseHandler.error(err);
-    //     }
-    // };
-    //  useEffect(() => {
-    //     if (!ValidationError.isSignupValidate(username, email, password, confirmpass, setError)) {
-    //         return;
-    //     }
-    // }, [username, email, password, confirmpass]);
+
+
+    const handleChange = (setter) => (e) => {
+        setter(e.target.value);
+        setIsTouched(true); 
+    };
+
+
+    useEffect(() => {
+        if(isTouched){
+            if (!ValidationError.isSignupValidate(username, email, password, confirmpass, setError)) {
+                return;
+             }
+        }
+    }, [username, email, password, confirmpass]);
 
     return (
         <div className="wrapper">
@@ -58,14 +55,14 @@ function Signup() {
                             placeholder="Username"
                             name="username"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={handleChange(setUsername)}
                         />
                         <FaUser className="icon" />
                     </div>
                     <div className="input-box">
                         <input
                             placeholder="Email"
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={handleChange(setEmail)}
                             name="email"
                             value={email}
                         />
@@ -75,7 +72,7 @@ function Signup() {
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handleChange(setPassword)}
                             name="password"
                             value={password}
                         />
@@ -90,7 +87,7 @@ function Signup() {
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Confirm Password"
-                            onChange={(e) => setConfirmPass(e.target.value)}
+                            onChange={handleChange(setConfirmPass)}
                             name="confirmpass"
                             value={confirmpass}
                         />

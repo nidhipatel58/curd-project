@@ -16,6 +16,7 @@ function Login({ setIsLoggedIn }) {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
 
   const stopLoading = () => {
     setTimeout(() => {
@@ -25,12 +26,9 @@ function Login({ setIsLoggedIn }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!ValidationError.isLoginValidate(email, password, setError)) {
-      return;
-    }
     try {
       setLoading(true);
-      const response = await login({ email, password })
+      const response = await login({ email, password });
       handleSuccess("Login Successfully");
       console.log(response.data);
       setEmail("");
@@ -48,16 +46,23 @@ function Login({ setIsLoggedIn }) {
       }
     } catch (err) {
       ResponseHandler.error(err);
-    }
-    finally {
+    } finally {
       stopLoading();
     }
   };
-  // useEffect(() => {
-  //   if (!ValidationError.isLoginValidate(email, password, setError)) {
-  //     return;
-  //   }
-  // }, [email, password]);
+
+  const handleChange = (setter) => (e) => {
+    setter(e.target.value);
+    setIsTouched(true);
+  };
+
+  useEffect(() => {
+    if (isTouched) {
+      if (!ValidationError.isLoginValidate(email, password, setError)) {
+        return;
+      }
+    }
+  }, [email, password]);
 
   return (
     <div className="wrapper">
@@ -69,7 +74,7 @@ function Login({ setIsLoggedIn }) {
             <input
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange(setEmail)}
             />
           </div>
           <div className="input-box">
@@ -77,7 +82,7 @@ function Login({ setIsLoggedIn }) {
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange(setPassword)}
             />
             <span
               className="password-toggle"
@@ -106,7 +111,11 @@ function Login({ setIsLoggedIn }) {
               <span
                 className="signup-link"
                 onClick={() => navigate("/signup")}
-                style={{ color: "black", cursor: "pointer", textDecoration: "underline" }}
+                style={{
+                  color: "black",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
               >
                 SignUp
               </span>

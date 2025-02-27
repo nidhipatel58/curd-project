@@ -9,7 +9,7 @@ function TodoTable({
   id,
   updateId,
   toBeUpdate,
-  handleUpdate,
+  handleEdit,
 }) {
   return (
     <tr key={id}>
@@ -20,7 +20,6 @@ function TodoTable({
         <ButtonComponent
           className="action-btn update-btn"
           onClick={() => toBeUpdate(updateId)}
-          // onClick={() => handleUpdate(updateId)}
           text="Update"
         />
         <ButtonComponent
@@ -28,11 +27,11 @@ function TodoTable({
           onClick={() => handleDelete(id)}
           text="Delete"
         />
-        {/* <ButtonComponent
+        <ButtonComponent
           className="action-btn delete-btn"
-          onClick={() => handleUpdate(updateId)}
+          onClick={() => handleEdit(updateId)}
           text="Edit"
-        /> */}
+        />
       </td>
     </tr>
   );

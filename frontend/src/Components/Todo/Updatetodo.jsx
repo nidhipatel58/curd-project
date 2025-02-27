@@ -12,6 +12,7 @@ function UpdateTodo() {
   const navigate = useNavigate();
   const { todoid, title, description } = location.state || {};
   const Token = localStorage.getItem("token");
+  const [isTouched, setIsTouched] = useState(false);
 
   const [inputs, setInputs] = useState({
     title: title || "",
@@ -19,9 +20,24 @@ function UpdateTodo() {
   });
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (isTouched) {
+      if (
+        !ValidationError.isTodoValidate(
+          inputs.title,
+          inputs.description,
+          setError
+        )
+      ) {
+        return;
+      }
+    }
+  }, [inputs.title, inputs.description]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
+    setIsTouched(true);
   };
 
   const clearInputs = () => {
@@ -29,17 +45,8 @@ function UpdateTodo() {
   };
 
   const submitTodo = async () => {
-    // e.preventDefault();
     const { title, description } = inputs;
-    if (!ValidationError.isTodoValidate(title, description, setError)) {
-      return;
-    }
     try {
-      // const response = await axios.put(
-      //   `http://localhost:3006/api/todos/updatetodo/${todoid}`,
-      //   { title, description },
-      //   { headers: { Authorization: `Bearer ${Token}` } }
-      // );
       await updateTodo(`${todoid}`, { title, description });
       handleSuccess("Todo updated successfully!");
 

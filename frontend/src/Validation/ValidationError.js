@@ -61,14 +61,11 @@ class ValidationError {
     if (!title || !description) {
       setError("*All fields are required");
       return false;
-    } else if (title.length < 8) {
+    }
+    if (title.length < 8) {
       setError("Title is at least 8 character");
       return false;
     }
-    // else if (description.length <= 15) {
-    //   setError("Description is less then or equal to 15 character");
-    //   return false;
-    // }
     setError("");
     return true;
   }

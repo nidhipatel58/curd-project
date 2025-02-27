@@ -22,6 +22,7 @@ function Todo() {
   const [deleteTodoId, setDeleteTodoId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [isTouched, setIsTouched] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -37,22 +38,31 @@ function Todo() {
         }
       };
       fetchTodos();
-    } else {
-      handleError("Please login first");
-    }
+    } 
   }, [userId, Token]);
+
+  useEffect(() => {
+    if (isTouched) {
+      if (
+        !ValidationError.isTodoValidate(
+          inputs.title,
+          inputs.description,
+          setError
+        )
+      ) {
+        return;
+      }
+    }
+  }, [inputs.title, inputs.description]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
-    
+    setIsTouched(true);
   };
 
   const submitTodo = async () => {
     const { title, description } = inputs;
-    if (!ValidationError.isTodoValidate(title, description, setError)) {
-      return;
-    }
     if (isUpdating) {
       try {
         await updateTodo(`${updateId}`, { title, description });
@@ -79,6 +89,7 @@ function Todo() {
     setInputs({ title: "", description: "" });
     setIsUpdating(false);
     setUpdateId(null);
+    setIsTouched(false);
   };
 
   const clearInputs = () => {
@@ -88,29 +99,22 @@ function Todo() {
   };
 
   // Update Specific todo on Same Page:-
-  const handleUpdate = (todo) => {
-    setInputs({ title: todo.title, description: todo.description });
-    setIsUpdating(true);
-    setUpdateId(todo.id);
+  const editTodo = (todo) => {
+    navigate("/updatetodo", {
+      state: {
+        todoid: todo.id,
+        title: todo.title,
+        description: todo.description,
+      },
+    });
   };
-
 
   // Update Todo on another page:-
   const updateTodo = (todo) => {
-    // handleSuccess("todo call");
-    // const selectedTodo = todoArray[index];
-    // navigate("/updatetodo", {
-    //   state: {
-    //     todoid: selectedTodo.id,
-    //     title: selectedTodo.title,
-    //     description: selectedTodo.description,
-    //   },
-    // });
     setInputs({ title: todo.title, description: todo.description });
     setIsUpdating(true);
     setUpdateId(todo.id);
   };
-
 
   const confirmDelete = (todoId) => {
     setDeleteTodoId(todoId);
@@ -204,7 +208,7 @@ function Todo() {
                             updateId={index}
                             handleDelete={confirmDelete}
                             toBeUpdate={() => updateTodo(item)}
-                          // handleUpdate={() => updateTodo}
+                            handleEdit={() => editTodo(item)}
                           />
                         ))
                       ) : (

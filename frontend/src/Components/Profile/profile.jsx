@@ -19,6 +19,7 @@ function Profile() {
   const navigate = useNavigate();
   const [todoArray, setTodoArray] = useState([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
 
   useEffect(() => {
     let StoreUser = localStorage.getItem("Username");
@@ -32,7 +33,6 @@ function Profile() {
     }
     fetchTodos();
   }, []);
-
 
   const fetchTodos = async () => {
     try {
@@ -48,9 +48,6 @@ function Profile() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    if (!ValidationError.isProfileValidate(username, email, setError)) {
-      return;
-    }
     try {
       let response = await updateUser({ username, email });
       handleSuccess("Profile updated successfully");
@@ -61,17 +58,24 @@ function Profile() {
       ResponseHandler.error(err);
     }
   };
-  // useEffect(() => {
-  //   if (!ValidationError.isProfileValidate(username, email, setError)) {
-  //     return;
-  //   }
-  // }, [username, email])
+
+  const handleChange = (setter) => (e) => {
+    setter(e.target.value);
+    setIsTouched(true);
+  };
+
+  useEffect(() => {
+    if (isTouched) {
+      if (!ValidationError.isProfileValidate(username, email, setError)) {
+        return;
+      }
+    }
+  }, [username, email]);
 
   const handleDeleteAccount = async () => {
     if (todoArray.length != 0) {
       handleError("Can’t delete yourself as todos exist in your bucket");
-    }
-    else {
+    } else {
       setShowConfirmDialog(true);
     }
   };
@@ -79,7 +83,7 @@ function Profile() {
   const handleDeleteUser = async () => {
     try {
       let response = await deleteUser();
-      handleSuccess("User deleted successfulyy")
+      handleSuccess("User deleted successfulyy");
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("token");
       localStorage.removeItem("id");
@@ -90,7 +94,6 @@ function Profile() {
       ResponseHandler.error(err);
     }
   };
-
 
   return (
     <div className="wrapper">
@@ -103,14 +106,14 @@ function Profile() {
               placeholder="Username"
               name="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleChange(setUsername)}
             />
             <FaUser className="icon" />
           </div>
           <div className="input-box">
             <input
               placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange(setEmail)}
               name="email"
               value={email}
             />
@@ -132,13 +135,24 @@ function Profile() {
           />
         </form>
       </div>
-      <Modal show={showConfirmDialog} onHide={() => setShowConfirmDialog(false)} centered>
+      <Modal
+        show={showConfirmDialog}
+        onHide={() => setShowConfirmDialog(false)}
+        centered
+      >
         <Modal.Body>
           <p>Are you sure you want to delete this user?</p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={handleDeleteUser}>Yes</Button>
-          <Button variant="secondary" onClick={() => setShowConfirmDialog(false)}>No</Button>
+          <Button variant="danger" onClick={handleDeleteUser}>
+            Yes
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setShowConfirmDialog(false)}
+          >
+            No
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
