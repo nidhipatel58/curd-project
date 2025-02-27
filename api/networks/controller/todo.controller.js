@@ -7,9 +7,7 @@ const CreateTodo = async (req, res) => {
   console.log(req.body, "========= todo params");
 
   if (!title || !description) {
-    return res
-      .status(400)
-      .json({ message: "All fields are required" });
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   const todo = await TodoService.CreateTodo(title, description, req.userId);
@@ -25,9 +23,7 @@ const GetTodo = async (req, res) => {
     const todo = await TodoService.GetTodo(userId);
 
     if (!todo) {
-      return res
-        .status(400)
-        .json({ message: "Todo not found" });
+      return res.status(400).json({ message: "Todo not found" });
     }
 
     res.status(200).json({
@@ -51,17 +47,13 @@ const GetTodoByUserId = async (req, res) => {
     } else {
       const todo = await TodoService.GetTodo(userId);
       if (!todo) {
-        return res
-          .status(400)
-          .json({ message: "Todo not found" });
-      }
-      else{
+        return res.status(400).json({ message: "Todo not found" });
+      } else {
         res.status(200).json({
           message: "Todo fetched successfully",
           todo,
         });
       }
-      
     }
   } catch (err) {
     console.error("Error in GetTodoById:", err);
@@ -75,9 +67,7 @@ const DeleteTodo = async (req, res) => {
     let { id } = req.params;
     const todo = await TodoService.DeleteTodo(id);
     if (!todo) {
-      return res
-        .status(400)
-        .json({ message: "Todo not found" });
+      return res.status(400).json({ message: "Todo not found" });
     }
     res.status(200).json({
       message: "Todo deleted successfully",
@@ -97,9 +87,7 @@ const UpdateTodo = async (req, res) => {
 
     const todo = await TodoService.UpdateTodo(id, body);
     if (!todo) {
-      return res
-        .status(400)
-        .json({ message: "Todo not found" });
+      return res.status(400).json({ message: "Todo not found" });
     }
 
     res.status(200).json({

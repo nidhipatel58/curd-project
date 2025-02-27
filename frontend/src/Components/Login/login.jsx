@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
@@ -25,7 +25,6 @@ function Login({ setIsLoggedIn }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!ValidationError.isLoginValidate(email, password, setError)) {
       return;
     }
@@ -54,6 +53,11 @@ function Login({ setIsLoggedIn }) {
       stopLoading();
     }
   };
+  // useEffect(() => {
+  //   if (!ValidationError.isLoginValidate(email, password, setError)) {
+  //     return;
+  //   }
+  // }, [email, password]);
 
   return (
     <div className="wrapper">
@@ -79,7 +83,7 @@ function Login({ setIsLoggedIn }) {
               className="password-toggle"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <FaEye /> : <FaEyeSlash />}
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
           <div className="remember-forget">

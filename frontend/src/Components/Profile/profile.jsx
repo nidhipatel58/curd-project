@@ -30,7 +30,6 @@ function Profile() {
     if (StoreEmail) {
       setEmail(StoreEmail);
     }
-
     fetchTodos();
   }, []);
 
@@ -57,11 +56,16 @@ function Profile() {
       handleSuccess("Profile updated successfully");
       localStorage.setItem("Username", response.data.user.username);
       localStorage.setItem("Email", response.data.user.email);
-      navigate("/todo");
+      navigate("/profile");
     } catch (err) {
       ResponseHandler.error(err);
     }
   };
+  // useEffect(() => {
+  //   if (!ValidationError.isProfileValidate(username, email, setError)) {
+  //     return;
+  //   }
+  // }, [username, email])
 
   const handleDeleteAccount = async () => {
     if (todoArray.length != 0) {

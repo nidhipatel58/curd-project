@@ -86,15 +86,16 @@ function Todo() {
     setUpdateId(null);
   };
 
+  // Update Specific todo on Same Page:-
   const handleUpdate = (todo) => {
     setInputs({ title: todo.title, description: todo.description });
     setIsUpdating(true);
     setUpdateId(todo.id);
   };
 
-  // Update Specific todo on Same Page:-
+
+  // Update Todo on another page:-
   const updateTodo = (todo) => {
-    //<<<<<<<<<<<------- For Update on Another Page open a comment >>>>>>>>>>:-
     // handleSuccess("todo call");
     // const selectedTodo = todoArray[index];
     // navigate("/updatetodo", {
@@ -103,11 +104,12 @@ function Todo() {
     //     title: selectedTodo.title,
     //     description: selectedTodo.description,
     //   },
-    // }); 
+    // });
     setInputs({ title: todo.title, description: todo.description });
     setIsUpdating(true);
     setUpdateId(todo.id);
   };
+
 
   const confirmDelete = (todoId) => {
     setDeleteTodoId(todoId);
@@ -201,6 +203,7 @@ function Todo() {
                             updateId={index}
                             handleDelete={confirmDelete}
                             toBeUpdate={() => updateTodo(item)}
+                          // handleUpdate={() => updateTodo}
                           />
                         ))
                       ) : (

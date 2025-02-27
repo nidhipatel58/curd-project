@@ -114,9 +114,7 @@ const Login = async (req, res) => {
   try {
     const user = await UserService.findUserByEmail(email);
     if (!user) {
-      return res
-        .status(400)
-        .json({ message: "Unauthorized user: User not found" });
+      return res.status(400).json({ message: "Unauthorized user" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

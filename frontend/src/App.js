@@ -6,6 +6,7 @@ import Signup from "./Components/Signup/signup";
 import Profile from "./Components/Profile/profile";
 import Todo from "./Components/Todo/Todo.component";
 import UpdateTodo from "./Components/Todo/Updatetodo";
+import Addtodo from "./Components/Todo/Addtodo";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/addtodo" element={<Addtodo />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/updatetodo" element={<UpdateTodo />} />
           <Route path="/todo" element={<Todo />} />

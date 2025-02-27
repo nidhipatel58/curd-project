@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signup.css";
 import { handleSuccess } from "../../utils/utils";
@@ -31,6 +31,21 @@ function Signup() {
             ResponseHandler.error(err);
         }
     };
+    // const handleSignup = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         let response = await signup({ username, email, password });
+    //         handleSuccess("User registered successfully");
+    //         navigate("/login");
+    //     } catch (err) {
+    //         ResponseHandler.error(err);
+    //     }
+    // };
+    //  useEffect(() => {
+    //     if (!ValidationError.isSignupValidate(username, email, password, confirmpass, setError)) {
+    //         return;
+    //     }
+    // }, [username, email, password, confirmpass]);
 
     return (
         <div className="wrapper">
@@ -68,7 +83,7 @@ function Signup() {
                             className="password-toggle"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
                     </div>
                     <div className="input-box">
@@ -83,9 +98,10 @@ function Signup() {
                             className="password-toggle"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
                     </div>
+
                     {error && <span className="error">{error}</span>}
                     <ButtonComponent
                         type="submit"

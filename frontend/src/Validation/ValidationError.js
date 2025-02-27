@@ -26,6 +26,8 @@ class ValidationError {
         setError("Username is required!");
       } else if (!email) {
         setError("Email is required!");
+      } else if (!password) {
+        setError("Password is required!");
       } else if (!confirmpass) {
         setError("Confirm password is required");
       } else {
@@ -75,6 +77,12 @@ class ValidationError {
     if (!username || !email) {
       setError("* All fields are required");
       return false;
+    }
+    if (!username) {
+      setError("Username is required");
+    }
+    if (!email) {
+      setError("Email is required");
     } else if (username.length < 6) {
       setError("Username must be at least 6 characters");
       return false;

@@ -8,7 +8,8 @@ function TodoTable({
   Description,
   id,
   updateId,
-  toBeUpdate
+  toBeUpdate,
+  handleUpdate,
 }) {
   return (
     <tr key={id}>
@@ -19,6 +20,7 @@ function TodoTable({
         <ButtonComponent
           className="action-btn update-btn"
           onClick={() => toBeUpdate(updateId)}
+          // onClick={() => handleUpdate(updateId)}
           text="Update"
         />
         <ButtonComponent
@@ -26,6 +28,11 @@ function TodoTable({
           onClick={() => handleDelete(id)}
           text="Delete"
         />
+        {/* <ButtonComponent
+          className="action-btn delete-btn"
+          onClick={() => handleUpdate(updateId)}
+          text="Edit"
+        /> */}
       </td>
     </tr>
   );
