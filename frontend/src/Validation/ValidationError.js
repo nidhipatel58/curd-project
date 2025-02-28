@@ -1,7 +1,7 @@
 class ValidationError {
   static isLoginValidate(email, password, setError) {
     if (!email || !password) {
-      setError("*All fields are required");
+      setError("*Both fields are required");
       return false;
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
@@ -58,7 +58,7 @@ class ValidationError {
   }
 
   static isTodoValidate(title, description, setError) {
-    if (!title || !description) {
+    if (!title && !description) {
       setError("*All fields are required");
       return false;
     }
@@ -91,8 +91,11 @@ class ValidationError {
     return true;
   }
 
-
-  static isValidateChangePassword = (currentPassword, newPassword, setError) => {
+  static isValidateChangePassword = (
+    currentPassword,
+    newPassword,
+    setError
+  ) => {
     if (!currentPassword || !newPassword) {
       setError("All fields are required");
       return false;
@@ -108,10 +111,7 @@ class ValidationError {
     }
     setError("");
     return true;
-  }
-
+  };
 }
-
-
 
 export default ValidationError;

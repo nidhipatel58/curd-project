@@ -76,13 +76,12 @@ function Profile() {
   }, [username, email]);
 
   const handleDeleteAccount = async () => {
-    if (todoArray.length != 0) {
+    if (todoArray.length !== 0) {
       handleError("Can’t delete yourself as todos exist in your bucket");
     } else {
       setShowConfirmDialog(true);
     }
   };
-
   const handleDeleteUser = async () => {
     try {
       let response = await deleteUser();
@@ -93,6 +92,7 @@ function Profile() {
       localStorage.removeItem("Username");
       localStorage.removeItem("Email");
       navigate("/login");
+      window.location.reload();
     } catch (err) {
       ResponseHandler.error(err);
     }

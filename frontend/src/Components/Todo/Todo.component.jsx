@@ -41,19 +41,7 @@ function Todo() {
     }
   }, [userId, Token]);
 
-  useEffect(() => {
-    if (isTouched) {
-      if (
-        !ValidationError.isTodoValidate(
-          inputs.title,
-          inputs.description,
-          setError
-        )
-      ) {
-        return;
-      }
-    }
-  }, [inputs.title, inputs.description]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,10 +51,10 @@ function Todo() {
 
   const submitTodo = async () => {
     const { title, description } = inputs;
-    if (!ValidationError.isTodoValidate(inputs.title,inputs.description,setError)) {
+
+    if (!ValidationError.isTodoValidate(inputs.title, inputs.description, setError)) {
       return;
     }
-    
     if (isUpdating) {
       try {
         await updateTodo(`${updateId}`, { title, description });
@@ -95,12 +83,27 @@ function Todo() {
     setUpdateId(null);
     setIsTouched(false);
   };
+  useEffect(() => {
+    if (isTouched) {
+      if (
+        !ValidationError.isTodoValidate(
+          inputs.title,
+          inputs.description,
+          setError
+        )
+      ) {
+        return;
+      }
+    }
+  }, [inputs.title, inputs.description]);
 
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
     setIsUpdating(false);
     setUpdateId(null);
+    setIsTouched(false);
   };
+
 
   // Update Specific todo on another Page:-
   const editTodo = (todo) => {
@@ -113,11 +116,12 @@ function Todo() {
     });
   };
 
-  // Update Todo on Same Page:-
+  // Update Todo on Same Page:- 
   const updateTodo = (todo) => {
     setInputs({ title: todo.title, description: todo.description });
     setIsUpdating(true);
     setUpdateId(todo.id);
+    setIsTouched(false);
   };
 
   const confirmDelete = (todoId) => {

@@ -43,11 +43,14 @@ function App() {
             path="/signup"
             element={isLoggedIn ? <Navigate to="/todo" replace /> : <Signup />}
           />
-
           <Route
             path="/profile"
             element={
-              isLoggedIn ? <Profile /> : <Navigate to="/login" replace />
+              isLoggedIn ? (
+                <Profile setIsLoggedIn={setIsLoggedIn} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
             }
           />
           <Route
@@ -72,8 +75,6 @@ function App() {
             path="/todo"
             element={isLoggedIn ? <Todo /> : <Navigate to="/login" replace />}
           />
-
-
 
           <Route
             path="/"
