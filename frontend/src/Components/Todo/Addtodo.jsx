@@ -18,8 +18,6 @@ let AddTodo = () => {
   const navigate = useNavigate();
   const Token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [deleteTodoId, setDeleteTodoId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateId, setUpdateId] = useState(null);
   const [isTouched, setIsTouched] = useState(false);
@@ -140,7 +138,7 @@ let AddTodo = () => {
                     opacity: !inputs.title || !inputs.description ? 0.4 : 1,
                   }}
                 >
-                  {isUpdating ? "Update" : "Add"}
+                  Add
                 </button>
               </div>
             </div>

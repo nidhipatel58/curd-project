@@ -47,6 +47,15 @@ function UpdateTodo() {
   const submitTodo = async () => {
     const { title, description } = inputs;
     try {
+      if (
+        !ValidationError.isTodoValidate(
+          inputs.title,
+          inputs.description,
+          setError
+        )
+      ) {
+        return;
+      }
       await updateTodo(`${todoid}`, { title, description });
       handleSuccess("Todo updated successfully!");
 

@@ -38,7 +38,7 @@ function Todo() {
         }
       };
       fetchTodos();
-    } 
+    }
   }, [userId, Token]);
 
   useEffect(() => {
@@ -63,6 +63,15 @@ function Todo() {
 
   const submitTodo = async () => {
     const { title, description } = inputs;
+    if (
+      !ValidationError.isTodoValidate(
+        inputs.title,
+        inputs.description,
+        setError
+      )
+    ) {
+      return;
+    }
     if (isUpdating) {
       try {
         await updateTodo(`${updateId}`, { title, description });
@@ -98,7 +107,7 @@ function Todo() {
     setUpdateId(null);
   };
 
-  // Update Specific todo on Same Page:-
+  // Update Specific todo on another Page:-
   const editTodo = (todo) => {
     navigate("/updatetodo", {
       state: {
@@ -109,7 +118,7 @@ function Todo() {
     });
   };
 
-  // Update Todo on another page:-
+  // Update Todo on Same Page:-
   const updateTodo = (todo) => {
     setInputs({ title: todo.title, description: todo.description });
     setIsUpdating(true);

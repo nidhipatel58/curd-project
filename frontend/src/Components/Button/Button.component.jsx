@@ -13,7 +13,8 @@ function ButtonComponent({
   disabled,
   variant,
 }) {
-  let nav = useNavigate(); // For navigate one page to other:-
+  // For navigate one page to other:-
+  let nav = useNavigate();
 
   let handleClick = () => {
     if (onClick) {
