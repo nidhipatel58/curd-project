@@ -48,6 +48,9 @@ function Profile() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    if (!ValidationError.isProfileValidate(username, email, setError)) {
+      return;
+    }
     try {
       let response = await updateUser({ username, email });
       handleSuccess("Profile updated successfully");

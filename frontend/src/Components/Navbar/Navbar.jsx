@@ -25,6 +25,13 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     navigate("/profile");
   };
 
+  
+  const handleChangePasswordClick = () => {
+    setShowDropdown(false);
+    navigate("/changepassword");
+  };
+
+
 
   // Toggle dropdown :-
   const toggleDropdown = () => {
@@ -80,7 +87,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                 <div className={`dropdown-menu ${showDropdown ? "active" : ""}`}
                 >
                   <button onClick={handleProfileClick}>My Account</button>
-                  <button>Change Password</button>
+                  <button onClick={handleChangePasswordClick}>Change Password</button>
                   <button onClick={handleLogout}>Logout</button>
                 </div>
               </div>

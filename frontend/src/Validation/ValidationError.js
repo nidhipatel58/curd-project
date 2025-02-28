@@ -90,6 +90,28 @@ class ValidationError {
     setError("");
     return true;
   }
+
+
+  static isValidateChangePassword = (currentPassword, newPassword, setError) => {
+    if (!currentPassword || !newPassword) {
+      setError("All fields are required");
+      return false;
+    } else if (
+      !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/.test(
+        newPassword
+      )
+    ) {
+      setError(
+        "Password must contain one lowercase, one uppercase, one special character, and digits!"
+      );
+      return false;
+    }
+    setError("");
+    return true;
+  }
+
 }
+
+
 
 export default ValidationError;

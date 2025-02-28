@@ -35,6 +35,14 @@ route.delete(
   UserController.deleteUser
 );
 
+route.put(
+  "/changepassword",
+  validate(UserValidation.user),
+  verifyToken,
+  UserController.changePassword
+);
+
+
 // Login:
 route.post("/login", validate(UserValidation.user), UserController.Login);
 

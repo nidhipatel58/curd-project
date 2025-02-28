@@ -63,15 +63,10 @@ function Todo() {
 
   const submitTodo = async () => {
     const { title, description } = inputs;
-    if (
-      !ValidationError.isTodoValidate(
-        inputs.title,
-        inputs.description,
-        setError
-      )
-    ) {
+    if (!ValidationError.isTodoValidate(inputs.title,inputs.description,setError)) {
       return;
     }
+    
     if (isUpdating) {
       try {
         await updateTodo(`${updateId}`, { title, description });

@@ -12,32 +12,11 @@ import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 
 let AddTodo = () => {
   const [inputs, setInputs] = useState({ title: "", description: "" });
-  const [todoArray, setTodoArray] = useState([]);
   const [error, setError] = useState("");
-  const [toBeUpdate, setToBeUpdate] = useState(null);
   const navigate = useNavigate();
   const Token = localStorage.getItem("token");
   const userId = localStorage.getItem("id");
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [updateId, setUpdateId] = useState(null);
   const [isTouched, setIsTouched] = useState(false);
-
-  useEffect(() => {
-    if (userId) {
-      const fetchTodos = async () => {
-        try {
-          const response = await getTodo();
-          let data = response.data.todo;
-          if (data.length != 0) {
-            setTodoArray(response.data.todo || []);
-          }
-        } catch (err) {
-          ResponseHandler.error(err);
-        }
-      };
-      fetchTodos();
-    }
-  }, [userId, Token]);
 
   useEffect(() => {
     if (isTouched) {
@@ -61,39 +40,22 @@ let AddTodo = () => {
 
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
-    setIsUpdating(false);
-    setUpdateId(null);
   };
 
   const submitTodo = async () => {
     const { title, description } = inputs;
-    if (isUpdating) {
-      try {
-        await updateTodo(`${updateId}`, { title, description });
-        handleSuccess("Todo updated successfully");
-        setTodoArray((prevTodos) =>
-          prevTodos.map((todo) =>
-            todo.id === updateId ? { ...todo, title, description } : todo
-          )
-        );
-      } catch (err) {
-        ResponseHandler.error(err);
-      }
-    } else {
-      try {
-        const response = await createTodo({ title, description });
-        handleSuccess("Todo created successfully");
-        navigate("/todo");
-        setTodoArray([...todoArray, response.data.todo]);
-        setInputs({ title: "", description: "" });
-      } catch (err) {
-        ResponseHandler.error(err);
-      }
+    if (!ValidationError.isTodoValidate(inputs.title,inputs.description,setError)) {
+      return;
     }
 
-    setInputs({ title: "", description: "" });
-    setIsUpdating(false);
-    setUpdateId(null);
+    try {
+      await createTodo({ title, description });
+      handleSuccess("Todo created successfully");
+      navigate("/todo");
+      setInputs({ title: "", description: "" });
+    } catch (err) {
+      ResponseHandler.error(err);
+    }
   };
 
   return (

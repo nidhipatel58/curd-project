@@ -10,6 +10,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Components/Login/login";
 import Signup from "./Components/Signup/signup";
 import Profile from "./Components/Profile/profile";
+import ChangePassword from "./Components/changepassword/changepassword";
 import Todo from "./Components/Todo/Todo.component";
 import UpdateTodo from "./Components/Todo/Updatetodo";
 import Addtodo from "./Components/Todo/Addtodo";
@@ -50,6 +51,12 @@ function App() {
             }
           />
           <Route
+            path="/changepassword"
+            element={
+              isLoggedIn ? <ChangePassword /> : <Navigate to="/login" replace />
+            }
+          />
+          <Route
             path="/addtodo"
             element={
               isLoggedIn ? <Addtodo /> : <Navigate to="/login" replace />
@@ -65,6 +72,8 @@ function App() {
             path="/todo"
             element={isLoggedIn ? <Todo /> : <Navigate to="/login" replace />}
           />
+
+
 
           <Route
             path="/"

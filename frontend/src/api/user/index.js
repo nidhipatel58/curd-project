@@ -5,6 +5,7 @@ const REGISTER = "/user/register";
 const GET_USER = `/user/getuser`;
 const UPDATE_USER = "/user/updateuser";
 const DELETE_USER = "/user/deleteuser";
+const CHANGE_PASSWORD = "/user/changepassword";
 
 export const login = (data) => {
   return axiosInstance.post(LOGIN, data);
@@ -24,4 +25,8 @@ export const updateUser = (data) => {
 
 export const deleteUser = () => {
   return axiosInstance.delete(DELETE_USER);
+};
+
+export const changePassword = (data) => {
+  return axiosInstance.put(CHANGE_PASSWORD,data);
 };

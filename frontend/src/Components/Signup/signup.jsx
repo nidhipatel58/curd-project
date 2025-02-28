@@ -16,10 +16,13 @@ function Signup() {
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-    const [isTouched, setIsTouched] = useState(false); 
+    const [isTouched, setIsTouched] = useState(false);
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        if (!ValidationError.isSignupValidate(username, email, password, confirmpass, setError)) {
+            return;
+        }
         try {
             let response = await signup({ username, email, password });
             handleSuccess("User registered successfully");
@@ -32,15 +35,15 @@ function Signup() {
 
     const handleChange = (setter) => (e) => {
         setter(e.target.value);
-        setIsTouched(true); 
+        setIsTouched(true);
     };
 
 
     useEffect(() => {
-        if(isTouched){
+        if (isTouched) {
             if (!ValidationError.isSignupValidate(username, email, password, confirmpass, setError)) {
                 return;
-             }
+            }
         }
     }, [username, email, password, confirmpass]);
 

@@ -26,6 +26,9 @@ function Login({ setIsLoggedIn }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!ValidationError.isLoginValidate(email, password, setError)) {
+      return;
+    }
     try {
       setLoading(true);
       const response = await login({ email, password });
