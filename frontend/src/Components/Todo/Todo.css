@@ -86,6 +86,7 @@
 
 .btn-clear:hover {
   background-color: #bbb;
+  color: #000;
 }
 
 .btn-submit {
@@ -103,6 +104,12 @@
   max-height: 300px;
   overflow-y: auto;
   border: 1px solid #ddd;
+}
+
+table td {
+  word-wrap: break-word; /* Break the word if necessary */
+  white-space: normal;   /* Allow wrapping in table cells */
+  word-break: break-word; /* Ensures longer text breaks appropriately */
 }
 
 .table-container table {

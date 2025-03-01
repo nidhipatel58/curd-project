@@ -43,16 +43,12 @@ function App() {
             path="/signup"
             element={isLoggedIn ? <Navigate to="/todo" replace /> : <Signup />}
           />
+
           <Route
             path="/profile"
-            element={
-              isLoggedIn ? (
-                <Profile setIsLoggedIn={setIsLoggedIn} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
+            element={isLoggedIn ? <Profile setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" replace />}
           />
+          
           <Route
             path="/changepassword"
             element={

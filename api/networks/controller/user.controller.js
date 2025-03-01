@@ -2,6 +2,7 @@ import createToken from "../../middleware/auth.js";
 import UserModel from "../../models/user.js";
 import UserService from "../services/user.service.js";
 import bcrypt from "bcryptjs";
+import TodoService from "../services/todo.service.js"; 
 
 // Register Users:
 const createUser = async (req, res) => {
@@ -93,9 +94,17 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const userId = req.userId;
-    const user = await UserService.deleteUser(userId);
 
-    console.log("Update id", userId);
+    // Check if the user has any todos
+    const todos = await TodoService.GetTodo(userId);
+    if (todos && todos.length > 0) {
+      return res.status(400).json({
+        message: "Can’t delete yourself as todos exist in your bucket",
+      });
+    }
+
+    // Proceed with user deletion if no todos exist
+    const user = await UserService.deleteUser(userId);
     if (!user) {
       return res.status(401).json({ message: "Unauthorized user" });
     }

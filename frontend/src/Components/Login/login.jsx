@@ -52,6 +52,7 @@ function Login({ setIsLoggedIn }) {
     } finally {
       stopLoading();
     }
+    setIsTouched(false);
   };
 
   const handleChange = (setter) => (e) => {

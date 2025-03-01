@@ -12,7 +12,7 @@ import { Modal, Button } from "react-bootstrap";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
 const userId = localStorage.getItem("id");
 
-function Profile() {
+function Profile({ setIsLoggedIn }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -31,20 +31,20 @@ function Profile() {
     if (StoreEmail) {
       setEmail(StoreEmail);
     }
-    fetchTodos();
+    //fetchTodos();
   }, []);
 
-  const fetchTodos = async () => {
-    try {
-      const response = await getTodo();
-      let data = response.data.todo;
-      if (data.length != 0) {
-        setTodoArray(response.data.todo || []);
-      }
-    } catch (err) {
-      ResponseHandler.error("fetch err");
-    }
-  };
+  // const fetchTodos = async () => {
+  //   try {
+  //     const response = await getTodo();
+  //     let data = response.data.todo;
+  //     if (data.length != 0) {
+  //       setTodoArray(response.data.todo || []);
+  //     }
+  //   } catch (err) {
+  //     ResponseHandler.error("fetch err");
+  //   }
+  // };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -60,6 +60,7 @@ function Profile() {
     } catch (err) {
       ResponseHandler.error(err);
     }
+    setIsTouched(false);
   };
 
   const handleChange = (setter) => (e) => {
@@ -76,12 +77,9 @@ function Profile() {
   }, [username, email]);
 
   const handleDeleteAccount = async () => {
-    if (todoArray.length !== 0) {
-      handleError("Can’t delete yourself as todos exist in your bucket");
-    } else {
-      setShowConfirmDialog(true);
-    }
+    setShowConfirmDialog(true);
   };
+
   const handleDeleteUser = async () => {
     try {
       let response = await deleteUser();
@@ -92,10 +90,11 @@ function Profile() {
       localStorage.removeItem("Username");
       localStorage.removeItem("Email");
       navigate("/login");
-      window.location.reload();
+      setIsLoggedIn(false); 
     } catch (err) {
       ResponseHandler.error(err);
     }
+    setShowConfirmDialog(false)
   };
 
   return (

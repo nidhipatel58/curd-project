@@ -30,6 +30,7 @@ function Profile() {
     } catch (err) {
       ResponseHandler.error(err);
     }
+    setIsTouched(false);
   };
 
   const handleChange = (setter) => (e) => {

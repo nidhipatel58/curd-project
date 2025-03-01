@@ -30,6 +30,7 @@ function Signup() {
         } catch (err) {
             ResponseHandler.error(err);
         }
+        setIsTouched(false);
     };
 
 

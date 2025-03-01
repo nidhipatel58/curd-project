@@ -14,8 +14,6 @@ let AddTodo = () => {
   const [inputs, setInputs] = useState({ title: "", description: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const Token = localStorage.getItem("token");
-  const userId = localStorage.getItem("id");
   const [isTouched, setIsTouched] = useState(false);
 
   useEffect(() => {
@@ -40,6 +38,7 @@ let AddTodo = () => {
 
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
+    setIsTouched(false);
   };
 
   const submitTodo = async () => {
@@ -52,10 +51,12 @@ let AddTodo = () => {
       await createTodo({ title, description });
       handleSuccess("Todo created successfully");
       navigate("/todo");
-      setInputs({ title: "", description: "" });
     } catch (err) {
       ResponseHandler.error(err);
     }
+
+    setInputs({ title: "", description: "" });
+    setIsTouched(false);
   };
 
   return (

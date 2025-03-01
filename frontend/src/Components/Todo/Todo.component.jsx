@@ -30,7 +30,7 @@ function Todo() {
         try {
           const response = await getTodo();
           let data = response.data.todo;
-          if (data.length != 0) {
+          if (data.length !== 0) {
             setTodoArray(response.data.todo || []);
           }
         } catch (err) {
@@ -41,7 +41,19 @@ function Todo() {
     }
   }, [userId, Token]);
 
-
+  useEffect(() => {
+    if (isTouched) {
+      if (
+        !ValidationError.isTodoValidate(
+          inputs.title,
+          inputs.description,
+          setError
+        )
+      ) {
+        return;
+      }
+    }
+  }, [inputs.title, inputs.description]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,9 +64,10 @@ function Todo() {
   const submitTodo = async () => {
     const { title, description } = inputs;
 
-    if (!ValidationError.isTodoValidate(inputs.title, inputs.description, setError)) {
+    if (!ValidationError.isTodoValidate(title, description, setError)) {
       return;
     }
+
     if (isUpdating) {
       try {
         await updateTodo(`${updateId}`, { title, description });
@@ -83,19 +96,6 @@ function Todo() {
     setUpdateId(null);
     setIsTouched(false);
   };
-  useEffect(() => {
-    if (isTouched) {
-      if (
-        !ValidationError.isTodoValidate(
-          inputs.title,
-          inputs.description,
-          setError
-        )
-      ) {
-        return;
-      }
-    }
-  }, [inputs.title, inputs.description]);
 
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
@@ -104,8 +104,6 @@ function Todo() {
     setIsTouched(false);
   };
 
-
-  // Update Specific todo on another Page:-
   const editTodo = (todo) => {
     navigate("/updatetodo", {
       state: {
@@ -116,7 +114,6 @@ function Todo() {
     });
   };
 
-  // Update Todo on Same Page:- 
   const updateTodo = (todo) => {
     setInputs({ title: todo.title, description: todo.description });
     setIsUpdating(true);
@@ -139,6 +136,7 @@ function Todo() {
         ResponseHandler.error(err);
       }
       setShowConfirmDialog(false);
+      setIsTouched(false);
     }
   };
 
@@ -169,12 +167,19 @@ function Todo() {
                 />
                 {error && <span className="error">{error}</span>}
                 <div className="button-group">
-                  <ButtonComponent
+                  <button
                     className="btn-clear"
                     onClick={clearInputs}
-                    text="Clear"
-                    disabled={!inputs.title && !inputs.description}
-                  />
+                    disabled={!(inputs.title && inputs.description)} // Only enabled if both fields are non-empty
+                    style={{
+                      cursor: !(inputs.title && inputs.description)
+                        ? "not-allowed"
+                        : "pointer", // Disable cursor if one of the fields is empty
+                      opacity: !(inputs.title && inputs.description) ? 0.8 : 1, // Lower opacity when disabled
+                    }}
+                  >
+                    Clear
+                  </button>
                   <button
                     className="btn-submit"
                     onClick={submitTodo}
@@ -184,7 +189,7 @@ function Todo() {
                         !inputs.title || !inputs.description
                           ? "not-allowed"
                           : "pointer",
-                      opacity: !inputs.title || !inputs.description ? 0.4 : 1,
+                      opacity: !inputs.title || !inputs.description ? 0.8 : 1,
                     }}
                   >
                     {isUpdating ? "Update" : "Add"}
@@ -222,7 +227,7 @@ function Todo() {
                       ) : (
                         <tr>
                           <td colSpan="4" style={{ textAlign: "center" }}>
-                            No data avaiable
+                            No data available
                           </td>
                         </tr>
                       )}

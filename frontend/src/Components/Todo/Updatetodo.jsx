@@ -42,6 +42,7 @@ function UpdateTodo() {
 
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
+    setIsTouched(false);
   };
 
   const submitTodo = async () => {
@@ -63,6 +64,7 @@ function UpdateTodo() {
     } catch (err) {
       handleError(err.response.data.message);
     }
+    setIsTouched(false);
   };
 
   return (
