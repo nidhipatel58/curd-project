@@ -31,6 +31,7 @@ function Signup() {
             ResponseHandler.error(err);
         }
         setIsTouched(false);
+        setError("");
     };
 
 

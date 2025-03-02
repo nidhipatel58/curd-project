@@ -95,6 +95,7 @@ function Todo() {
     setIsUpdating(false);
     setUpdateId(null);
     setIsTouched(false);
+    setError("");
   };
 
   const clearInputs = () => {
@@ -102,6 +103,7 @@ function Todo() {
     setIsUpdating(false);
     setUpdateId(null);
     setIsTouched(false);
+    setError("");
   };
 
   const editTodo = (todo) => {
@@ -119,6 +121,7 @@ function Todo() {
     setIsUpdating(true);
     setUpdateId(todo.id);
     setIsTouched(false);
+    setError("");
   };
 
   const confirmDelete = (todoId) => {
@@ -157,6 +160,7 @@ function Todo() {
                   className="form-input"
                   value={inputs.title}
                   onChange={handleChange}
+                  maxLength={50}
                 />
                 <textarea
                   name="description"
@@ -164,18 +168,33 @@ function Todo() {
                   className="form-input"
                   value={inputs.description}
                   onChange={handleChange}
+                  maxLength={100}
                 />
-                {error && <span className="error">{error}</span>}
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: "12px",
+                  marginTop: "5px",
+                  padding: "0 5px",
+                  minHeight: "16px" 
+                }}>
+                  <span style={{ color: "red", fontSize: "14px", visibility: error ? "visible" : "hidden" }}>
+                    {error || "Placeholder"}
+                  </span>
+                </div>
+
+
                 <div className="button-group">
                   <button
                     className="btn-clear"
                     onClick={clearInputs}
-                    disabled={!(inputs.title && inputs.description)} // Only enabled if both fields are non-empty
+                    disabled={!(inputs.title && inputs.description)}
                     style={{
                       cursor: !(inputs.title && inputs.description)
                         ? "not-allowed"
-                        : "pointer", // Disable cursor if one of the fields is empty
-                      opacity: !(inputs.title && inputs.description) ? 0.8 : 1, // Lower opacity when disabled
+                        : "pointer",
+                      opacity: !(inputs.title && inputs.description) ? 0.8 : 1, 
                     }}
                   >
                     Clear

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Updatetodo.css";
+import "./Todo.css";
 import { handleError, handleSuccess } from "../../utils/utils";
 import { useLocation, useNavigate } from "react-router-dom";
 import ValidationError from "../../Validation/ValidationError";

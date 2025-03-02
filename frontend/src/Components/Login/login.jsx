@@ -53,6 +53,7 @@ function Login({ setIsLoggedIn }) {
       stopLoading();
     }
     setIsTouched(false);
+    setError("");
   };
 
   const handleChange = (setter) => (e) => {
@@ -121,7 +122,7 @@ function Login({ setIsLoggedIn }) {
                   textDecoration: "underline",
                 }}
               >
-                SignUp
+                Create One.
               </span>
             </p>
           </div>

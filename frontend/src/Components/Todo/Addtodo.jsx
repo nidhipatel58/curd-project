@@ -39,11 +39,12 @@ let AddTodo = () => {
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
     setIsTouched(false);
+    setError("");
   };
 
   const submitTodo = async () => {
     const { title, description } = inputs;
-    if (!ValidationError.isTodoValidate(inputs.title,inputs.description,setError)) {
+    if (!ValidationError.isTodoValidate(inputs.title, inputs.description, setError)) {
       return;
     }
 
@@ -57,6 +58,7 @@ let AddTodo = () => {
 
     setInputs({ title: "", description: "" });
     setIsTouched(false);
+    setError("");
   };
 
   return (
@@ -65,7 +67,9 @@ let AddTodo = () => {
         <div className="row">
           <div className="col-lg-4">
             <div className="todo-card">
-              <h6 className="todo-form-title"></h6>
+              <h6 className="todo-form-title">
+                Add New Todo
+              </h6>
               <input
                 type="text"
                 name="title"
@@ -73,6 +77,7 @@ let AddTodo = () => {
                 className="form-input"
                 value={inputs.title}
                 onChange={handleChange}
+                maxLength={50}
               />
               <textarea
                 name="description"
@@ -80,15 +85,37 @@ let AddTodo = () => {
                 className="form-input"
                 value={inputs.description}
                 onChange={handleChange}
+                maxLength={100}
               />
-              {error && <span className="error">{error}</span>}
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontSize: "12px",
+                marginTop: "5px",
+                padding: "0 5px",
+                minHeight: "16px" 
+              }}>
+                <span style={{ color: "red", fontSize: "14px", visibility: error ? "visible" : "hidden" }}>
+                  {error || "Placeholder"}
+                </span>
+              </div>
+
+
               <div className="button-group">
-                <ButtonComponent
+                <button
                   className="btn-clear"
                   onClick={clearInputs}
-                  text="Clear"
-                  disabled={!inputs.title && !inputs.description}
-                />
+                  disabled={!(inputs.title && inputs.description)} 
+                  style={{
+                    cursor: !(inputs.title && inputs.description)
+                      ? "not-allowed"
+                      : "pointer", 
+                    opacity: !(inputs.title && inputs.description) ? 0.8 : 1, 
+                  }}
+                >
+                  Clear
+                </button>
                 <button
                   className="btn-submit"
                   onClick={submitTodo}
@@ -98,7 +125,7 @@ let AddTodo = () => {
                       !inputs.title || !inputs.description
                         ? "not-allowed"
                         : "pointer",
-                    opacity: !inputs.title || !inputs.description ? 0.4 : 1,
+                    opacity: !inputs.title || !inputs.description ? 0.8 : 1,
                   }}
                 >
                   Add

@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Navbar.css";
+import { FiLogOut, FiUser, FiLock, FiPlusCircle, FiList, FiLogIn } from "react-icons/fi"; // Added Sign In icon
+import { FaTasks } from "react-icons/fa"; // Logo icon
 import profileImg from "../../assets/profile.png";
-import ButtonComponent from "../Button/Button.component";
+import "./Navbar.css";
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -10,11 +11,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const dropdownRef = useRef(null);
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("Username");
-    localStorage.removeItem("Email");
+    localStorage.clear();
     setIsLoggedIn(false);
     setShowDropdown(false);
     navigate("/");
@@ -25,20 +22,15 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     navigate("/profile");
   };
 
-  
   const handleChangePasswordClick = () => {
     setShowDropdown(false);
     navigate("/changepassword");
   };
 
-
-
-  // Toggle dropdown :-
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
 
-  // Close dropdown:-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -55,40 +47,39 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   return (
     <nav className="navbar">
       <div className="container">
-        <h4 className="logo">Todo App</h4>
+        {/* Logo with icon */}
+        <div className="logo">
+          <FaTasks className="logo-icon" />
+          <span className="gradient-text">Todo</span>
+        </div>
 
         <div className="nav-buttons">
           {!isLoggedIn ? (
-            <button className="nav-button" onClick={() => navigate("/login")}>
-              Sign In
+            <button className="nav-btn" onClick={() => navigate("/login")}>
+              <FiLogIn className="icon" /> <span>Sign In</span>
             </button>
           ) : (
             <>
-              <button
-                className="create-todo-btn"
-                onClick={() => {
-                  navigate("/todo");
-                }}
-              >
-                Create Todo
+              <button className="nav-btn" onClick={() => navigate("/todo")}>
+                <FiList className="icon" /> <span>Create Todo</span>
               </button>
-              <button
-                className="create-todo-btn"
-                onClick={() => {
-                  navigate("/addtodo");
-                }}
-              >
-                Add
+              <button className="nav-btn" onClick={() => navigate("/addtodo")}>
+                <FiPlusCircle className="icon" /> <span>Add</span>
               </button>
               <div className="profile-dropdown" ref={dropdownRef}>
                 <button className="profile-btn" onClick={toggleDropdown}>
                   <img src={profileImg} alt="Profile" className="profile-img" />
                 </button>
-                <div className={`dropdown-menu ${showDropdown ? "active" : ""}`}
-                >
-                  <button onClick={handleProfileClick}>My Account</button>
-                  <button onClick={handleChangePasswordClick}>Change Password</button>
-                  <button onClick={handleLogout}>Logout</button>
+                <div className={`dropdown-menu ${showDropdown ? "active" : ""}`}>
+                  <button className="dropdown-item" onClick={handleProfileClick}>
+                    <FiUser className="icon" /> My Account
+                  </button>
+                  <button className="dropdown-item" onClick={handleChangePasswordClick}>
+                    <FiLock className="icon" /> Change Password
+                  </button>
+                  <button className="dropdown-item logout-btn" onClick={handleLogout}>
+                    <FiLogOut className="icon" /> Logout
+                  </button>
                 </div>
               </div>
             </>

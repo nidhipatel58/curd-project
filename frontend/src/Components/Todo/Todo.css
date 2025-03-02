@@ -9,7 +9,6 @@
 
 .center-container {
   width: 100%;
-  max-width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,21 +53,28 @@
 .form-input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
+}
+
+.form-input[name="title"] {
+  margin-bottom: 15px;
+}
+
+.form-input[name="description"] {
+  margin-bottom: 5px;
 }
 
 .button-group {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  margin-top: 15px;
 }
 
 .btn-clear,
-.btn-submit,
-.btn-delete {
+.btn-submit {
   font-size: 16px;
   border-radius: 5px;
   width: 100px;
@@ -90,13 +96,22 @@
 }
 
 .btn-submit {
-  background-color: #000000;
+  background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
+  border: none;
   color: white;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+  padding: 8px;
+  transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
+/* Add a subtle hover effect */
 .btn-submit:hover {
-  background-color: #333333;
+  opacity: 0.9;
 }
 
 .table-container {
@@ -107,9 +122,9 @@
 }
 
 table td {
-  word-wrap: break-word; /* Break the word if necessary */
-  white-space: normal;   /* Allow wrapping in table cells */
-  word-break: break-word; /* Ensures longer text breaks appropriately */
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .table-container table {
@@ -138,12 +153,8 @@ table td {
   text-align: left;
   white-space: normal;
   word-wrap: break-word;
-  height: auto;
+  height: 80px;
   overflow: hidden;
-}
-
-.table-container td:first-child {
-  text-align: center;
 }
 
 td {
@@ -154,6 +165,24 @@ td {
 .table-container th {
   font-weight: bold;
   height: 40px;
+}
+
+.table-container td:first-child, 
+.table-container th:first-child {
+  width: 8%;
+  min-width: 8%;
+  max-width: 8%; 
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.table-container td:nth-child(2), 
+.table-container th:nth-child(2) {
+  width: 20%;
+  min-width: 20%;
+  max-width: 20%; 
+  text-align: left;
+  word-wrap: break-word;
 }
 
 .table-container::-webkit-scrollbar {
@@ -171,7 +200,7 @@ td {
 
 textarea {
   resize: none;
-  max-height: 80px;
+  max-height: 70px;
   overflow-y: auto;
 }
 
@@ -184,26 +213,38 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   height: 100%;
-  white-space: nowrap;
+}
+
+.table-container td:last-child { 
+  vertical-align: middle;
 }
 
 .action-btn {
-  padding: 5px 10px;
-  border: 1px solid gray;
-  background: transparent;
-  font-size: 12px;
+  min-width: 80px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  gap: 5px;
+  padding: 8px 12px;
+  border: none;
   cursor: pointer;
-  border-radius: 3px;
-  color: #000000;
-  min-width: 50px;
-  text-align: center;
+  border-radius: 5px;
+  background-color:white;
+  border: 1px solid #ddd;
 }
 
 .action-btn:hover {
-  background: gray;
+  background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
   color: white;
+  border: none;
+}
+
+.table-container td:last-child {
+  border-bottom: none !important;
 }
 
 .error {

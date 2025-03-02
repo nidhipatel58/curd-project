@@ -11,6 +11,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 function Profile() {
   const [currentpassword, setCurrentPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
+  const [confirmnewpassword, setConfirmNewPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -19,7 +20,7 @@ function Profile() {
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
-    if (!ValidationError.isValidateChangePassword(currentpassword, newpassword, setError)) {
+    if (!ValidationError.isValidateChangePassword(currentpassword, newpassword,confirmnewpassword, setError)) {
       return;
     }
     try {
@@ -31,6 +32,7 @@ function Profile() {
       ResponseHandler.error(err);
     }
     setIsTouched(false);
+    setError("");
   };
 
   const handleChange = (setter) => (e) => {
@@ -40,11 +42,11 @@ function Profile() {
 
   useEffect(() => {
     if (isTouched) {
-      if (!ValidationError.isValidateChangePassword(currentpassword, newpassword, setError)) {
+      if (!ValidationError.isValidateChangePassword(currentpassword, newpassword,confirmnewpassword, setError)) {
         return;
       }
     }
-  }, [currentpassword, newpassword]);
+  }, [currentpassword, newpassword,confirmnewpassword]);
 
 
 
@@ -73,6 +75,21 @@ function Profile() {
               placeholder="New Password"
               onChange={handleChange(setNewPassword)}
               value={newpassword}
+            />
+            <span
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          <div className="input-box">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Confirm New Password"
+              onChange={handleChange(setConfirmNewPassword)}
+              value={confirmnewpassword}
             />
             <span
               className="password-toggle"
