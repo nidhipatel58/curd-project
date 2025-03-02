@@ -95,7 +95,6 @@ const deleteUser = async (req, res) => {
   try {
     const userId = req.userId;
 
-    // Check if the user has any todos
     const todos = await TodoService.GetTodo(userId);
     if (todos && todos.length > 0) {
       return res.status(400).json({
@@ -103,7 +102,6 @@ const deleteUser = async (req, res) => {
       });
     }
 
-    // Proceed with user deletion if no todos exist
     const user = await UserService.deleteUser(userId);
     if (!user) {
       return res.status(401).json({ message: "Unauthorized user" });
@@ -117,6 +115,8 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
 // Login:-
 const Login = async (req, res) => {
   const { email, password } = req.body;

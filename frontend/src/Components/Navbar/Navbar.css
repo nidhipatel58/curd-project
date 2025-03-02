@@ -33,10 +33,10 @@
 .gradient-text {
   background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
   background-clip: text;
-  -webkit-background-clip: text; /* For WebKit browsers (Chrome, Safari) */
-  -moz-background-clip: text; /* For Mozilla Firefox (Older versions) */
-  -o-background-clip: text; /* For Opera (Older versions) */
-  -ms-background-clip: text; /* For Internet Explorer (Not widely supported) */
+  -webkit-background-clip: text; 
+  -moz-background-clip: text;
+  -o-background-clip: text; 
+  -ms-background-clip: text; 
   color: transparent;
   font-weight: bold;
 }
@@ -58,7 +58,7 @@
   background: transparent;
   cursor: pointer;
   border: none;
-  color: black; /* Default text color */
+  color: black; 
   font-weight: bold;
   transition: background 0.3s ease, color 0.3s ease;
 }
@@ -72,8 +72,8 @@
 }
 
 .nav-btn:hover {
-  background: #f4f4f4; /* Light gray background on hover */
-  color: black; /* Keeps text color black */
+  background: #f4f4f4; 
+  color: black;
 }
 
 .profile-dropdown {
@@ -101,7 +101,7 @@
   top: 70px;
   right: 0;
   background: white;
-  width: 200px; /* Increased width */
+  width: 200px;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;

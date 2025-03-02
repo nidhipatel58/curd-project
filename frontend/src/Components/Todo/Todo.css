@@ -109,7 +109,6 @@
   transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
-/* Add a subtle hover effect */
 .btn-submit:hover {
   opacity: 0.9;
 }

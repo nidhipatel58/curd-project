@@ -47,7 +47,6 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   return (
     <nav className="navbar">
       <div className="container">
-        {/* Logo with icon */}
         <div className="logo">
           <FaTasks className="logo-icon" />
           <span className="gradient-text">Todo</span>
