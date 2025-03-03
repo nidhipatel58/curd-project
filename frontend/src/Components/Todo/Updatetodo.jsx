@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Todo.css";
-import { handleError, handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 import { useLocation, useNavigate } from "react-router-dom";
 import ValidationError from "../../Validation/ValidationError";
 import ButtonComponent from "../Button/Button.component";
@@ -58,11 +58,11 @@ function UpdateTodo() {
         return;
       }
       await updateTodo(`${todoid}`, { title, description });
-      handleSuccess("Todo updated successfully!");
+      showToast("Todo updated successfully!", "success");
 
       navigate("/todo");
     } catch (err) {
-      handleError(err.response.data.message);
+      showToast(err.response.data.message, "error");
     }
     setIsTouched(false);
   };

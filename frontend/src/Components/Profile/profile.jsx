@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import axios from "axios";
-import { handleError, handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 import { FaUser, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import { updateUser, deleteUser } from "../../api/user";
@@ -53,7 +53,7 @@ function Profile({ setIsLoggedIn }) {
     }
     try {
       let response = await updateUser({ username, email });
-      handleSuccess("Profile updated successfully");
+      showToast("Profile updated successfully", "success");
       localStorage.setItem("Username", response.data.user.username);
       localStorage.setItem("Email", response.data.user.email);
       navigate("/profile");
@@ -83,14 +83,14 @@ function Profile({ setIsLoggedIn }) {
   const handleDeleteUser = async () => {
     try {
       let response = await deleteUser();
-      handleSuccess("User deleted successfulyy");
+      showToast("User deleted successfulyy", "success");
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("Username");
       localStorage.removeItem("Email");
       navigate("/login");
-      setIsLoggedIn(false); 
+      setIsLoggedIn(false);
     } catch (err) {
       ResponseHandler.error(err);
     }

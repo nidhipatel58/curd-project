@@ -33,14 +33,13 @@
 .gradient-text {
   background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
   background-clip: text;
-  -webkit-background-clip: text; 
+  -webkit-background-clip: text;
   -moz-background-clip: text;
-  -o-background-clip: text; 
-  -ms-background-clip: text; 
+  -o-background-clip: text;
+  -ms-background-clip: text;
   color: transparent;
   font-weight: bold;
 }
-
 
 .nav-buttons {
   display: flex;
@@ -52,13 +51,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; 
+  gap: 8px;
   padding: 10px 16px;
   border-radius: 5px;
   background: transparent;
   cursor: pointer;
   border: none;
-  color: black; 
+  color: black;
   font-weight: bold;
   transition: background 0.3s ease, color 0.3s ease;
 }
@@ -72,7 +71,7 @@
 }
 
 .nav-btn:hover {
-  background: #f4f4f4; 
+  background: #f4f4f4;
   color: black;
 }
 
@@ -135,3 +134,41 @@
   margin-right: 10px;
   font-size: 18px;
 }
+
+/* ============= Theme Btn=======================*/
+/* button {
+  background: #ccc;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 100px;
+  font-size: inherit;
+  outline: none;
+}
+
+svg {
+  height: 2em;
+  width: 2em;
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+
+body:not(.theme-light):not(.theme-dark) .icon-default,
+body.theme-light .icon-light,
+body.theme-dark .icon-dark {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode presentational styles */
+/* @media (prefers-color-scheme: dark) {
+  body:not(.theme-light) {
+    background: black;
+  }
+}
+
+body.theme-dark {
+  background: black;
+}  */

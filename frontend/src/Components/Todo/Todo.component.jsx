@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./Todo.css";
-import { handleError, handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import TodoTable from "./TodoTable";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
 import { Modal, Button } from "react-bootstrap";
-import ButtonComponent from "../Button/Button.component";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 
 function Todo() {
@@ -71,7 +69,7 @@ function Todo() {
     if (isUpdating) {
       try {
         await updateTodo(`${updateId}`, { title, description });
-        handleSuccess("Todo updated successfully");
+        showToast("Todo updated successfully", "success");
         setTodoArray((prevTodos) =>
           prevTodos.map((todo) =>
             todo.id === updateId ? { ...todo, title, description } : todo
@@ -83,7 +81,7 @@ function Todo() {
     } else {
       try {
         const response = await createTodo({ title, description });
-        handleSuccess("Todo created successfully");
+        showToast("Todo created successfully", "success");
         setTodoArray([...todoArray, response.data.todo]);
         setInputs({ title: "", description: "" });
       } catch (err) {
@@ -133,7 +131,7 @@ function Todo() {
     if (deleteTodoId) {
       try {
         await deleteTodo(`${deleteTodoId}`);
-        handleSuccess("Todo deleted successfully");
+        showToast("Todo deleted successfully", "success");
         setTodoArray(todoArray.filter((item) => item.id !== deleteTodoId));
       } catch (err) {
         ResponseHandler.error(err);

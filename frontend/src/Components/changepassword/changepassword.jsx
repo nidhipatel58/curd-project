@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Profile/profile.css";
-import { handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 import ButtonComponent from "../Button/Button.component";
 import { changePassword } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
@@ -27,7 +27,7 @@ function Profile() {
     }
     try {
       let response = await changePassword({ currentpassword, newpassword });
-      handleSuccess("Password changed successfully");
+      showToast("Password changed successfully", "success");
       console.log(response.data);
       navigate("/todo");
     } catch (err) {

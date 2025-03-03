@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
-import { handleError, handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import { login } from "../../api/user";
 import Progressbtn from "../Progressbar/progressbar";
@@ -32,7 +32,7 @@ function Login({ setIsLoggedIn }) {
     try {
       setLoading(true);
       const response = await login({ email, password });
-      handleSuccess("Login Successfully");
+      showToast("Login Successfully", "success");
       console.log(response.data);
       setEmail("");
       setPassword("");
@@ -45,7 +45,7 @@ function Login({ setIsLoggedIn }) {
         setIsLoggedIn(true);
         navigate("/todo");
       } else {
-        handleError("Login failed");
+        showToast("Login failed", "error");
       }
     } catch (err) {
       ResponseHandler.error(err);

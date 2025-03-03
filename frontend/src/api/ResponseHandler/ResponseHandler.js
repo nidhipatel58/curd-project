@@ -1,13 +1,16 @@
-import { handleError, handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 
 class ResponseHandler {
   static success(message) {
-    handleSuccess(message);
+    showToast(message, "success");
   }
 
   static error(err) {
     if (!err.response) {
-      handleError("No response from server. Check your internet connection.");
+      showToast(
+        "No response from server. Check your internet connection.",
+        "error"
+      );
       return;
     }
 
@@ -38,7 +41,7 @@ class ResponseHandler {
         errorMessage = errMessage || "Something went wrong!";
     }
 
-    handleError(errorMessage);
+    showToast(errorMessage, "error");
   }
 }
 

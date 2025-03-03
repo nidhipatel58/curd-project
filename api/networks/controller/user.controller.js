@@ -2,7 +2,7 @@ import createToken from "../../middleware/auth.js";
 import UserModel from "../../models/user.js";
 import UserService from "../services/user.service.js";
 import bcrypt from "bcryptjs";
-import TodoService from "../services/todo.service.js"; 
+import TodoService from "../services/todo.service.js";
 
 // Register Users:
 const createUser = async (req, res) => {
@@ -116,21 +116,18 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
 // Login:-
 const Login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UserService.findUserByEmail(email);
     if (!user) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid Credential" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res
-        .status(401)
-        .json({ message: "Invalid password" });
+      return res.status(401).json({ message: "Invalid password" });
     }
 
     let token = createToken({ userId: user.id, username: user.username });
@@ -147,17 +144,18 @@ const Login = async (req, res) => {
   }
 };
 
-
 const changePassword = async (req, res) => {
   try {
-    const userId = req.userId; 
+    const userId = req.userId;
     const { currentpassword, newpassword } = req.body;
 
-    console.log("current password: ",currentpassword);
-    console.log("new password: ",newpassword);
+    console.log("current password: ", currentpassword);
+    console.log("new password: ", newpassword);
 
     if (!currentpassword || !newpassword) {
-      return res.status(401).json({ message: "Current and new password are required" });
+      return res
+        .status(401)
+        .json({ message: "Current and new password are required" });
     }
 
     const user = await UserService.getUser(userId);
@@ -165,13 +163,18 @@ const changePassword = async (req, res) => {
       return res.status(401).json({ message: "User not found" });
     }
 
-    const isPasswordValid = await bcrypt.compare(currentpassword, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      currentpassword,
+      user.password
+    );
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Current password is incorrect" });
     }
 
     const hashedNewPassword = await bcrypt.hash(newpassword, 10);
-    const updatedUser = await UserService.updateUser(userId, { password: hashedNewPassword });
+    const updatedUser = await UserService.updateUser(userId, {
+      password: hashedNewPassword,
+    });
 
     if (!updatedUser) {
       return res.status(401).json({ message: "Failed to update password" });
@@ -179,8 +182,18 @@ const changePassword = async (req, res) => {
 
     res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };
 
-export { createUser, getAllUser, getUser, deleteUser, updateUser, Login, changePassword };
+export {
+  createUser,
+  getAllUser,
+  getUser,
+  deleteUser,
+  updateUser,
+  Login,
+  changePassword,
+};

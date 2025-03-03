@@ -1,11 +1,5 @@
-import { useState, useEffect } from "react";
-import {
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-  Navigate,
-} from "react-router-dom";
+import { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Components/Login/login";
 import Signup from "./Components/Signup/signup";
@@ -17,11 +11,9 @@ import Addtodo from "./Components/Todo/Addtodo";
 import { ToastContainer } from "react-toastify";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-  }, []);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
 
   return (
     <div className="App">
@@ -43,7 +35,6 @@ function App() {
             path="/signup"
             element={isLoggedIn ? <Navigate to="/todo" replace /> : <Signup />}
           />
-
           <Route
             path="/profile"
             element={
@@ -54,7 +45,6 @@ function App() {
               )
             }
           />
-
           <Route
             path="/changepassword"
             element={
@@ -77,15 +67,23 @@ function App() {
             path="/todo"
             element={isLoggedIn ? <Todo /> : <Navigate to="/login" replace />}
           />
-
           <Route
             path="/"
-            element={<Navigate to={isLoggedIn ? "/todo" : "/login"} replace />}
+            element={
+              <Navigate
+                to={isLoggedIn ? window.location.pathname : "/login"}
+                replace
+              />
+            }
           />
-
           <Route
             path="*"
-            element={<Navigate to={isLoggedIn ? "/todo" : "/login"} replace />}
+            element={
+              <Navigate
+                to={isLoggedIn ? window.location.pathname : "/login"}
+                replace
+              />
+            }
           />
         </Routes>
       </div>

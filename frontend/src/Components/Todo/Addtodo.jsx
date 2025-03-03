@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./Todo.css";
-import { handleError, handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import TodoTable from "./TodoTable";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
@@ -50,7 +50,7 @@ let AddTodo = () => {
 
     try {
       await createTodo({ title, description });
-      handleSuccess("Todo created successfully");
+      showToast("Todo created successfully", "success");
       navigate("/todo");
     } catch (err) {
       ResponseHandler.error(err);
@@ -94,7 +94,7 @@ let AddTodo = () => {
                 fontSize: "12px",
                 marginTop: "5px",
                 padding: "0 5px",
-                minHeight: "16px" 
+                minHeight: "16px"
               }}>
                 <span style={{ color: "red", fontSize: "14px", visibility: error ? "visible" : "hidden" }}>
                   {error || "Placeholder"}
@@ -106,12 +106,12 @@ let AddTodo = () => {
                 <button
                   className="btn-clear"
                   onClick={clearInputs}
-                  disabled={!(inputs.title && inputs.description)} 
+                  disabled={!(inputs.title && inputs.description)}
                   style={{
                     cursor: !(inputs.title && inputs.description)
                       ? "not-allowed"
-                      : "pointer", 
-                    opacity: !(inputs.title && inputs.description) ? 0.8 : 1, 
+                      : "pointer",
+                    opacity: !(inputs.title && inputs.description) ? 0.8 : 1,
                   }}
                 >
                   Clear

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signup.css";
-import { handleSuccess } from "../../utils/utils";
+import { showToast } from "../../utils/utils";
 import { FaUser, FaEye, FaEyeSlash, FaEnvelope } from "react-icons/fa";
 import ButtonComponent from "../Button/Button.component";
 import { signup } from "../../api/user";
@@ -26,7 +26,7 @@ function Signup() {
         }
         try {
             let response = await signup({ username, email, password });
-            handleSuccess("User registered successfully");
+            showToast("User registered successfully", "success");
             navigate("/login");
         } catch (err) {
             ResponseHandler.error(err);
