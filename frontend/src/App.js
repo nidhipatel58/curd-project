@@ -46,9 +46,15 @@ function App() {
 
           <Route
             path="/profile"
-            element={isLoggedIn ? <Profile setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" replace />}
+            element={
+              isLoggedIn ? (
+                <Profile setIsLoggedIn={setIsLoggedIn} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
           />
-          
+
           <Route
             path="/changepassword"
             element={

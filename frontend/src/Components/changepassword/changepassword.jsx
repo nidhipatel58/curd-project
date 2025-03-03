@@ -14,13 +14,15 @@ function Profile() {
   const [confirmnewpassword, setConfirmNewPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showNewPass, SetshowNewPass] = useState(false);
+  const [showconfirm, SetshowConfirm] = useState(false)
 
   const navigate = useNavigate();
   const [isTouched, setIsTouched] = useState(false);
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
-    if (!ValidationError.isValidateChangePassword(currentpassword, newpassword,confirmnewpassword, setError)) {
+    if (!ValidationError.isValidateChangePassword(currentpassword, newpassword, confirmnewpassword, setError)) {
       return;
     }
     try {
@@ -42,11 +44,11 @@ function Profile() {
 
   useEffect(() => {
     if (isTouched) {
-      if (!ValidationError.isValidateChangePassword(currentpassword, newpassword,confirmnewpassword, setError)) {
+      if (!ValidationError.isValidateChangePassword(currentpassword, newpassword, confirmnewpassword, setError)) {
         return;
       }
     }
-  }, [currentpassword, newpassword,confirmnewpassword]);
+  }, [currentpassword, newpassword, confirmnewpassword]);
 
 
 
@@ -71,31 +73,31 @@ function Profile() {
           </div>
           <div className="input-box">
             <input
-              type={showPassword ? "text" : "password"}
+              type={showNewPass ? "text" : "password"}
               placeholder="New Password"
               onChange={handleChange(setNewPassword)}
               value={newpassword}
             />
             <span
               className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => SetshowNewPass(!showNewPass)}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showNewPass ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
 
           <div className="input-box">
             <input
-              type={showPassword ? "text" : "password"}
+              type={showconfirm ? "text" : "password"}
               placeholder="Confirm New Password"
               onChange={handleChange(setConfirmNewPassword)}
               value={confirmnewpassword}
             />
             <span
               className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => SetshowConfirm(!showconfirm)}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showconfirm ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
           {error && <span className="error">{error}</span>}

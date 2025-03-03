@@ -15,6 +15,7 @@ function Signup() {
     const [confirmpass, setConfirmPass] = useState("");
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmpass, setShowConfirm] = useState(false)
     const navigate = useNavigate();
     const [isTouched, setIsTouched] = useState(false);
 
@@ -90,7 +91,7 @@ function Signup() {
                     </div>
                     <div className="input-box">
                         <input
-                            type={showPassword ? "text" : "password"}
+                            type={showConfirmpass ? "text" : "password"}
                             placeholder="Confirm Password"
                             onChange={handleChange(setConfirmPass)}
                             name="confirmpass"
@@ -98,9 +99,9 @@ function Signup() {
                         />
                         <span
                             className="password-toggle"
-                            onClick={() => setShowPassword(!showPassword)}
+                            onClick={() => setShowConfirm(!showConfirmpass)}
                         >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            {showConfirmpass ? <FaEyeSlash /> : <FaEye />}
                         </span>
                     </div>
 

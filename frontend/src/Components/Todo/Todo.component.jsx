@@ -177,7 +177,7 @@ function Todo() {
                   fontSize: "12px",
                   marginTop: "5px",
                   padding: "0 5px",
-                  minHeight: "16px" 
+                  minHeight: "16px"
                 }}>
                   <span style={{ color: "red", fontSize: "14px", visibility: error ? "visible" : "hidden" }}>
                     {error || "Placeholder"}
@@ -194,7 +194,7 @@ function Todo() {
                       cursor: !(inputs.title && inputs.description)
                         ? "not-allowed"
                         : "pointer",
-                      opacity: !(inputs.title && inputs.description) ? 0.8 : 1, 
+                      opacity: !(inputs.title && inputs.description) ? 0.8 : 1,
                     }}
                   >
                     Clear
