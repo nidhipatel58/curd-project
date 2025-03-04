@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./signup.css";
 import { showToast } from "../../utils/utils";
 import { FaUser, FaEye, FaEyeSlash, FaEnvelope } from "react-icons/fa";
-import ButtonComponent from "../Button/Button.component";
 import { signup } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
+import ProgressBtn from "../common/Progressbar/progressbar";
+import InputFields from "../common/Input/inputfields"
 
 function Signup() {
     const [username, setUsername] = useState("");
@@ -56,7 +57,7 @@ function Signup() {
                 <form onSubmit={handleSignup}>
                     <h1>Signup</h1>
                     <div className="input-box">
-                        <input
+                        <InputFields
                             type="text"
                             placeholder="Username"
                             name="username"
@@ -66,7 +67,7 @@ function Signup() {
                         <FaUser className="icon" />
                     </div>
                     <div className="input-box">
-                        <input
+                        <InputFields
                             placeholder="Email"
                             onChange={handleChange(setEmail)}
                             name="email"
@@ -75,7 +76,7 @@ function Signup() {
                         <FaEnvelope className="icon" />
                     </div>
                     <div className="input-box">
-                        <input
+                        <InputFields
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
                             onChange={handleChange(setPassword)}
@@ -90,7 +91,7 @@ function Signup() {
                         </span>
                     </div>
                     <div className="input-box">
-                        <input
+                        <InputFields
                             type={showConfirmpass ? "text" : "password"}
                             placeholder="Confirm Password"
                             onChange={handleChange(setConfirmPass)}
@@ -106,7 +107,7 @@ function Signup() {
                     </div>
 
                     {error && <span className="error">{error}</span>}
-                    <ButtonComponent
+                    <ProgressBtn
                         type="submit"
                         text="Signup"
                         className="w-100 mt-3"

@@ -95,8 +95,21 @@
   color: #000;
 }
 
+@keyframes gradientAnimation {
+  0% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
 .btn-submit {
   background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
+  background-size: 200% 200%;
   border: none;
   color: white;
   font-size: 16px;
@@ -107,6 +120,7 @@
   cursor: pointer;
   padding: 8px;
   transition: opacity 0.3s ease, transform 0.2s ease;
+  animation: gradientAnimation 3s ease infinite;
 }
 
 .btn-submit:hover {
@@ -166,20 +180,20 @@ td {
   height: 40px;
 }
 
-.table-container td:first-child, 
+.table-container td:first-child,
 .table-container th:first-child {
   width: 8%;
   min-width: 8%;
-  max-width: 8%; 
+  max-width: 8%;
   text-align: center;
   word-wrap: break-word;
 }
 
-.table-container td:nth-child(2), 
+.table-container td:nth-child(2),
 .table-container th:nth-child(2) {
   width: 20%;
   min-width: 20%;
-  max-width: 20%; 
+  max-width: 20%;
   text-align: left;
   word-wrap: break-word;
 }
@@ -216,7 +230,7 @@ textarea {
   height: 100%;
 }
 
-.table-container td:last-child { 
+.table-container td:last-child {
   vertical-align: middle;
 }
 
@@ -232,12 +246,14 @@ textarea {
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  background-color:white;
+  background-color: white;
   border: 1px solid #ddd;
 }
 
 .action-btn:hover {
   background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
+  animation: gradientAnimation 3s ease infinite;
+  background-size: 200% 200%;
   color: white;
   border: none;
 }

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 function ButtonComponent({
@@ -27,7 +26,7 @@ function ButtonComponent({
 
   return (
     <div>
-      <Button
+      <button
         onClick={handleClick}
         className={className}
         variant={variant}
@@ -36,8 +35,7 @@ function ButtonComponent({
         disabled={disabled}
       >
         {text}
-      </Button>
-
+      </button>
     </div>
   );
 }

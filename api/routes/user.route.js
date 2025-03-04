@@ -5,6 +5,7 @@ import validate from "../middleware/validate.js";
 import UserValidation from "../validations/index.js";
 import verifyToken from "../middleware/verifyauth.js";
 
+// User Routes:-
 route.post(
   "/register",
   validate(UserValidation.user),
@@ -42,8 +43,7 @@ route.put(
   UserController.changePassword
 );
 
-
-// Login:
+// Login:-
 route.post("/login", validate(UserValidation.user), UserController.Login);
 
 export default route;

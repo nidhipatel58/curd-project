@@ -30,7 +30,7 @@
   font-size: 1.5rem;
 }
 
-.gradient-text {
+/* .gradient-text {
   background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
   background-clip: text;
   -webkit-background-clip: text;
@@ -39,6 +39,31 @@
   -ms-background-clip: text;
   color: transparent;
   font-weight: bold;
+} */
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -o-background-clip: text;
+  -ms-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  animation: gradientAnimation 3s ease infinite;
 }
 
 .nav-buttons {
@@ -65,9 +90,11 @@
 .nav-btn span {
   background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
   -webkit-background-clip: text;
+  background-size: 200% 200%;
   background-clip: text;
   color: transparent;
   font-weight: bold;
+  animation: gradientAnimation 3s ease infinite;
 }
 
 .nav-btn:hover {
@@ -135,8 +162,8 @@
   font-size: 18px;
 }
 
-/* ============= Theme Btn=======================*/
-/* button {
+/* ============= Theme Styles=======================*/
+#switcher {
   background: #ccc;
   border: none;
   padding: 0;
@@ -148,7 +175,7 @@
   outline: none;
 }
 
-svg {
+#switcher svg {
   height: 2em;
   width: 2em;
   padding: 0.5rem;
@@ -162,13 +189,13 @@ body.theme-dark .icon-dark {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
-/* Dark mode presentational styles */
-/* @media (prefers-color-scheme: dark) {
+/* Dark mode*/
+@media (prefers-color-scheme: dark) {
   body:not(.theme-light) {
-    background: black;
+    background: #212529;
   }
 }
 
 body.theme-dark {
-  background: black;
-}  */
+  background: #212529;
+}

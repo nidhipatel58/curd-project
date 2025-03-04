@@ -2,12 +2,15 @@ import React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 
-const ProgressButtonComponent = ({ text, type, className, variant, loading }) => {
+const ProgressButtonComponent = ({ text, type, className, variant, loading, onClick }) => {
     return (
         <button
             type={type}
             className={`btn btn-${variant} ${className} d-flex align-items-center justify-content-center`}
             disabled={loading}
+            text={text}
+            onClick={onClick}
+            variant={variant}
             style={{
                 position: "relative",
                 display: "flex",

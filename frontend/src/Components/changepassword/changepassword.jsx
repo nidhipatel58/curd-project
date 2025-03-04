@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Profile/profile.css";
 import { showToast } from "../../utils/utils";
-import ButtonComponent from "../Button/Button.component";
 import { changePassword } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import InputFields from "../common/Input/inputfields";
+import ProgressBtn from "../common/Progressbar/progressbar";
 
 function Profile() {
   const [currentpassword, setCurrentPassword] = useState("");
@@ -72,7 +73,7 @@ function Profile() {
             </span>
           </div>
           <div className="input-box">
-            <input
+            <InputFields
               type={showNewPass ? "text" : "password"}
               placeholder="New Password"
               onChange={handleChange(setNewPassword)}
@@ -87,7 +88,7 @@ function Profile() {
           </div>
 
           <div className="input-box">
-            <input
+            <InputFields
               type={showconfirm ? "text" : "password"}
               placeholder="Confirm New Password"
               onChange={handleChange(setConfirmNewPassword)}
@@ -101,7 +102,7 @@ function Profile() {
             </span>
           </div>
           {error && <span className="error">{error}</span>}
-          <ButtonComponent
+          <ProgressBtn
             type="submit"
             text="Submit"
             className="w-100 mt-3"

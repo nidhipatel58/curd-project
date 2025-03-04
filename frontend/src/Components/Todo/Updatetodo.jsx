@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./Todo.css";
 import { showToast } from "../../utils/utils";
 import { useLocation, useNavigate } from "react-router-dom";
 import ValidationError from "../../Validation/ValidationError";
-import ButtonComponent from "../Button/Button.component";
+import ButtonComponent from "../common/Button/Button.component";
 import { updateTodo } from "../../api/todo";
+import InputFields from "../common/Input/inputfields"
 
 function UpdateTodo() {
   const location = useLocation();
   const navigate = useNavigate();
   const { todoid, title, description } = location.state || {};
-  const Token = localStorage.getItem("token");
   const [isTouched, setIsTouched] = useState(false);
 
   const [inputs, setInputs] = useState({
@@ -75,7 +74,7 @@ function UpdateTodo() {
             <div className="col-lg-4">
               <div className="todo-card">
                 <h6 className="todo-form-title">Update todo</h6>
-                <input
+                <InputFields
                   type="text"
                   name="title"
                   placeholder="Enter title"

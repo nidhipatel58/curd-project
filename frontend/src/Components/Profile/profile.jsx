@@ -4,12 +4,14 @@ import "./profile.css";
 import axios from "axios";
 import { showToast } from "../../utils/utils";
 import { FaUser, FaEnvelope } from "react-icons/fa";
-import ButtonComponent from "../Button/Button.component";
+import ButtonComponent from "../common/Button/Button.component";
 import { updateUser, deleteUser } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 import { Modal, Button } from "react-bootstrap";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
+import InputFields from "../common/Input/inputfields"
+import ProgressBtn from "../common/Progressbar/progressbar";
 const userId = localStorage.getItem("id");
 
 function Profile({ setIsLoggedIn }) {
@@ -89,6 +91,7 @@ function Profile({ setIsLoggedIn }) {
       localStorage.removeItem("id");
       localStorage.removeItem("Username");
       localStorage.removeItem("Email");
+
       navigate("/login");
       setIsLoggedIn(false);
     } catch (err) {
@@ -103,7 +106,7 @@ function Profile({ setIsLoggedIn }) {
         <form onSubmit={handleUpdate}>
           <h1>My Account</h1>
           <div className="input-box">
-            <input
+            <InputFields
               type="text"
               placeholder="Username"
               name="username"
@@ -113,7 +116,7 @@ function Profile({ setIsLoggedIn }) {
             <FaUser className="icon" />
           </div>
           <div className="input-box">
-            <input
+            <InputFields
               placeholder="Email"
               onChange={handleChange(setEmail)}
               name="email"
@@ -122,13 +125,13 @@ function Profile({ setIsLoggedIn }) {
             <FaEnvelope className="icon" />
           </div>
           {error && <span className="error">{error}</span>}
-          <ButtonComponent
+          <ProgressBtn
             type="submit"
             text="Update"
             className="w-100 mt-3"
             variant="dark"
           />
-          <ButtonComponent
+          <ProgressBtn
             type="button"
             text="Close your account"
             className="w-100 mt-3"

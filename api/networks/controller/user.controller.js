@@ -4,7 +4,7 @@ import UserService from "../services/user.service.js";
 import bcrypt from "bcryptjs";
 import TodoService from "../services/todo.service.js";
 
-// Register Users:
+// Register Users:-
 const createUser = async (req, res) => {
   let { email, password, username } = req.body;
   if (!email || !password || !username) {
@@ -34,8 +34,8 @@ const getUser = async (req, res) => {
   try {
     const userId = req.userId;
     const username = req.username;
-    console.log(userId, "token based userId"); //
-    console.log(username, "token based username"); //
+    console.log(userId, "token based userId");
+    console.log(username, "token based username");
 
     const user = await UserService.getUser(userId);
     if (!user) {
@@ -144,6 +144,7 @@ const Login = async (req, res) => {
   }
 };
 
+//Change Password:-
 const changePassword = async (req, res) => {
   try {
     const userId = req.userId;

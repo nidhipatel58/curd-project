@@ -1,7 +1,7 @@
 import TodoService from "../services/todo.service.js";
 import UserService from "../services/user.service.js";
 
-// Create todos
+// Create todos:-
 const CreateTodo = async (req, res) => {
   const { title, description } = req.body;
   console.log(req.body, "========= todo params");
@@ -17,6 +17,7 @@ const CreateTodo = async (req, res) => {
   });
 };
 
+// Get Todos By Id:-
 const GetTodo = async (req, res) => {
   try {
     const userId = req.userId;
@@ -36,6 +37,7 @@ const GetTodo = async (req, res) => {
   }
 };
 
+// Get Todos By User Id:-
 const GetTodoByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -61,7 +63,7 @@ const GetTodoByUserId = async (req, res) => {
   }
 };
 
-// Delete todo by ID
+// Delete todo by ID:-
 const DeleteTodo = async (req, res) => {
   try {
     let { id } = req.params;
@@ -78,7 +80,7 @@ const DeleteTodo = async (req, res) => {
   }
 };
 
-// Update todo by ID
+// Update todo by ID:-
 const UpdateTodo = async (req, res) => {
   try {
     let { id } = req.params;

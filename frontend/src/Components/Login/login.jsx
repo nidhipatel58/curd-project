@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
-import ButtonComponent from "../Button/Button.component";
 import { showToast } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import { login } from "../../api/user";
-import Progressbtn from "../Progressbar/progressbar";
+import Progressbtn from "../common/Progressbar/progressbar";
+import InputFields from "../common/Input/inputfields"
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 
 function Login({ setIsLoggedIn }) {
@@ -76,14 +76,14 @@ function Login({ setIsLoggedIn }) {
           <h1>Sign In</h1>
           <div className="input-box">
             <FaUser className="icon" />
-            <input
+            <InputFields
               placeholder="Email"
               value={email}
               onChange={handleChange(setEmail)}
             />
           </div>
           <div className="input-box">
-            <input
+            <InputFields
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
@@ -98,7 +98,7 @@ function Login({ setIsLoggedIn }) {
           </div>
           <div className="remember-forget">
             <label>
-              <input type="checkbox" /> Remember me
+              <InputFields type="checkbox" /> Remember me
             </label>
             <a href="#">Forget Password?</a>
           </div>

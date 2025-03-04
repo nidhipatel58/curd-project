@@ -15,7 +15,7 @@ const verifyToken = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECERT || "Master");
     req.userId = decoded.userId;
     req.username = decoded.username;
-    console.log(decoded.username,"decoded.username");//
+    console.log(decoded.username, "decoded.username"); //
 
     next();
     console.log("verify function : completed of verify");

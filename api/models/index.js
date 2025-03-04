@@ -33,10 +33,6 @@ const loadModels = async () => {
   });
 };
 
-// loadModels()
-//   .then(() => console.log("Models loaded and associations set up"))
-//   .catch((error) => console.error("Error loading models:", error));
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

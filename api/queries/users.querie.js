@@ -1,4 +1,3 @@
-import sequelize from "../config/db.js";
 import UserModel from "../models/user.js";
 
 // Users CRUD Queries:-

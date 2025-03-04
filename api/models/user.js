@@ -2,7 +2,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-// Define the User model using sequelize.define
+// Define the User model using sequelize.define:-
 const UserModel = sequelize.define(
   "User",
   {
@@ -31,10 +31,5 @@ const UserModel = sequelize.define(
     timestamps: false,
   }
 );
-
-// Compare Password
-// UserModel.prototype.comparePassword = async function (password) {
-//   return await bcrypt.compare(password, this.password);
-// };
 
 export default UserModel;

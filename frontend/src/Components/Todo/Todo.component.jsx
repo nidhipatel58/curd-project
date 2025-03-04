@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import "./Todo.css";
 import { showToast } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
-import TodoTable from "./TodoTable";
+import TodoTable from "../common/TodoTable/TodoTable";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
 import { Modal, Button } from "react-bootstrap";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
+import ButtonComponent from "../common/Button/Button.component"
+import InputFields from "../common/Input/inputfields"
 
 function Todo() {
   const [inputs, setInputs] = useState({ title: "", description: "" });
@@ -151,7 +153,7 @@ function Todo() {
                 <h6 className="todo-form-title">
                   {isUpdating ? "Update Todo" : "Create New Todo"}
                 </h6>
-                <input
+                <InputFields
                   type="text"
                   name="title"
                   placeholder="Enter title"
@@ -184,9 +186,10 @@ function Todo() {
 
 
                 <div className="button-group">
-                  <button
+                  <ButtonComponent
                     className="btn-clear"
                     onClick={clearInputs}
+                    text="Clear"
                     disabled={!(inputs.title && inputs.description)}
                     style={{
                       cursor: !(inputs.title && inputs.description)
@@ -194,9 +197,7 @@ function Todo() {
                         : "pointer",
                       opacity: !(inputs.title && inputs.description) ? 0.8 : 1,
                     }}
-                  >
-                    Clear
-                  </button>
+                  />
                   <button
                     className="btn-submit"
                     onClick={submitTodo}

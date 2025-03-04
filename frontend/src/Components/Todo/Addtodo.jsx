@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./Todo.css";
 import { showToast } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
-import TodoTable from "./TodoTable";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
-import { Modal, Button } from "react-bootstrap";
-import ButtonComponent from "../Button/Button.component";
+import ButtonComponent from "../common/Button/Button.component"
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
+import InputFields from "../common/Input/inputfields"
 
 let AddTodo = () => {
   const [inputs, setInputs] = useState({ title: "", description: "" });
@@ -70,7 +68,7 @@ let AddTodo = () => {
               <h6 className="todo-form-title">
                 Add New Todo
               </h6>
-              <input
+              <InputFields
                 type="text"
                 name="title"
                 placeholder="Enter title"
@@ -103,8 +101,9 @@ let AddTodo = () => {
 
 
               <div className="button-group">
-                <button
+                <ButtonComponent
                   className="btn-clear"
+                  text="Clear"
                   onClick={clearInputs}
                   disabled={!(inputs.title && inputs.description)}
                   style={{
@@ -113,12 +112,11 @@ let AddTodo = () => {
                       : "pointer",
                     opacity: !(inputs.title && inputs.description) ? 0.8 : 1,
                   }}
-                >
-                  Clear
-                </button>
-                <button
+                />
+                <ButtonComponent
                   className="btn-submit"
                   onClick={submitTodo}
+                  text="Add"
                   disabled={!inputs.title || !inputs.description}
                   style={{
                     cursor:
@@ -127,9 +125,7 @@ let AddTodo = () => {
                         : "pointer",
                     opacity: !inputs.title || !inputs.description ? 0.8 : 1,
                   }}
-                >
-                  Add
-                </button>
+                />
               </div>
             </div>
           </div>
