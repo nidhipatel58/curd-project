@@ -192,10 +192,41 @@ body.theme-dark .icon-dark {
 /* Dark mode*/
 @media (prefers-color-scheme: dark) {
   body:not(.theme-light) {
-    background: #212529;
+    background: #333333;
   }
 }
 
 body.theme-dark {
-  background: #212529;
+  background: #333333;
+}
+
+/*================= Light theme ===================== */
+.navbar {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/*================= Dark theme ====================== */
+.navbar.theme-dark {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.navbar .nav-btn {
+  background-color: transparent;
+  color: inherit;
+  border: 1px solid transparent;
+  padding: 10px 15px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.navbar.theme-dark .nav-btn {
+  background-color: #444444;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+.navbar.theme-dark .nav-btn:hover {
+  background-color: #555555;
 }
