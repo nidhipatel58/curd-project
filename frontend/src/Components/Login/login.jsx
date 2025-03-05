@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
-import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaUser, FaEye, FaEyeSlash, FaEnvelope } from "react-icons/fa";
 import { showToast } from "../../utils/utils";
 import ValidationError from "../../Validation/ValidationError";
 import { login } from "../../api/user";
 import Progressbtn from "../common/Progressbar/progressbar";
 import InputFields from "../common/Input/inputfields"
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
+import ErrorMessage from "../common/Error/errormsg";
+import PasswordField from "../common/Input/passwordfield";
+import Form from "../common/Form/form";
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -72,37 +75,29 @@ function Login({ setIsLoggedIn }) {
   return (
     <div className="wrapper">
       <div className="form-box login">
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={handleSubmit}>
           <h1>Sign In</h1>
-          <div className="input-box">
-            <FaUser className="icon" />
-            <InputFields
-              placeholder="Email"
-              value={email}
-              onChange={handleChange(setEmail)}
-            />
-          </div>
-          <div className="input-box">
-            <InputFields
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={handleChange(setPassword)}
-            />
-            <span
-              className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
+          <InputFields
+            placeholder="Email"
+            value={email}
+            onChange={handleChange(setEmail)}
+            icon={FaUser}
+          />
+          <PasswordField
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={handleChange(setPassword)}
+            showPassword={showPassword}
+            togglePasswordVisibility={() => setShowPassword(!showPassword)}
+          />
           <div className="remember-forget">
             <label>
-              <InputFields type="checkbox" /> Remember me
+              <input type="checkbox" /> Remember me
             </label>
             <a href="#">Forget Password?</a>
           </div>
-          {error && <span className="error">{error}</span>}
+          <ErrorMessage error={error} />
           <Progressbtn
             type="submit"
             text="Sign In"
@@ -126,7 +121,20 @@ function Login({ setIsLoggedIn }) {
               </span>
             </p>
           </div>
-        </form>
+        </form> */}
+
+        <Form
+          title="SignIn"
+          fields={[
+            { type: "email", placeholder: "Email", name: "email", value: email, onChange: handleChange(setEmail), icon: FaEnvelope },
+            { type: showPassword ? "text" : "password", placeholder: "Password", name: "password", value: password, onChange: handleChange(setPassword), showPassword, togglePasswordVisibility: () => setShowPassword(!showPassword) },
+          ]}
+          onSubmit={handleSubmit}
+          error={error}
+          buttonText="Login"
+          footerText="Don't have an account?"
+          footerAction={() => navigate("/signup")}
+        />
       </div>
     </div>
   );

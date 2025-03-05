@@ -8,6 +8,7 @@ import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputFields from "../common/Input/inputfields";
 import ProgressBtn from "../common/Progressbar/progressbar";
+import PasswordField from "../common/Input/passwordfield";
 
 function Profile() {
   const [currentpassword, setCurrentPassword] = useState("");
@@ -59,47 +60,34 @@ function Profile() {
         <form onSubmit={handleChangePassword}>
           <h1>Change Password</h1>
           <div className="input-box">
-            <input
+            <PasswordField
               type={showPassword ? "text" : "password"}
               placeholder="Current Password"
               value={currentpassword}
               onChange={handleChange(setCurrentPassword)}
+              showPassword={showPassword}
+              togglePasswordVisibility={() => setShowPassword(!showPassword)}
             />
-            <span
-              className="password-toggle"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
           <div className="input-box">
-            <InputFields
+            <PasswordField
               type={showNewPass ? "text" : "password"}
               placeholder="New Password"
               onChange={handleChange(setNewPassword)}
               value={newpassword}
+              showPassword={showNewPass}
+              togglePasswordVisibility={() => SetshowNewPass(!showNewPass)}
             />
-            <span
-              className="password-toggle"
-              onClick={() => SetshowNewPass(!showNewPass)}
-            >
-              {showNewPass ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
-
           <div className="input-box">
-            <InputFields
+            <PasswordField
               type={showconfirm ? "text" : "password"}
               placeholder="Confirm New Password"
               onChange={handleChange(setConfirmNewPassword)}
               value={confirmnewpassword}
+              showPassword={showconfirm}
+              togglePasswordVisibility={() => SetshowConfirm(!showconfirm)}
             />
-            <span
-              className="password-toggle"
-              onClick={() => SetshowConfirm(!showconfirm)}
-            >
-              {showconfirm ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
           {error && <span className="error">{error}</span>}
           <ProgressBtn

@@ -7,6 +7,8 @@ import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
 import ButtonComponent from "../common/Button/Button.component"
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 import InputFields from "../common/Input/inputfields"
+import Todo from "./Todo.component";
+
 
 let AddTodo = () => {
   const [inputs, setInputs] = useState({ title: "", description: "" });
@@ -98,8 +100,6 @@ let AddTodo = () => {
                   {error || "Placeholder"}
                 </span>
               </div>
-
-
               <div className="button-group">
                 <ButtonComponent
                   className="btn-clear"

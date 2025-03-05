@@ -42,6 +42,7 @@ function UpdateTodo() {
   const clearInputs = () => {
     setInputs({ title: "", description: "" });
     setIsTouched(false);
+    setError("")
   };
 
   const submitTodo = async () => {
@@ -64,6 +65,7 @@ function UpdateTodo() {
       showToast(err.response.data.message, "error");
     }
     setIsTouched(false);
+    setError("")
   };
 
   return (
@@ -89,7 +91,19 @@ function UpdateTodo() {
                   value={inputs.description}
                   onChange={handleChange}
                 />
-                {error && <span className="error">{error}</span>}
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: "12px",
+                  marginTop: "5px",
+                  padding: "0 5px",
+                  minHeight: "16px"
+                }}>
+                  <span style={{ color: "red", fontSize: "14px", visibility: error ? "visible" : "hidden" }}>
+                    {error || "Placeholder"}
+                  </span>
+                </div>
                 <div className="button-group">
                   <ButtonComponent
                     className="btn-clear"

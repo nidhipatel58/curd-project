@@ -4,7 +4,6 @@ import "./profile.css";
 import axios from "axios";
 import { showToast } from "../../utils/utils";
 import { FaUser, FaEnvelope } from "react-icons/fa";
-import ButtonComponent from "../common/Button/Button.component";
 import { updateUser, deleteUser } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
@@ -12,6 +11,8 @@ import { Modal, Button } from "react-bootstrap";
 import { getTodo, createTodo, deleteTodo, updateTodo } from "../../api/todo";
 import InputFields from "../common/Input/inputfields"
 import ProgressBtn from "../common/Progressbar/progressbar";
+import ErrorMessage from "../common/Error/errormsg"
+
 const userId = localStorage.getItem("id");
 
 function Profile({ setIsLoggedIn }) {
@@ -105,26 +106,22 @@ function Profile({ setIsLoggedIn }) {
       <div className="form-box login">
         <form onSubmit={handleUpdate}>
           <h1>My Account</h1>
-          <div className="input-box">
-            <InputFields
-              type="text"
-              placeholder="Username"
-              name="username"
-              value={username}
-              onChange={handleChange(setUsername)}
-            />
-            <FaUser className="icon" />
-          </div>
-          <div className="input-box">
-            <InputFields
-              placeholder="Email"
-              onChange={handleChange(setEmail)}
-              name="email"
-              value={email}
-            />
-            <FaEnvelope className="icon" />
-          </div>
-          {error && <span className="error">{error}</span>}
+          <InputFields
+            type="text"
+            placeholder="Username"
+            name="username"
+            value={username}
+            onChange={handleChange(setUsername)}
+            icon={FaUser}
+          />
+          <InputFields
+            placeholder="Email"
+            onChange={handleChange(setEmail)}
+            name="email"
+            value={email}
+            icon={FaEnvelope}
+          />
+          <ErrorMessage error={error} />
           <ProgressBtn
             type="submit"
             text="Update"
@@ -139,6 +136,7 @@ function Profile({ setIsLoggedIn }) {
             onClick={handleDeleteAccount}
           />
         </form>
+
       </div>
       <Modal
         show={showConfirmDialog}

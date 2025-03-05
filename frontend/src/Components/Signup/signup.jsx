@@ -8,6 +8,9 @@ import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 import ProgressBtn from "../common/Progressbar/progressbar";
 import InputFields from "../common/Input/inputfields"
+import ErrorMessage from "../common/Error/errormsg";
+import PasswordField from "../common/Input/passwordfield";
+import Form from "../common/Form/form";
 
 function Signup() {
     const [username, setUsername] = useState("");
@@ -54,59 +57,41 @@ function Signup() {
     return (
         <div className="wrapper">
             <div className="form-box login">
-                <form onSubmit={handleSignup}>
+                {/* <form onSubmit={handleSignup}>
                     <h1>Signup</h1>
-                    <div className="input-box">
-                        <InputFields
-                            type="text"
-                            placeholder="Username"
-                            name="username"
-                            value={username}
-                            onChange={handleChange(setUsername)}
-                        />
-                        <FaUser className="icon" />
-                    </div>
-                    <div className="input-box">
-                        <InputFields
-                            placeholder="Email"
-                            onChange={handleChange(setEmail)}
-                            name="email"
-                            value={email}
-                        />
-                        <FaEnvelope className="icon" />
-                    </div>
-                    <div className="input-box">
-                        <InputFields
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
-                            onChange={handleChange(setPassword)}
-                            name="password"
-                            value={password}
-                        />
-                        <span
-                            className="password-toggle"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                    </div>
-                    <div className="input-box">
-                        <InputFields
-                            type={showConfirmpass ? "text" : "password"}
-                            placeholder="Confirm Password"
-                            onChange={handleChange(setConfirmPass)}
-                            name="confirmpass"
-                            value={confirmpass}
-                        />
-                        <span
-                            className="password-toggle"
-                            onClick={() => setShowConfirm(!showConfirmpass)}
-                        >
-                            {showConfirmpass ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                    </div>
-
-                    {error && <span className="error">{error}</span>}
+                    <InputFields
+                        type="text"
+                        placeholder="Username"
+                        name="username"
+                        value={username}
+                        onChange={handleChange(setUsername)}
+                        icon={FaUser}
+                    />
+                    <InputFields
+                        placeholder="Email"
+                        onChange={handleChange(setEmail)}
+                        name="email"
+                        value={email}
+                        icon={FaEnvelope}
+                    />
+                    <PasswordField
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        value={password}
+                        onChange={handleChange(setPassword)}
+                        name="password"
+                        showPassword={showPassword}
+                        togglePasswordVisibility={() => setShowPassword(!showPassword)} />
+                    <PasswordField
+                        type={showConfirmpass ? "text" : "password"}
+                        placeholder="Confirm Password"
+                        onChange={handleChange(setConfirmPass)}
+                        name="confirmpass"
+                        value={confirmpass}
+                        showPassword={showConfirmpass}
+                        togglePasswordVisibility={() => setShowConfirm(!showConfirmpass)}
+                    />
+                    <ErrorMessage error={error} />
                     <ProgressBtn
                         type="submit"
                         text="Signup"
@@ -130,7 +115,21 @@ function Signup() {
                             </span>
                         </p>
                     </div>
-                </form>
+                </form> */}
+                <Form
+                    title="Signup"
+                    fields={[
+                        { type: "text", placeholder: "Username", name: "username", value: username, onChange: handleChange(setUsername), icon: FaUser },
+                        { type: "email", placeholder: "Email", name: "email", value: email, onChange: handleChange(setEmail), icon: FaEnvelope },
+                        { type: showPassword ? "text" : "password", placeholder: "Password", name: "password", value: password, onChange: handleChange(setPassword), showPassword, togglePasswordVisibility: () => setShowPassword(!showPassword) },
+                        { type: showConfirmpass ? "text" : "password", placeholder: "Confirm Password", name: "confirmpass", value: confirmpass, onChange: handleChange(setConfirmPass), showPassword: showConfirmpass, togglePasswordVisibility: () => setShowConfirm(!showConfirmpass) }
+                    ]}
+                    onSubmit={handleSignup}
+                    error={error}
+                    buttonText="Signup"
+                    footerText="Already have an account?"
+                    footerAction={() => navigate("/login")}
+                />
             </div>
         </div>
     );
