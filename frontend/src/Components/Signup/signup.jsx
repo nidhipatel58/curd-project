@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signup.css";
 import { showToast } from "../../utils/utils";
-import { FaUser, FaEye, FaEyeSlash, FaEnvelope } from "react-icons/fa";
+import { FaUser, FaEnvelope } from "react-icons/fa";
 import { signup } from "../../api/user";
 import ValidationError from "../../Validation/ValidationError";
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
@@ -57,7 +57,7 @@ function Signup() {
     return (
         <div className="wrapper">
             <div className="form-box login">
-                {/* <form onSubmit={handleSignup}>
+                <form onSubmit={handleSignup}>
                     <h1>Signup</h1>
                     <InputFields
                         type="text"
@@ -115,21 +115,7 @@ function Signup() {
                             </span>
                         </p>
                     </div>
-                </form> */}
-                <Form
-                    title="Signup"
-                    fields={[
-                        { type: "text", placeholder: "Username", name: "username", value: username, onChange: handleChange(setUsername), icon: FaUser },
-                        { type: "email", placeholder: "Email", name: "email", value: email, onChange: handleChange(setEmail), icon: FaEnvelope },
-                        { type: showPassword ? "text" : "password", placeholder: "Password", name: "password", value: password, onChange: handleChange(setPassword), showPassword, togglePasswordVisibility: () => setShowPassword(!showPassword) },
-                        { type: showConfirmpass ? "text" : "password", placeholder: "Confirm Password", name: "confirmpass", value: confirmpass, onChange: handleChange(setConfirmPass), showPassword: showConfirmpass, togglePasswordVisibility: () => setShowConfirm(!showConfirmpass) }
-                    ]}
-                    onSubmit={handleSignup}
-                    error={error}
-                    buttonText="Signup"
-                    footerText="Already have an account?"
-                    footerAction={() => navigate("/login")}
-                />
+                </form>
             </div>
         </div>
     );

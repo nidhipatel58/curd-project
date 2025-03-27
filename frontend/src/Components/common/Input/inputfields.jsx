@@ -1,7 +1,7 @@
 import React from "react";
 import "./input.css"
 
-let InputFields = ({ value, type, placeholder, name, onChange, maxLength, className, icon: Icon }) => {
+let InputFields = ({ value, type, placeholder, name, onChange, maxLength, className = "", icon: Icon }) => {
     return (
         <div className="input-box">
             <input

@@ -68,11 +68,34 @@ const getAllUser = async (req, res) => {
 };
 
 // Update user by ID:-
+// const updateUser = async (req, res) => {
+//   try {
+//     const userId = req.userId;
+//     let updates = req.body;
+//     console.log("Update id", userId, "and data", updates);
+
+//     const user = await UserService.updateUser(userId, updates);
+//     if (!user) {
+//       return res.status(401).json({ message: "Unauthorized user" });
+//     }
+
+//     return res.status(200).json({
+//       message: "User updated successfully",
+//       user,
+//     });
+//   } catch (err) {
+//     return res.status(400).json({
+//       message: err.message,
+//     });
+//   }
+// };
+
 const updateUser = async (req, res) => {
   try {
     const userId = req.userId;
     let updates = req.body;
     console.log("Update id", userId, "and data", updates);
+    console.log(req.profile, "------profile");
 
     const user = await UserService.updateUser(userId, updates);
     if (!user) {

@@ -10,7 +10,7 @@ import InputFields from "../common/Input/inputfields"
 import ResponseHandler from "../../api/ResponseHandler/ResponseHandler";
 import ErrorMessage from "../common/Error/errormsg";
 import PasswordField from "../common/Input/passwordfield";
-import Form from "../common/Form/form";
+// import Form from "../common/Form/form";
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -75,7 +75,7 @@ function Login({ setIsLoggedIn }) {
   return (
     <div className="wrapper">
       <div className="form-box login">
-        {/* <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <h1>Sign In</h1>
           <InputFields
             placeholder="Email"
@@ -121,20 +121,7 @@ function Login({ setIsLoggedIn }) {
               </span>
             </p>
           </div>
-        </form> */}
-
-        <Form
-          title="SignIn"
-          fields={[
-            { type: "email", placeholder: "Email", name: "email", value: email, onChange: handleChange(setEmail), icon: FaEnvelope },
-            { type: showPassword ? "text" : "password", placeholder: "Password", name: "password", value: password, onChange: handleChange(setPassword), showPassword, togglePasswordVisibility: () => setShowPassword(!showPassword) },
-          ]}
-          onSubmit={handleSubmit}
-          error={error}
-          buttonText="Login"
-          footerText="Don't have an account?"
-          footerAction={() => navigate("/signup")}
-        />
+        </form>
       </div>
     </div>
   );
