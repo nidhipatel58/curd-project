@@ -19,7 +19,10 @@
 .wrapper .form-box {
   width: 100%;
   padding: 40px;
+  text-align: center;
 }
+
+
 
 .wrapper .form-box.login {
   transition: translate 0.18s ease;
@@ -42,6 +45,10 @@
 form h1 {
   font-size: 36px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 form .input-box {
@@ -133,4 +140,77 @@ form .register-link {
   font-size: 14px;
   margin-top: 5px;
   display: block;
+}
+
+.profile-image-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 20px auto; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-image,
+.default-profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f3f3;
+}
+
+.default-profile {
+  font-size: 50px;
+  color: #888;
+}
+
+.default-user-icon {
+  font-size: 50px;
+  color: #555;
+}
+.edit-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: linear-gradient(45deg, #ff8c00, #ff1493, #6a5acd, #1e90ff);
+  background-size: 200% 200%;
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  cursor: pointer;
+  padding: 8px;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-icon svg {
+  color: white;
+  font-size: 16px;
+}
+
+.profile-image-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cropper-container {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  margin: auto;
 }
