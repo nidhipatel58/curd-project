@@ -36,18 +36,16 @@ async function initializeServer() {
     } catch (err) {
       throw new Error(`Unable to load Swagger file: ${err.message}`);
     }
-
     app.use("/swagger.json", express.static(swaggerPath));
-
-    app.get("/hello", (req, res) => {
-      res.status(200).json({ message: "Hello, this is your serverless GET function!" });
-    });
-
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     app.use("/api", routes);
 
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(JSON.parse(swaggerFile)));
+    app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(JSON.parse(swaggerFile))
+    );
 
     try {
       await db.sequelize.authenticate();
@@ -58,9 +56,9 @@ async function initializeServer() {
       console.error("Database connection error:", dbError.message);
     }
 
+    //Give access to img by giving static path:-
     const imagesPath = path.join(process.cwd(), "public/images");
-    console.log("Serving images from:", imagesPath); 
-
+    console.log("Serving images from:", imagesPath);
     app.use("/images", express.static(imagesPath));
 
     const PORT = process.env.PORT_SERVER || 6001;

@@ -10,18 +10,20 @@ import { Modal, Button } from "react-bootstrap";
 import InputFields from "../common/Input/inputfields";
 import ProgressBtn from "../common/Progressbar/progressbar";
 import ErrorMessage from "../common/Error/errormsg";
-
+import "./ResponsiveProfile.css"
 const userId = localStorage.getItem("id");
+
+
 
 function Profile({ setIsLoggedIn }) {
   const [profile, setProfile] = useState("");
+  const [profileFile, setProfileFile] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
-  const [profileFile, setProfileFile] = useState(null);
 
   useEffect(() => {
     let storedUser = localStorage.getItem("Username");
@@ -31,8 +33,8 @@ function Profile({ setIsLoggedIn }) {
     if (storedUser) setUsername(storedUser);
     if (storedEmail) setEmail(storedEmail);
 
-    const path ="http://localhost:3006"+storedProfile;
-    if (path) 
+    const path = "http://localhost:3006" + storedProfile;
+    if (path)
       setProfile(path);
   }, []);
 
@@ -70,13 +72,13 @@ function Profile({ setIsLoggedIn }) {
     setIsTouched(true);
   };
 
-  const handleImageChange = (event) => {
+  const handleImg = (event) => {
     const file = event.target.files[0];
     if (file) {
       setProfileFile(file);
       setProfile(URL.createObjectURL(file));
     }
-  }; 
+  };
 
   const handleDeleteAccount = async () => {
     setShowConfirmDialog(true);
@@ -119,7 +121,7 @@ function Profile({ setIsLoggedIn }) {
             type="file"
             id="fileInput"
             accept="image/*"
-            onChange={handleImageChange}
+            onChange={handleImg}
             style={{ display: "none" }}
           />
         </div>

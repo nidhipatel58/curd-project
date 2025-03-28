@@ -99,7 +99,7 @@ const updateUser = async (req, res) => {
       updates.profile = `/images/${req.file.filename}`;
     }
     console.log("Update id", userId, "and data", updates);
-    console.log(req.profile, "------profile");
+    console.log(req.file.filename, "------profile");
 
     const user = await UserService.updateUser(userId, updates);
     if (!user) {

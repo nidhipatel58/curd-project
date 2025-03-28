@@ -4,6 +4,7 @@ import { FiLogOut, FiUser, FiLock, FiPlusCircle, FiList, FiLogIn } from "react-i
 import { FaTasks } from "react-icons/fa";
 import profileImg from "../../assets/profile.png";
 import "./Navbar.css";
+import "./ResponsiveNav.css"
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [showDropdown, setShowDropdown] = useState(false);
